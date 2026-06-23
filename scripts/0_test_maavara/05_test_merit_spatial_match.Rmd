@@ -61,32 +61,25 @@ This analysis tests whether the downloaded MERIT Hydro `cat_*` and `riv_*` layer
 The Maavara catchment shapefile is treated as the Maavara spatial source of truth because it contains both `COMID` and catchment geometries.
 
 ```{r read-data, message=FALSE, warning=FALSE}
-force_4326 <- function(x) {
-  x |>
-    st_set_crs(common_crs) |>
-    st_transform(common_crs)
-}
-
-clean_comid <- function(x) {
-  x |>
-    clean_names() |>
-    rename_with(~ "comid", matches("^comid$")) |>
-    mutate(comid = as.character(comid))
-}
-
 maavara_cat <- read_sf(path_maavara_cat) |>
-  force_4326() |>
-  clean_comid() |>
+  st_set_crs(common_crs) |>
+  st_transform(common_crs) |>
+  clean_names() |>
+  mutate(comid = as.character(comid)) |>
   select(comid, unitarea, lengthkm, geometry)
 
 merit_cat <- read_sf(path_merit_cat) |>
-  force_4326() |>
-  clean_comid() |>
+  st_set_crs(common_crs) |>
+  st_transform(common_crs) |>
+  clean_names() |>
+  mutate(comid = as.character(comid)) |>
   select(comid, any_of(c("linkno", "ds_cont_area")), geometry)
 
 merit_riv <- read_sf(path_merit_riv) |>
-  force_4326() |>
-  clean_comid() |>
+  st_set_crs(common_crs) |>
+  st_transform(common_crs) |>
+  clean_names() |>
+  mutate(comid = as.character(comid)) |>
   select(
     comid,
     any_of(c(
@@ -203,37 +196,6 @@ The primary spatial spot-check compares Maavara catchment centroids to downloade
 
 Distances are calculated after transforming geometries to EPSG:5070.
 
-```{r centroid-distance-functions}
-centroid_table <- function(x, source_name) {
-  centroid_geom <- x |>
-    st_transform(distance_crs) |>
-    st_centroid()
-  
-  tibble(
-    comid = centroid_geom$comid,
-    "{source_name}_geometry" := st_geometry(centroid_geom)
-  )
-}
-
-distance_between_sources <- function(left, right, left_name, right_name) {
-  left_geom <- paste0(left_name, "_geometry")
-  right_geom <- paste0(right_name, "_geometry")
-  
-  joined <- left |>
-    left_join(right, by = "comid")
-  
-  joined |>
-    mutate(
-      distance_m = as.numeric(st_distance(
-        .data[[left_geom]],
-        .data[[right_geom]],
-        by_element = TRUE
-      ))
-    ) |>
-    select(comid, distance_m)
-}
-```
-
 ```{r sample-centroid-distances, message=FALSE, warning=FALSE}
 shared_cat_ids <- comid_match |>
   filter(in_merit_cat) |>
@@ -248,25 +210,50 @@ sample_riv_ids <- sample(shared_riv_ids, size = min(1000, length(shared_riv_ids)
 
 maavara_cat_centroids <- maavara_cat |>
   filter(comid %in% union(sample_cat_ids, sample_riv_ids)) |>
-  centroid_table("maavara")
+  st_transform(distance_crs) |>
+  st_centroid() |>
+  transmute(comid, maavara_geometry = geometry) |>
+  st_drop_geometry()
 
 merit_cat_centroids <- merit_cat |>
   filter(comid %in% sample_cat_ids) |>
-  centroid_table("merit_cat")
+  st_transform(distance_crs) |>
+  st_centroid() |>
+  transmute(comid, merit_cat_geometry = geometry) |>
+  st_drop_geometry()
 
 merit_riv_centroids <- merit_riv |>
   filter(comid %in% sample_riv_ids) |>
-  centroid_table("merit_riv")
+  st_transform(distance_crs) |>
+  st_centroid() |>
+  transmute(comid, merit_riv_geometry = geometry) |>
+  st_drop_geometry()
 
 cat_distances <- maavara_cat_centroids |>
   filter(comid %in% sample_cat_ids) |>
-  distance_between_sources(merit_cat_centroids, "maavara", "merit_cat") |>
-  mutate(comparison = "Maavara catchment vs MERIT catchment")
+  left_join(merit_cat_centroids, by = "comid") |>
+  mutate(
+    distance_m = as.numeric(st_distance(
+      maavara_geometry,
+      merit_cat_geometry,
+      by_element = TRUE
+    )),
+    comparison = "Maavara catchment vs MERIT catchment"
+  ) |>
+  select(comid, comparison, distance_m)
 
 riv_distances <- maavara_cat_centroids |>
   filter(comid %in% sample_riv_ids) |>
-  distance_between_sources(merit_riv_centroids, "maavara", "merit_riv") |>
-  mutate(comparison = "Maavara catchment vs MERIT river")
+  left_join(merit_riv_centroids, by = "comid") |>
+  mutate(
+    distance_m = as.numeric(st_distance(
+      maavara_geometry,
+      merit_riv_geometry,
+      by_element = TRUE
+    )),
+    comparison = "Maavara catchment vs MERIT river"
+  ) |>
+  select(comid, comparison, distance_m)
 
 centroid_distances <- bind_rows(cat_distances, riv_distances)
 
@@ -323,22 +310,23 @@ The Jemez River test uses the provided point to identify the containing HUC8 wit
 ```{r get-jemez-huc8, message=FALSE, warning=FALSE}
 jemez_huc_info <- nhdplusTools::get_huc(
   AOI = jemez_point,
-  type = "huc08"
-) |>
-  st_as_sf() |>
-  force_4326() |>
+  type = "huc08") |>
+  st_transform(common_crs) |>
   clean_names()
-
-jemez_huc_info |>
-  st_drop_geometry()
 ```
 
 ```{r crop-jemez-data, message=FALSE, warning=FALSE}
 jemez_boundary <- jemez_huc_info |>
   select(any_of(c("huc8", "name")), geometry)
 
+# s2 flagged one invalid Maavara polygon loop during this spatial crop.
+# The local HUC8 diagnostic uses GEOS predicates instead of spherical predicates.
+sf_use_s2(FALSE)
+
 maavara_jemez <- maavara_cat |>
   st_filter(jemez_boundary, .predicate = st_intersects)
+
+sf_use_s2(TRUE)
 
 jemez_ids <- maavara_jemez |>
   st_drop_geometry() |>

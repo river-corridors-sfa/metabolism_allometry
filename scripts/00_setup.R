@@ -9,6 +9,9 @@ pacman::p_load(tidyverse,
                sf,
                here,
                ggthemes,
+               nhdplusTools,
+               ggsflabel,
+               cowplot,
                janitor)
 
 

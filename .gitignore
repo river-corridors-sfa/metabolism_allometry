@@ -48,5 +48,11 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 .DS_Store
-data/
-.DS_Store
+
+# Ignore data by default
+data/*
+
+# Allow selected data paths to be tracked
+!data/data_source_merit_saga**
+
+!data/processed/centroid_difference**

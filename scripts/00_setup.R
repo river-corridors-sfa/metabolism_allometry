@@ -11,7 +11,9 @@ pacman::p_load(tidyverse,
                ggthemes,
                nhdplusTools,
                ggsflabel,
+               rnaturalearth,
                cowplot,
+               tictoc,
                janitor)
 
 

@@ -1,0 +1,256 @@
+---
+title: "07 Explore Clean HUC8 Allometry"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: flatly
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = F, 
+                      warning = F, 
+                      message = F)
+```
+
+
+```{r 1}
+
+rm(list = ls())
+
+knit_start_time <- Sys.time()
+
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  nhdplusTools,
+  sf,
+  tidyverse,
+  viridis
+)
+
+theme_set(theme_void())
+
+dir_data <- "../data/processed"
+dir_figs <- "../figures"
+
+huc_level <- "huc08"
+huc_col <- str_replace(huc_level, "huc0", "huc")
+
+path_metrics <- file.path(dir_data, paste0("06_", huc_level, "_allometry_metrics.csv"))
+path_diagnostics <- file.path(dir_data, paste0("06_", huc_level, "_diagnostics.csv"))
+path_flowlines <- file.path(dir_data, "riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+
+```
+
+
+```{r 2}
+
+metrics <- read_csv(path_metrics, show_col_types = FALSE) |>
+  mutate(
+    huc = str_pad(as.character(huc), width = 8, pad = "0"),
+    metabolism = recode(
+      metabolism_var,
+      c_gpp_flux_gO2_d = "GPP",
+      c_er_flux_gO2_d = "ER"
+    )
+  )
+
+diagnostics <- read_csv(path_diagnostics, show_col_types = FALSE) |>
+  mutate(huc = str_pad(as.character(huc), width = 8, pad = "0"))
+
+annual_metrics <- metrics |>
+  inner_join(diagnostics, by = c("huc_level", "huc")) |>
+  filter(
+    n >= 30,
+    is.finite(slope),
+    is.finite(r2)
+  ) |>
+  group_by(huc, metabolism) |>
+  summarise(
+    annual_slope = median(slope, na.rm = TRUE),
+    annual_r2 = median(r2, na.rm = TRUE),
+    n_months = n_distinct(month),
+    .groups = "drop"
+  ) |>
+  filter(n_months >= 6) |>
+  mutate(
+    slope_class = case_when(
+      annual_slope < 0.8 ~ "Sublinear",
+      annual_slope <= 1.2 ~ "Linear",
+      annual_slope > 1.2 ~ "Superlinear"
+    ),
+    slope_class = factor(slope_class, levels = c("Sublinear", "Linear", "Superlinear")),
+    coherence_class = if_else(annual_r2 >= 0.8, "Coherent", "Not coherent"),
+    coherence_class = factor(coherence_class, levels = c("Not coherent", "Coherent"))
+  )
+
+```
+
+
+```{r 3}
+
+flowlines_sf <- read_sf(path_flowlines) |>
+  clean_names()
+
+huc_boundaries <- nhdplusTools::get_huc(
+  AOI = st_as_sfc(st_bbox(flowlines_sf)),
+  type = huc_level,
+  t_srs = 4326
+) |>
+  clean_names() |>
+  mutate(huc = str_pad(as.character(.data[[huc_col]]), width = 8, pad = "0"))
+
+```
+
+
+```{r 4}
+
+plot_huc_map <- function(data, fill_var, title, fill_label, palette_values) {
+  
+  huc_boundaries |>
+    left_join(data, by = "huc") |>
+    ggplot() +
+    geom_sf(aes(fill = {{ fill_var }}), color = NA) +
+    scale_fill_manual(
+      values = palette_values,
+      na.value = "grey82",
+      name = fill_label
+    ) +
+    coord_sf(datum = NA) +
+    labs(title = title) +
+    theme(
+      legend.position = "bottom",
+      plot.title = element_text(face = "bold", size = 16),
+      legend.title = element_text(size = 11),
+      legend.text = element_text(size = 10)
+    )
+}
+
+```
+
+
+```{r 5}
+
+p_gpp_slope_map <- annual_metrics |>
+  filter(metabolism == "GPP") |>
+  plot_huc_map(
+    fill_var = slope_class,
+    title = "Annual GPP allometric scaling class",
+    fill_label = "GPP slope",
+    palette_values = c(
+      "Sublinear" = "#2166ac",
+      "Linear" = "orange",
+      "Superlinear" = "#b2182b"
+    )
+  )
+
+p_gpp_slope_map
+
+ggsave(
+  file.path(dir_figs, "07b_gpp_slope_class_huc08_map.png"),
+  p_gpp_slope_map,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+
+```{r 6}
+
+p_er_slope_map <- annual_metrics |>
+  filter(metabolism == "ER") |>
+  plot_huc_map(
+    fill_var = slope_class,
+    title = "Annual ER allometric scaling class",
+    fill_label = "ER slope",
+    palette_values = c(
+      "Sublinear" = "#2166ac",
+      "Linear" = "orange",
+      "Superlinear" = "#b2182b"
+    )
+  )
+
+p_er_slope_map
+
+ggsave(
+  file.path(dir_figs, "07b_er_slope_class_huc08_map.png"),
+  p_er_slope_map,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+
+```{r 7}
+
+p_gpp_r2_map <- annual_metrics |>
+  filter(metabolism == "GPP") |>
+  plot_huc_map(
+    fill_var = coherence_class,
+    title = "Annual GPP allometric coherence",
+    fill_label = "GPP R²",
+    palette_values = c(
+      "Not coherent" = "red",
+      "Coherent" = "#1b9e77"
+    )
+  )
+
+p_gpp_r2_map
+
+ggsave(
+  file.path(dir_figs, "07b_gpp_r2_coherence_huc08_map.png"),
+  p_gpp_r2_map,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+
+```{r 8}
+
+p_er_r2_map <- annual_metrics |>
+  filter(metabolism == "ER") |>
+  plot_huc_map(
+    fill_var = coherence_class,
+    title = "Annual ER allometric coherence",
+    fill_label = "ER R²",
+    palette_values = c(
+      "Not coherent" = "red",
+      "Coherent" = "#1b9e77"
+    )
+  )
+
+p_er_r2_map
+
+ggsave(
+  file.path(dir_figs, "07b_er_r2_coherence_huc08_map.png"),
+  p_er_r2_map,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+
+```{r 9}
+
+knit_elapsed <- difftime(Sys.time(), knit_start_time, units = "mins")
+
+cat(
+  "\n\n**Render time:**",
+  round(as.numeric(knit_elapsed), 2),
+  "minutes\n"
+)
+
+```
+
+
+

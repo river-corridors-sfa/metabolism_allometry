@@ -1,0 +1,594 @@
+---
+title: "08 Ecoregion Patterns in HUC8 Metabolism Allometry"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: flatly
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = F, 
+                      warning = F, 
+                      message = F)
+```
+
+```{r 1}
+
+rm(list = ls())
+
+knit_start_time <- Sys.time()
+
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  knitr,
+  nhdplusTools,
+  scales,
+  sf,
+  tidyverse,
+  viridis
+)
+
+theme_set(theme_bw())
+
+dir_data <- "../data/processed"
+dir_figs <- "../figures"
+
+dir.create(dir_figs, recursive = TRUE, showWarnings = FALSE)
+
+huc_level <- "huc08"
+huc_col <- str_replace(huc_level, "huc0", "huc")
+
+min_reaches <- 30
+min_months <- 6
+coherence_r2 <- 0.8
+compromised_threshold <- 5
+rebuild_ecoregion_lookup <- FALSE
+
+month_levels <- month.abb
+
+path_metrics <- file.path(dir_data, paste0("06_", huc_level, "_allometry_metrics.csv"))
+path_diagnostics <- file.path(dir_data, paste0("06_", huc_level, "_diagnostics.csv"))
+path_flowlines <- file.path(dir_data, "riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_coherence <- file.path(
+  dir_data,
+  "06a_null_coherence",
+  paste0("06a_", huc_level, "_observed_vs_null_coherence.csv")
+)
+
+path_ecoregion_lookup <- file.path(dir_data, "08_huc08_l1_ecoregion_lookup.csv")
+path_ecoregion_flux_summary <- file.path(dir_data, "08_l1_ecoregion_flux_summary.csv")
+path_ecoregion_gap_summary <- file.path(dir_data, "08_l1_ecoregion_gpp_er_gap_summary.csv")
+path_ecoregion_null_summary <- file.path(dir_data, "08_l1_ecoregion_null_coherence_summary.csv")
+
+# ArcGIS REST FeatureServer query for North American Level I terrestrial ecoregions.
+# This pulls only Level I code/name plus geometry as GeoJSON, then caches only a
+# small HUC8-to-ecoregion lookup table locally.
+ecoregion_l1_url <- paste0(
+  "https://services7.arcgis.com/oF9CDB4lUYF7Um9q/arcgis/rest/services/",
+  "NA_Terrestrial_Ecoregions_Level_1/FeatureServer/5/query?",
+  "where=1%3D1",
+  "&outFields=LEVEL1%2CNameL1_En",
+  "&returnGeometry=true",
+  "&outSR=4326",
+  "&f=geojson"
+)
+
+```
+
+## Goal
+
+This notebook asks whether HUC8-scale GPP and ER allometries vary systematically across broad Level I ecoregions. The intent is descriptive stratification: ecoregions are used to summarize where scaling patterns occur, not to infer that ecoregion membership causes those scaling patterns.
+
+**My take:** 
+
+```{r 2}
+
+metrics <- read_csv(path_metrics, show_col_types = FALSE) |>
+  mutate(
+    huc = str_pad(as.character(huc), width = 8, pad = "0"),
+    month = factor(month, levels = month_levels),
+    metabolism = recode(
+      metabolism_var,
+      c_gpp_flux_gO2_d = "GPP",
+      c_er_flux_gO2_d = "ER"
+    ),
+    coherent = n >= min_reaches & r2 >= coherence_r2,
+    slope_class = case_when(
+      slope < 0.8 ~ "Sublinear",
+      slope <= 1.2 ~ "Linear",
+      slope > 1.2 ~ "Superlinear",
+      TRUE ~ NA_character_
+    ),
+    slope_class = factor(slope_class, levels = c("Sublinear", "Linear", "Superlinear"))
+  )
+
+diagnostics <- read_csv(path_diagnostics, show_col_types = FALSE) |>
+  mutate(
+    huc = str_pad(as.character(huc), width = 8, pad = "0"),
+    n_reaches_removed = replace_na(n_reaches_removed, 0),
+    pct_reaches_removed = replace_na(pct_reaches_removed, 0),
+    length_removed_km = replace_na(length_removed_km, 0),
+    pct_length_removed = replace_na(pct_length_removed, 0),
+    likely_allometry_sensitive = replace_na(likely_allometry_sensitive, FALSE),
+    compromised = pct_reaches_removed >= compromised_threshold |
+      pct_length_removed >= compromised_threshold |
+      likely_allometry_sensitive
+  )
+
+allometry <- metrics |>
+  inner_join(diagnostics, by = c("huc_level", "huc")) |>
+  filter(
+    n >= min_reaches,
+    is.finite(slope),
+    is.finite(r2)
+  )
+
+annual_slopes <- allometry |>
+  group_by(huc, metabolism) |>
+  summarise(
+    annual_slope = median(slope, na.rm = TRUE),
+    annual_r2 = median(r2, na.rm = TRUE),
+    pct_coherent_months = mean(coherent, na.rm = TRUE) * 100,
+    n_months = n_distinct(month),
+    .groups = "drop"
+  ) |>
+  filter(n_months >= min_months)
+
+annual_pairs <- annual_slopes |>
+  select(huc, metabolism, annual_slope, annual_r2, pct_coherent_months, n_months) |>
+  pivot_wider(
+    names_from = metabolism,
+    values_from = c(annual_slope, annual_r2, pct_coherent_months, n_months)
+  ) |>
+  left_join(
+    diagnostics |>
+      select(huc, compromised),
+    by = "huc"
+  ) |>
+  filter(
+    is.finite(annual_slope_GPP),
+    is.finite(annual_slope_ER)
+  ) |>
+  mutate(
+    annual_slope_gap_gpp_minus_er = annual_slope_GPP - annual_slope_ER,
+    gpp_greater_than_er = annual_slope_gap_gpp_minus_er > 0
+  )
+
+monthly_pairs <- allometry |>
+  select(huc, month, metabolism, slope, r2, coherent) |>
+  pivot_wider(
+    names_from = metabolism,
+    values_from = c(slope, r2, coherent)
+  ) |>
+  left_join(
+    diagnostics |>
+      select(huc, compromised),
+    by = "huc"
+  ) |>
+  filter(
+    is.finite(slope_GPP),
+    is.finite(slope_ER)
+  ) |>
+  mutate(
+    slope_gap_gpp_minus_er = slope_GPP - slope_ER,
+    both_coherent = coherent_GPP & coherent_ER
+  )
+
+coherence <- if (file.exists(path_coherence)) {
+  read_csv(path_coherence, show_col_types = FALSE) |>
+    mutate(
+      huc = str_pad(as.character(huc), width = 8, pad = "0"),
+      month = factor(month, levels = month_levels),
+      metabolism = recode(
+        metabolism_var,
+        c_gpp_flux_gO2_d = "GPP",
+        c_er_flux_gO2_d = "ER"
+      )
+    ) |>
+    filter(!is.na(r2), !is.na(r2_null_95))
+} else {
+  tibble()
+}
+
+```
+
+## Build or read the HUC8 ecoregion lookup
+
+This section uses a lightweight API route. It queries the ArcGIS REST service for Level I North American terrestrial ecoregions, assigns each HUC8 to the Level I ecoregion containing its point-on-surface, and saves only the small HUC8 lookup table. The ecoregion polygons themselves are not saved.
+
+**My take:** 
+
+```{r 3}
+
+build_huc_ecoregion_lookup <- function() {
+  flowlines_sf <- read_sf(path_flowlines) |>
+    clean_names()
+  
+  huc_boundaries <- nhdplusTools::get_huc(
+    AOI = st_as_sfc(st_bbox(flowlines_sf)),
+    type = huc_level,
+    t_srs = 4326
+  ) |>
+    clean_names() |>
+    mutate(
+      huc = str_pad(as.character(.data[[huc_col]]), width = 8, pad = "0")
+    ) |>
+    select(huc)
+  
+  ecoregions_l1 <- read_sf(ecoregion_l1_url) |>
+    clean_names() |>
+    transmute(
+      l1_code = level1,
+      l1_ecoregion = name_l1_en
+    ) |>
+    st_transform(st_crs(huc_boundaries))
+  
+  huc_lookup <- huc_boundaries |>
+    st_point_on_surface() |>
+    st_join(ecoregions_l1, join = st_within) |>
+    st_drop_geometry() |>
+    select(huc, l1_code, l1_ecoregion) |>
+    distinct() |>
+    arrange(huc)
+  
+  write_csv(huc_lookup, path_ecoregion_lookup)
+  
+  huc_lookup
+}
+
+huc_ecoregions <- if (file.exists(path_ecoregion_lookup) & !rebuild_ecoregion_lookup) {
+  read_csv(path_ecoregion_lookup, show_col_types = FALSE) |>
+    mutate(huc = str_pad(as.character(huc), width = 8, pad = "0"))
+} else {
+  build_huc_ecoregion_lookup()
+}
+
+ecoregion_check <- huc_ecoregions |>
+  count(l1_code, l1_ecoregion, sort = TRUE)
+
+ecoregion_check |>
+  kable(digits = 1)
+
+```
+
+```{r 4}
+
+annual_ecoregion <- annual_slopes |>
+  left_join(huc_ecoregions, by = "huc") |>
+  left_join(
+    diagnostics |>
+      select(huc, compromised),
+    by = "huc"
+  ) |>
+  filter(!is.na(l1_ecoregion))
+
+monthly_ecoregion <- allometry |>
+  left_join(huc_ecoregions, by = "huc") |>
+  filter(!is.na(l1_ecoregion))
+
+annual_pairs_ecoregion <- annual_pairs |>
+  left_join(huc_ecoregions, by = "huc") |>
+  filter(!is.na(l1_ecoregion))
+
+monthly_pairs_ecoregion <- monthly_pairs |>
+  left_join(huc_ecoregions, by = "huc") |>
+  filter(!is.na(l1_ecoregion))
+
+coherence_ecoregion <- coherence |>
+  left_join(huc_ecoregions, by = "huc") |>
+  filter(!is.na(l1_ecoregion))
+
+ecoregion_order <- annual_ecoregion |>
+  filter(metabolism == "GPP") |>
+  group_by(l1_ecoregion) |>
+  summarise(
+    median_gpp_slope = median(annual_slope, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(median_gpp_slope) |>
+  pull(l1_ecoregion)
+
+annual_ecoregion <- annual_ecoregion |>
+  mutate(l1_ecoregion = factor(l1_ecoregion, levels = ecoregion_order))
+
+monthly_ecoregion <- monthly_ecoregion |>
+  mutate(l1_ecoregion = factor(l1_ecoregion, levels = ecoregion_order))
+
+annual_pairs_ecoregion <- annual_pairs_ecoregion |>
+  mutate(l1_ecoregion = factor(l1_ecoregion, levels = ecoregion_order))
+
+monthly_pairs_ecoregion <- monthly_pairs_ecoregion |>
+  mutate(l1_ecoregion = factor(l1_ecoregion, levels = ecoregion_order))
+
+coherence_ecoregion <- coherence_ecoregion |>
+  mutate(l1_ecoregion = factor(l1_ecoregion, levels = ecoregion_order))
+
+```
+
+## How do GPP and ER slopes vary across Level I ecoregions?
+
+**My take:** 
+
+```{r 5}
+
+p_annual_slope_ecoregion <- annual_ecoregion |>
+  ggplot(aes(x = annual_slope, y = l1_ecoregion, fill = metabolism)) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey45") +
+  geom_boxplot(
+    position = position_dodge(width = 0.75),
+    width = 0.6,
+    outlier.alpha = 0.2
+  ) +
+  scale_fill_viridis_d(option = "D", end = 0.85) +
+  labs(
+    title = "Annual HUC8 GPP and ER allometric slopes by Level I ecoregion",
+    x = "Median annual HUC8 allometric slope",
+    y = NULL,
+    fill = "Flux"
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )
+
+p_annual_slope_ecoregion
+
+ggsave(
+  file.path(dir_figs, "08_l1_ecoregion_annual_slope_boxplot.png"),
+  p_annual_slope_ecoregion,
+  width = 9,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+## Where do GPP and ER scaling rules diverge?
+
+Positive values mean GPP has the steeper annual allometric slope. Negative values mean ER has the steeper annual allometric slope.
+
+**My take:** 
+
+```{r 6}
+
+p_annual_gap_ecoregion <- annual_pairs_ecoregion |>
+  ggplot(aes(x = annual_slope_gap_gpp_minus_er, y = l1_ecoregion)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey45") +
+  geom_boxplot(fill = "grey70", outlier.alpha = 0.25) +
+  labs(
+    title = "Annual GPP minus ER allometric slope gap by Level I ecoregion",
+    x = "Annual slope gap: GPP - ER",
+    y = NULL
+  ) +
+  theme(panel.grid.minor = element_blank())
+
+p_annual_gap_ecoregion
+
+ggsave(
+  file.path(dir_figs, "08_l1_ecoregion_gpp_minus_er_slope_gap.png"),
+  p_annual_gap_ecoregion,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+## Are ecoregion patterns seasonal?
+
+This heatmap shows the median monthly HUC8 allometric slope within each Level I ecoregion. It is a compact way to see whether ecoregion separation is persistent or season-specific.
+
+**My take:** 
+
+```{r 7}
+
+monthly_ecoregion_summary <- monthly_ecoregion |>
+  group_by(l1_ecoregion, month, metabolism) |>
+  summarise(
+    n_huc8 = n_distinct(huc),
+    median_slope = median(slope, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  filter(n_huc8 >= 5)
+
+p_monthly_slope_heatmap <- monthly_ecoregion_summary |>
+  ggplot(aes(x = month, y = l1_ecoregion, fill = median_slope)) +
+  geom_tile(color = "white", linewidth = 0.25) +
+  geom_text(aes(label = round(median_slope, 2)), size = 2.6) +
+  facet_wrap(~ metabolism, nrow = 1) +
+  scale_fill_viridis_c(option = "C") +
+  labs(
+    title = "Monthly median HUC8 allometric slope by Level I ecoregion",
+    x = NULL,
+    y = NULL,
+    fill = "Median\nslope"
+  ) +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold")
+  )
+
+p_monthly_slope_heatmap
+
+ggsave(
+  file.path(dir_figs, "08_l1_ecoregion_monthly_slope_heatmap.png"),
+  p_monthly_slope_heatmap,
+  width = 11,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+## Do ecoregion differences persist after excluding compromised HUC8s?
+
+This is a quick sensitivity check. "Compromised" follows the centroid-filter diagnostics from the 06 workflow. It does not mean the HUC8 is unusable; it only flags HUC8s where removed reaches may have enough leverage to matter.
+
+**My take:** 
+
+```{r 8}
+
+sensitivity_summary <- bind_rows(
+  annual_ecoregion |>
+    mutate(screen = "All HUC8s"),
+  annual_ecoregion |>
+    filter(!compromised) |>
+    mutate(screen = "Uncompromised only")
+) |>
+  group_by(screen, l1_ecoregion, metabolism) |>
+  summarise(
+    n_huc8 = n_distinct(huc),
+    median_slope = median(annual_slope, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  filter(n_huc8 >= 5) |>
+  mutate(screen = factor(screen, levels = c("All HUC8s", "Uncompromised only")))
+
+p_sensitivity <- sensitivity_summary |>
+  ggplot(aes(x = median_slope, y = l1_ecoregion, color = screen)) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey50") +
+  geom_line(aes(group = interaction(l1_ecoregion, metabolism)), color = "grey75") +
+  geom_point(size = 2.5) +
+  facet_wrap(~ metabolism, nrow = 1) +
+  scale_color_viridis_d(option = "D", end = 0.85) +
+  labs(
+    title = "Sensitivity of ecoregion median slopes to compromised-HUC8 exclusion",
+    x = "Median annual HUC8 allometric slope",
+    y = NULL,
+    color = NULL
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold")
+  )
+
+p_sensitivity
+
+ggsave(
+  file.path(dir_figs, "08_l1_ecoregion_slope_sensitivity_compromised_hucs.png"),
+  p_sensitivity,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+## How does null-model support vary across ecoregions?
+
+This summarizes the 06a null-model coherence results by ecoregion. It is still descriptive: a high ecoregion value means that HUC8-month tests in that ecoregion often exceeded the shuffled-network null, not that ecoregion properties caused the coherence.
+
+**My take:** 
+
+```{r 9}
+
+if (nrow(coherence_ecoregion) > 0) {
+  ecoregion_null_summary <- coherence_ecoregion |>
+    group_by(l1_ecoregion, metabolism) |>
+    summarise(
+      n_tests = n(),
+      n_huc8 = n_distinct(huc),
+      pct_observed_coherent = mean(observed_coherent, na.rm = TRUE) * 100,
+      pct_stronger_than_null = mean(stronger_than_null, na.rm = TRUE) * 100,
+      pct_rcc_like_coherent = mean(rcc_like_coherent, na.rm = TRUE) * 100,
+      median_r2_margin = median(r2_minus_null_95, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    filter(n_huc8 >= 5)
+  
+  write_csv(ecoregion_null_summary, path_ecoregion_null_summary)
+  
+  p_null_ecoregion <- ecoregion_null_summary |>
+    ggplot(aes(x = pct_rcc_like_coherent, y = l1_ecoregion, fill = metabolism)) +
+    geom_col(position = position_dodge(width = 0.75), width = 0.65) +
+    scale_fill_viridis_d(option = "D", end = 0.85) +
+    scale_x_continuous(limits = c(0, 100)) +
+    labs(
+      title = "RCC-like coherent HUC8-month tests by Level I ecoregion",
+      x = "RCC-like coherent tests (%)",
+      y = NULL,
+      fill = "Flux"
+    ) +
+    theme(
+      panel.grid.minor = element_blank(),
+      legend.position = "bottom"
+    )
+  
+  p_null_ecoregion
+  
+  ggsave(
+    file.path(dir_figs, "08_l1_ecoregion_rcc_like_coherence.png"),
+    p_null_ecoregion,
+    width = 9,
+    height = 6,
+    dpi = 300
+  )
+}
+
+```
+
+## Compact summary tables
+
+**My take:** 
+
+```{r 10}
+
+ecoregion_flux_summary <- annual_ecoregion |>
+  group_by(l1_code, l1_ecoregion, metabolism) |>
+  summarise(
+    n_huc8 = n_distinct(huc),
+    n_compromised_huc8 = n_distinct(huc[compromised]),
+    pct_compromised_huc8 = n_compromised_huc8 / n_huc8 * 100,
+    median_annual_slope = median(annual_slope, na.rm = TRUE),
+    p25_annual_slope = quantile(annual_slope, 0.25, na.rm = TRUE),
+    p75_annual_slope = quantile(annual_slope, 0.75, na.rm = TRUE),
+    median_annual_r2 = median(annual_r2, na.rm = TRUE),
+    median_pct_coherent_months = median(pct_coherent_months, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(metabolism, median_annual_slope)
+
+ecoregion_gap_summary <- annual_pairs_ecoregion |>
+  group_by(l1_code, l1_ecoregion) |>
+  summarise(
+    n_huc8 = n_distinct(huc),
+    n_compromised_huc8 = n_distinct(huc[compromised]),
+    pct_compromised_huc8 = n_compromised_huc8 / n_huc8 * 100,
+    median_gpp_slope = median(annual_slope_GPP, na.rm = TRUE),
+    median_er_slope = median(annual_slope_ER, na.rm = TRUE),
+    median_slope_gap_gpp_minus_er = median(annual_slope_gap_gpp_minus_er, na.rm = TRUE),
+    p25_slope_gap_gpp_minus_er = quantile(annual_slope_gap_gpp_minus_er, 0.25, na.rm = TRUE),
+    p75_slope_gap_gpp_minus_er = quantile(annual_slope_gap_gpp_minus_er, 0.75, na.rm = TRUE),
+    pct_gpp_slope_greater_than_er = mean(gpp_greater_than_er, na.rm = TRUE) * 100,
+    .groups = "drop"
+  ) |>
+  arrange(median_slope_gap_gpp_minus_er)
+
+write_csv(ecoregion_flux_summary, path_ecoregion_flux_summary)
+write_csv(ecoregion_gap_summary, path_ecoregion_gap_summary)
+
+ecoregion_flux_summary |>
+  kable(digits = 2)
+
+ecoregion_gap_summary |>
+  kable(digits = 2)
+
+```
+
+## Initial interpretation notes
+
+Use this section as a running scratchpad for interpretation after inspecting the figures and tables.
+
+**My take:** 
+
+- 
+
+```{r 11}
+
+Sys.time() - knit_start_time
+
+```

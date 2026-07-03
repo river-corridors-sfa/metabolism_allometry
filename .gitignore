@@ -56,3 +56,4 @@ data/*
 !data/data_source_merit_saga**
 
 !data/processed/centroid_difference**
+scripts/x_l1_conus_nm_oneoff.R

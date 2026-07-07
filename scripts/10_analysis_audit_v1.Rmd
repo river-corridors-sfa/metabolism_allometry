@@ -1,0 +1,613 @@
+
+---
+title: "Area-metabolism alignment audit"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = F,
+  message = F,
+  warning = F)
+```
+
+
+```{r}
+rm(list = ls())
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  tidyverse,
+  sf,
+  janitor,
+  knitr
+)
+```
+
+
+```{r}
+huc_level <- "huc08"
+huc_col <- str_replace(huc_level, "huc0", "huc")
+
+min_reaches <- 10
+coherence_r2 <- 0.8
+min_valid_months <- 6
+
+dir_qc <- "../data/qc"
+dir_qc_figs <- "../figures/qc"
+
+dir.create(dir_qc, recursive = TRUE, showWarnings = FALSE)
+dir.create(dir_qc_figs, recursive = TRUE, showWarnings = FALSE)
+
+path_flowlines <- "../data/processed/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp"
+path_metabolism <- "../data/processed/05b_centroid_mismatch/05b_maavara_monthly_metabolism_centroid_filtered.rds"
+path_removed_comids <- "../data/processed/05b_centroid_mismatch/05b_removed_comids.rds"
+path_upstream_lookup <- "../data/processed/04_upstream_lookup.rds"
+path_comid_characteristics <- "../data/dryad_data/scaling_dataset_Qmonth_06082024.csv"
+path_existing_metrics <- "../data/processed/06_huc08_allometry_metrics.csv"
+```
+
+
+```{r}
+flowlines_sf <- read_sf(path_flowlines) |>
+  clean_names() |>
+  mutate(
+    comid = as.character(comid),
+    nxt_dw = as.character(nxt_dw)
+  )
+
+removed_comids <- readRDS(path_removed_comids) |>
+  mutate(comid = as.character(comid)) |>
+  distinct(comid)
+
+metabolism <- readRDS(path_metabolism) |>
+  mutate(comid = as.character(comid))
+
+comid_characteristics <- read_csv(path_comid_characteristics, show_col_types = FALSE) |>
+  clean_names() |>
+  select(comid, unitarea, lengthkm, merit_width, order, merit_qmean) |>
+  mutate(
+    comid = as.character(comid),
+    stream_area_m2 = lengthkm * 1000 * merit_width
+  ) |>
+  anti_join(removed_comids, by = "comid")
+
+upstream_lookup <- readRDS(path_upstream_lookup) |>
+  mutate(
+    downstream_comid = as.character(downstream_comid),
+    upstream_comid = as.character(upstream_comid)
+  ) |>
+  anti_join(removed_comids, by = c("downstream_comid" = "comid")) |>
+  anti_join(removed_comids, by = c("upstream_comid" = "comid"))
+
+existing_metrics <- read_csv(path_existing_metrics, show_col_types = FALSE) |>
+  clean_names() |>
+  mutate(
+    huc = as.character(huc),
+    metabolism_var = recode(
+      metabolism_var,
+      c_gpp_flux_g_o2_d = "GPP",
+      c_er_flux_g_o2_d = "ER",
+      c_gpp_flux_go2_d = "GPP",
+      c_er_flux_go2_d = "ER",
+      c_gpp_flux_gO2_d = "GPP",
+      c_er_flux_gO2_d = "ER",
+      .default = metabolism_var
+    )
+  )
+```
+
+
+```{r}
+huc_boundaries <- nhdplusTools::get_huc(
+  AOI = st_as_sfc(st_bbox(flowlines_sf)),
+  type = huc_level,
+  t_srs = st_crs(flowlines_sf)
+) |>
+  clean_names() |>
+  select(all_of(huc_col))
+
+flowline_hucs <- flowlines_sf |>
+  anti_join(removed_comids, by = "comid") |>
+  st_point_on_surface() |>
+  st_join(huc_boundaries, join = st_within) |>
+  st_drop_geometry() |>
+  mutate(comid = as.character(comid)) |>
+  select(comid, huc = all_of(huc_col), uparea)
+
+huc_comid_lookup <- flowline_hucs |>
+  filter(!is.na(huc)) |>
+  transmute(comid, huc)
+
+flowline_hucs |>
+  summarise(
+    n_flowlines = n(),
+    n_assigned_huc = sum(!is.na(huc)),
+    n_missing_huc = sum(is.na(huc)),
+    pct_missing_huc = n_missing_huc / n_flowlines * 100
+  ) |>
+  kable(digits = 2)
+```
+
+
+```{r}
+upstream_lookup_huc <- upstream_lookup |>
+  inner_join(
+    huc_comid_lookup,
+    by = c("downstream_comid" = "comid")
+  ) |>
+  rename(huc_downstream = huc) |>
+  inner_join(
+    huc_comid_lookup,
+    by = c("upstream_comid" = "comid")
+  ) |>
+  rename(huc_upstream = huc) |>
+  mutate(same_huc = huc_downstream == huc_upstream)
+
+within_huc_lookup <- upstream_lookup_huc |>
+  filter(same_huc) |>
+  transmute(
+    huc = huc_downstream,
+    downstream_comid,
+    upstream_comid
+  )
+
+upstream_lookup_huc |>
+  summarise(
+    n_pairs_with_assigned_hucs = n(),
+    n_pairs_same_huc = sum(same_huc),
+    n_pairs_cross_huc = sum(!same_huc),
+    pct_pairs_cross_huc = n_pairs_cross_huc / n_pairs_with_assigned_hucs * 100
+  ) |>
+  kable(digits = 2)
+```
+
+
+```{r}
+area_alignment_by_comid <- upstream_lookup |>
+  group_by(downstream_comid) |>
+  summarise(
+    n_upstream_full_after_centroid_filter = n_distinct(upstream_comid),
+    .groups = "drop"
+  ) |>
+  left_join(
+    within_huc_lookup |>
+      group_by(huc, downstream_comid) |>
+      summarise(
+        n_upstream_within_huc = n_distinct(upstream_comid),
+        .groups = "drop"
+      ),
+    by = "downstream_comid"
+  ) |>
+  left_join(
+    within_huc_lookup |>
+      left_join(
+        comid_characteristics |> select(upstream_comid = comid, unitarea),
+        by = "upstream_comid"
+      ) |>
+      group_by(huc, downstream_comid) |>
+      summarise(
+        unitarea_sum_within_huc = sum(unitarea, na.rm = TRUE),
+        .groups = "drop"
+      ),
+    by = c("huc", "downstream_comid")
+  ) |>
+  left_join(
+    flowline_hucs |> select(downstream_comid = comid, uparea),
+    by = "downstream_comid"
+  ) |>
+  mutate(
+    n_upstream_within_huc = replace_na(n_upstream_within_huc, 0L),
+    unitarea_sum_within_huc = replace_na(unitarea_sum_within_huc, 0),
+    area_alignment_ratio = unitarea_sum_within_huc / uparea,
+    upstream_count_alignment_ratio = n_upstream_within_huc / n_upstream_full_after_centroid_filter
+  )
+
+write_csv(
+  area_alignment_by_comid,
+  file.path(dir_qc, "10_area_metabolism_alignment_by_comid.csv")
+)
+
+area_alignment_by_comid |>
+  summarise(
+    n_downstream_comids = n(),
+    median_area_alignment_ratio = median(area_alignment_ratio, na.rm = TRUE),
+    p10_area_alignment_ratio = quantile(area_alignment_ratio, 0.10, na.rm = TRUE),
+    p90_area_alignment_ratio = quantile(area_alignment_ratio, 0.90, na.rm = TRUE),
+    pct_ratio_lt_0_5 = mean(area_alignment_ratio < 0.5, na.rm = TRUE) * 100,
+    pct_ratio_lt_0_9 = mean(area_alignment_ratio < 0.9, na.rm = TRUE) * 100
+  ) |>
+  kable(digits = 3)
+```
+
+
+```{r}
+area_alignment_by_huc <- area_alignment_by_comid |>
+  filter(!is.na(huc)) |>
+  group_by(huc) |>
+  summarise(
+    n_downstream_comids = n(),
+    median_area_alignment_ratio = median(area_alignment_ratio, na.rm = TRUE),
+    min_area_alignment_ratio = min(area_alignment_ratio, na.rm = TRUE),
+    p10_area_alignment_ratio = quantile(area_alignment_ratio, 0.10, na.rm = TRUE),
+    pct_reaches_ratio_lt_0_5 = mean(area_alignment_ratio < 0.5, na.rm = TRUE) * 100,
+    pct_reaches_ratio_lt_0_9 = mean(area_alignment_ratio < 0.9, na.rm = TRUE) * 100,
+    median_upstream_count_alignment_ratio = median(upstream_count_alignment_ratio, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(median_area_alignment_ratio)
+
+write_csv(
+  area_alignment_by_huc,
+  file.path(dir_qc, "10_area_metabolism_alignment_by_huc8.csv")
+)
+
+area_alignment_by_huc |>
+  slice_head(n = 20) |>
+  kable(digits = 3)
+```
+
+
+```{r}
+p_area_alignment_huc <- area_alignment_by_huc |>
+  ggplot(aes(x = reorder(huc, median_area_alignment_ratio),
+             y = as.numeric(median_area_alignment_ratio))) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous() +
+  labs(
+    x = "HUC8",
+    y = "Median within-HUC upstream area / full MERIT upstream area"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank()
+  )
+
+p_area_alignment_huc
+```
+
+
+```{r}
+metabolism_scaled <- metabolism |>
+  left_join(comid_characteristics, by = "comid") |>
+  transmute(
+    comid,
+    month,
+    gpp_flux_gO2_d = gpp * stream_area_m2,
+    er_flux_gO2_d = er * stream_area_m2
+  )
+
+cumulative_metabolism_audit <- within_huc_lookup |>
+  left_join(
+    metabolism_scaled |>
+      select(upstream_comid = comid, month, gpp_flux_gO2_d, er_flux_gO2_d),
+    by = "upstream_comid",
+    relationship = "many-to-many"
+  ) |>
+  group_by(huc, downstream_comid, month) |>
+  summarise(
+    c_gpp_flux_gO2_d = sum(gpp_flux_gO2_d, na.rm = TRUE),
+    c_er_flux_gO2_d = sum(er_flux_gO2_d, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  left_join(
+    flowline_hucs |> select(downstream_comid = comid, uparea_full_merit = uparea),
+    by = "downstream_comid"
+  ) |>
+  left_join(
+    area_alignment_by_comid |>
+      select(
+        huc,
+        downstream_comid,
+        unitarea_sum_within_huc,
+        area_alignment_ratio,
+        upstream_count_alignment_ratio
+      ),
+    by = c("huc", "downstream_comid")
+  )
+
+cumulative_metabolism_audit |>
+  summarise(
+    n_rows = n(),
+    n_hucs = n_distinct(huc),
+    n_downstream_comids = n_distinct(downstream_comid),
+    n_months = n_distinct(month),
+    pct_missing_full_uparea = mean(is.na(uparea_full_merit)) * 100,
+    pct_missing_within_area = mean(is.na(unitarea_sum_within_huc)) * 100
+  ) |>
+  kable(digits = 2)
+```
+
+
+```{r}
+fit_allometry <- function(data, area_col, fit_label) {
+  
+  data |>
+    pivot_longer(
+      cols = c(c_gpp_flux_gO2_d, c_er_flux_gO2_d),
+      names_to = "metabolism_var",
+      values_to = "cumulative_metabolism"
+    ) |>
+    mutate(
+      area = .data[[area_col]],
+      metabolism_var = recode(
+        metabolism_var,
+        c_gpp_flux_gO2_d = "GPP",
+        c_er_flux_gO2_d = "ER"
+      )
+    ) |>
+    filter(
+      area > 0,
+      cumulative_metabolism > 0,
+      !is.na(area),
+      !is.na(cumulative_metabolism)
+    ) |>
+    group_by(huc, month, metabolism_var) |>
+    summarise(
+      n = n(),
+      fit = list(if (n() >= 3) lm(log10(cumulative_metabolism) ~ log10(area)) else NULL),
+      .groups = "drop"
+    ) |>
+    mutate(
+      intercept = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else coef(x)[1]),
+      slope = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else coef(x)[2]),
+      r2 = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else summary(x)$r.squared),
+      fit_label = fit_label
+    ) |>
+    select(-fit)
+}
+
+allometry_existing_area <- fit_allometry(
+  cumulative_metabolism_audit,
+  area_col = "uparea_full_merit",
+  fit_label = "existing_full_uparea"
+)
+
+allometry_aligned_area <- fit_allometry(
+  cumulative_metabolism_audit,
+  area_col = "unitarea_sum_within_huc",
+  fit_label = "aligned_within_huc_area"
+)
+
+allometry_sensitivity <- bind_rows(
+  allometry_existing_area,
+  allometry_aligned_area
+) |>
+  pivot_wider(
+    names_from = fit_label,
+    values_from = c(n, intercept, slope, r2)
+  ) |>
+  mutate(
+    slope_delta = slope_aligned_within_huc_area - slope_existing_full_uparea,
+    r2_delta = r2_aligned_within_huc_area - r2_existing_full_uparea,
+    existing_pass_month = n_existing_full_uparea >= min_reaches & r2_existing_full_uparea >= coherence_r2,
+    aligned_pass_month = n_aligned_within_huc_area >= min_reaches & r2_aligned_within_huc_area >= coherence_r2,
+    month_pass_changed = existing_pass_month != aligned_pass_month
+  )
+
+write_csv(
+  allometry_sensitivity,
+  file.path(dir_qc, "10_existing_vs_aligned_allometry_sensitivity.csv")
+)
+
+allometry_sensitivity |>
+  summarise(
+    n_huc_month_var = n(),
+    median_slope_delta = median(slope_delta, na.rm = TRUE),
+    median_r2_delta = median(r2_delta, na.rm = TRUE),
+    pct_month_pass_changed = mean(month_pass_changed, na.rm = TRUE) * 100
+  ) |>
+  kable(digits = 3)
+```
+
+
+```{r}
+existing_fit_check <- allometry_existing_area |>
+  select(huc, month, metabolism_var, n_rebuilt = n, slope_rebuilt = slope, r2_rebuilt = r2) |>
+  left_join(
+    existing_metrics |>
+      select(huc, month, metabolism_var, n_existing = n, slope_existing = slope, r2_existing = r2),
+    by = c("huc", "month", "metabolism_var")
+  ) |>
+  mutate(
+    n_diff = n_rebuilt - n_existing,
+    slope_diff = slope_rebuilt - slope_existing,
+    r2_diff = r2_rebuilt - r2_existing
+  )
+
+write_csv(
+  existing_fit_check,
+  file.path(dir_qc, "10_rebuilt_existing_fit_check.csv")
+)
+
+existing_fit_check |>
+  summarise(
+    n_rows = n(),
+    pct_missing_saved_metric = mean(is.na(slope_existing)) * 100,
+    max_abs_n_diff = max(abs(n_diff), na.rm = TRUE),
+    max_abs_slope_diff = max(abs(slope_diff), na.rm = TRUE),
+    max_abs_r2_diff = max(abs(r2_diff), na.rm = TRUE)
+  ) |>
+  kable(digits = 6)
+```
+
+
+```{r}
+huc_sensitivity <- allometry_sensitivity |>
+  group_by(huc, metabolism_var) |>
+  summarise(
+    n_months_existing_valid = sum(existing_pass_month, na.rm = TRUE),
+    n_months_aligned_valid = sum(aligned_pass_month, na.rm = TRUE),
+    median_slope_existing = median(slope_existing_full_uparea, na.rm = TRUE),
+    median_slope_aligned = median(slope_aligned_within_huc_area, na.rm = TRUE),
+    median_slope_delta = median(slope_delta, na.rm = TRUE),
+    median_r2_existing = median(r2_existing_full_uparea, na.rm = TRUE),
+    median_r2_aligned = median(r2_aligned_within_huc_area, na.rm = TRUE),
+    median_r2_delta = median(r2_delta, na.rm = TRUE),
+    any_month_pass_changed = any(month_pass_changed, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    existing_coherent = n_months_existing_valid >= min_valid_months,
+    aligned_coherent = n_months_aligned_valid >= min_valid_months,
+    coherence_changed = existing_coherent != aligned_coherent
+  ) |>
+  left_join(
+    area_alignment_by_huc,
+    by = "huc"
+  ) |>
+  arrange(coherence_changed, median_area_alignment_ratio)
+
+write_csv(
+  huc_sensitivity,
+  file.path(dir_qc, "10_huc8_area_alignment_sensitivity_summary.csv")
+)
+
+huc_sensitivity |>
+  count(metabolism_var, existing_coherent, aligned_coherent, coherence_changed) |>
+  kable()
+```
+
+
+```{r}
+p_slope_existing_vs_aligned <- allometry_sensitivity |>
+  ggplot(aes(x = slope_existing_full_uparea, y = slope_aligned_within_huc_area)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  geom_point(aes(color = metabolism_var), alpha = 0.35, size = 1) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(
+    x = "Slope using full MERIT upstream area",
+    y = "Slope using within-HUC upstream area",
+    color = "Metabolism"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )
+
+# ggsave(
+#   file.path(dir_qc_figs, "10_slope_existing_vs_aligned.png"),
+#   p_slope_existing_vs_aligned,
+#   width = 6,
+#   height = 5,
+#   dpi = 300
+# )
+
+p_slope_existing_vs_aligned
+```
+
+
+```{r}
+p_r2_existing_vs_aligned <- allometry_sensitivity |>
+  ggplot(aes(x = r2_existing_full_uparea, y = r2_aligned_within_huc_area)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  geom_point(aes(color = metabolism_var), alpha = 0.35, size = 1) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(
+    x = expression(R^2~"using full MERIT upstream area"),
+    y = expression(R^2~"using within-HUC upstream area"),
+    color = "Metabolism"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )
+
+# ggsave(
+#   file.path(dir_qc_figs, "10_r2_existing_vs_aligned.png"),
+#   p_r2_existing_vs_aligned,
+#   width = 6,
+#   height = 5,
+#   dpi = 300
+# )
+
+p_r2_existing_vs_aligned
+```
+
+
+```{r}
+p_alignment_vs_slope_delta <- allometry_sensitivity |>
+  left_join(
+    area_alignment_by_huc |> select(huc, median_area_alignment_ratio),
+    by = "huc"
+  ) |>
+  ggplot(aes(x = median_area_alignment_ratio, y = slope_delta)) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_point(aes(color = metabolism_var), alpha = 0.35, size = 1) +
+  scale_x_continuous(labels = percent_format(accuracy = 1)) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(
+    x = "Median within-HUC area / full upstream area",
+    y = "Aligned-area slope minus full-area slope",
+    color = "Metabolism"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )
+
+# ggsave(
+#   file.path(dir_qc_figs, "10_alignment_ratio_vs_slope_delta.png"),
+#   p_alignment_vs_slope_delta,
+#   width = 6,
+#   height = 5,
+#   dpi = 300
+# )
+
+p_alignment_vs_slope_delta
+```
+
+
+```{r}
+decision_summary <- huc_sensitivity |>
+  mutate(
+    audit_flag = case_when(
+      median_area_alignment_ratio < 0.5 & coherence_changed ~ "major_alignment_and_classification_change",
+      median_area_alignment_ratio < 0.5 ~ "major_area_alignment_mismatch",
+      coherence_changed ~ "classification_changes_after_area_alignment",
+      median_area_alignment_ratio < 0.9 ~ "moderate_area_alignment_mismatch",
+      TRUE ~ "little_evidence_of_area_alignment_problem"
+    )
+  )
+
+write_csv(
+  decision_summary,
+  file.path(dir_qc, "10_area_alignment_decision_summary.csv")
+)
+
+decision_summary |>
+  count(metabolism_var, audit_flag) |>
+  arrange(metabolism_var, desc(n)) |>
+  kable()
+
+decision_summary |>
+  arrange(median_area_alignment_ratio) |>
+  select(
+    huc,
+    metabolism_var,
+    audit_flag,
+    median_area_alignment_ratio,
+    n_months_existing_valid,
+    n_months_aligned_valid,
+    existing_coherent,
+    aligned_coherent,
+    median_slope_delta,
+    median_r2_delta
+  ) |>
+  slice_head(n = 30) |>
+  kable(digits = 3)
+
+```
+
+
+
+
+
+
+
+
+

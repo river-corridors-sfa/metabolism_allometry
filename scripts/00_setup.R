@@ -25,3 +25,4 @@ dir_dryad <- file.path("data/dryad_data")
 # 3. other standards -----------------------------------------------------------
 
 common_crs <- 4326   # WGS84
+

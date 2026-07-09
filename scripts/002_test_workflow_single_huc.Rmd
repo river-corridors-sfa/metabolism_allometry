@@ -34,8 +34,6 @@ pacman::p_load(
 
 - `min_reaches <- 10`: We require at least 10 reaches for a monthly HUC-level allometry fit to be interpretable, because smaller samples can produce unstable slopes and misleading high or low \(R^2\) values.
 
-- `coherence_r2 <- 0.8`: We require \(R^2 \ge 0.8\) to classify an allometric relationship as coherent, following the Regier-style threshold for distinguishing interpretable scaling from weak or uncertain relationships.
-
 - `min_valid_months <- 6`: We require at least 6 valid months for a HUC to be considered seasonally supported, because this prevents conclusions from being driven by only one or a few months of coherent behavior.
 
 
@@ -48,19 +46,14 @@ centroid_threshold_km <- 1
 min_reaches <- 10
 min_valid_months <- 6
 
-dir_qc <- "../data/qc"
-dir_qc_figs <- "../figures/qc"
-
-dir.create(dir_qc, recursive = TRUE, showWarnings = FALSE)
-dir.create(dir_qc_figs, recursive = TRUE, showWarnings = FALSE)
-
-path_maavara_cat <- "../data/dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp"
-path_merit_cat <- file.path("../data/merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01.shp")
-path_merit_riv <- file.path("../data/merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01.shp")
+path_maavara_cat <- "../data/raw/dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp"
+path_merit_cat <- file.path("../data/processed/merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_merit_riv <- file.path("../data//oricessedmerit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_metabolism <- "../data/processed/03_maavara_monthly_metabolism.rds"
 path_characteristics <- "../data/dryad_data/scaling_dataset_Qmonth_06082024.csv"
 path_existing_metrics <- "../data/processed/06_huc08_allometry_metrics.csv"
 ```
+
 
 ```{r 4}
 maavara_cat <- read_sf(path_maavara_cat) |>

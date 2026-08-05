@@ -1,0 +1,554 @@
+---
+title: "005 Calculate HUC8 Allometric Scaling"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## 0. Setup
+
+This workflow calculates allometric scaling of cumulative GPP and ER against cumulative upstream drainage area. Cumulative values include each focal reach plus all retained upstream reaches.
+
+```{r}
+rm(list = ls())
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  tidyverse,
+  sf,
+  janitor,
+  ggplot2,
+  ggthemes,
+  ggrepel,
+  viridis,
+  broom,
+  knitr,
+  tictoc
+)
+
+dir_project <- "/Users/regi350/offline_work/GitHub/RC/metabolism_allometry"
+dir_processed <- file.path(dir_project, "data/processed")
+dir_merit <- file.path(dir_processed, "merit_data")
+dir_figs <- file.path(dir_project, "figures")
+
+dir.create(dir_figs, showWarnings = FALSE, recursive = TRUE)
+
+path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
+
+path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
+path_characteristics <- file.path(dir_project, "data/raw/dryad_data/scaling_dataset_Qmonth_06082024.csv")
+
+path_allometry_data <- file.path(dir_processed, "005_huc08_allometry_input.rds")
+path_allometry_results <- file.path(dir_processed, "005_huc08_allometry_results.csv")
+
+missing_area_threshold <- 10
+min_reaches <- 20
+min_area_range_log10 <- 1
+```
+
+## 1. Read filtered spatial, routing, and metabolism data
+
+```{r}
+tic("Read data")
+
+merit_cat_v2 <- read_sf(path_cat) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+merit_riv_v2 <- read_sf(path_riv) %>%
+  clean_names() %>%
+  mutate(
+    comid = as.character(comid),
+    nxt_dw = as.character(nxt_dw),
+    huc = as.character(huc)
+  )
+
+upstream_lookup <- base::readRDS(path_upstream_lookup) %>%
+  mutate(
+    downstream_comid = as.character(downstream_comid),
+    upstream_comid = as.character(upstream_comid)
+  )
+
+metabolism_raw <- base::readRDS(path_metabolism) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+comid_characteristics <- read_csv(path_characteristics, show_col_types = FALSE) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+toc()
+```
+
+```{r}
+metabolism <- metabolism_raw
+
+if ("gpp_g_o2_m2_d" %in% names(metabolism)) {
+  metabolism <- metabolism %>%
+    rename(
+      gpp_rate_g_o2_m2_d = gpp_g_o2_m2_d,
+      er_rate_g_o2_m2_d = er_g_o2_m2_d
+    )
+} else {
+  metabolism <- metabolism %>%
+    rename(
+      gpp_rate_g_o2_m2_d = gpp,
+      er_rate_g_o2_m2_d = er
+    )
+}
+
+metabolism <- metabolism %>%
+  select(comid, month, gpp_rate_g_o2_m2_d, er_rate_g_o2_m2_d)
+```
+
+```{r}
+tibble(
+  dataset = c("Filtered catchments", "Filtered flowlines", "Upstream lookup", "Monthly metabolism"),
+  rows = c(nrow(merit_cat_v2), nrow(merit_riv_v2), nrow(upstream_lookup), nrow(metabolism)),
+  unique_comids = c(
+    n_distinct(merit_cat_v2$comid),
+    n_distinct(merit_riv_v2$comid),
+    n_distinct(upstream_lookup$downstream_comid),
+    n_distinct(metabolism$comid)
+  )
+) %>%
+  kable()
+```
+
+## 2. Build reach attributes and local metabolism fluxes
+
+Maavara metabolism is an areal rate. Here it is converted to reach-scale flux using stream surface area: `lengthkm × 1000 × merit_width`.
+
+```{r}
+reach_attributes <- merit_cat_v2 %>%
+  st_drop_geometry() %>%
+  select(comid, huc, unitarea) %>%
+  left_join(
+    merit_riv_v2 %>%
+      st_drop_geometry() %>%
+      select(comid, uparea),
+    by = "comid"
+  ) %>%
+  left_join(
+    comid_characteristics %>%
+      select(comid, lengthkm, merit_width, order),
+    by = "comid"
+  ) %>%
+  mutate(
+    stream_area_m2 = lengthkm * 1000 * merit_width
+  )
+
+local_metabolism <- metabolism %>%
+  inner_join(reach_attributes, by = "comid") %>%
+  mutate(
+    gpp_flux_g_o2_d = gpp_rate_g_o2_m2_d * stream_area_m2,
+    er_flux_g_o2_d = er_rate_g_o2_m2_d * stream_area_m2
+  )
+```
+
+```{r}
+reach_attributes %>%
+  summarise(
+    n_reaches = n(),
+    n_missing_unitarea = sum(is.na(unitarea)),
+    n_missing_width = sum(is.na(merit_width)),
+    n_missing_length = sum(is.na(lengthkm)),
+    n_missing_stream_area = sum(is.na(stream_area_m2))
+  ) %>%
+  kable()
+```
+
+```{r, fig.width=7, fig.height=4}
+local_metabolism %>%
+  filter(month == 7) %>%
+  pivot_longer(
+    c(gpp_flux_g_o2_d, er_flux_g_o2_d),
+    names_to = "metabolism_metric",
+    values_to = "local_flux_g_o2_d"
+  ) %>%
+  mutate(
+    metabolism_metric = recode(
+      metabolism_metric,
+      gpp_flux_g_o2_d = "GPP",
+      er_flux_g_o2_d = "ER"
+    )
+  ) %>%
+  filter(local_flux_g_o2_d > 0) %>%
+  ggplot(aes(x = local_flux_g_o2_d)) +
+  geom_histogram(bins = 60) +
+  scale_x_log10() +
+  facet_wrap(~ metabolism_metric, scales = "free_y") +
+  labs(
+    x = "Local reach flux (g O2 d-1)",
+    y = "Number of reach-months"
+  ) +
+  theme_bw()
+```
+
+## 3. Calculate cumulative upstream area
+
+```{r}
+retained_upstream_area <- upstream_lookup %>%
+  inner_join(
+    reach_attributes %>%
+      select(upstream_comid = comid, upstream_unitarea = unitarea),
+    by = "upstream_comid"
+  ) %>%
+  group_by(downstream_comid) %>%
+  summarise(
+    cumulative_area_km2 = sum(upstream_unitarea, na.rm = TRUE),
+    n_upstream_reaches = n_distinct(upstream_comid),
+    .groups = "drop"
+  ) %>%
+  left_join(
+    reach_attributes %>%
+      select(downstream_comid = comid, huc, uparea),
+    by = "downstream_comid"
+  ) %>%
+  mutate(
+    area_ratio_retained = cumulative_area_km2 / uparea,
+    pct_area_missing = pmax(0, 1 - area_ratio_retained) * 100
+  )
+```
+
+```{r}
+retained_upstream_area %>%
+  summarise(
+    n_reaches = n(),
+    median_area_ratio = median(area_ratio_retained, na.rm = TRUE),
+    p05_area_ratio = quantile(area_ratio_retained, 0.05, na.rm = TRUE),
+    p95_area_ratio = quantile(area_ratio_retained, 0.95, na.rm = TRUE),
+    n_ge_10pct_missing = sum(pct_area_missing >= 10, na.rm = TRUE)
+  ) %>%
+  kable(digits = 3)
+```
+
+```{r, fig.width=6, fig.height=5}
+ggplot(retained_upstream_area, aes(x = uparea, y = cumulative_area_km2)) +
+  geom_point(alpha = 0.15, size = 0.3) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(
+    x = "MERIT upstream drainage area, uparea (km²)",
+    y = "Retained cumulative upstream area (km²)"
+  ) +
+  theme_bw()
+```
+
+## 4. Calculate cumulative upstream metabolism
+
+```{r}
+tic("Calculate cumulative metabolism")
+
+cumulative_metabolism <- upstream_lookup %>%
+  inner_join(
+    local_metabolism %>%
+      select(
+        upstream_comid = comid,
+        month,
+        gpp_flux_g_o2_d,
+        er_flux_g_o2_d
+      ),
+    by = "upstream_comid",
+    relationship = "many-to-many"
+  ) %>%
+  group_by(downstream_comid, month) %>%
+  summarise(
+    cumulative_gpp_g_o2_d = sum(gpp_flux_g_o2_d, na.rm = TRUE),
+    cumulative_er_g_o2_d = sum(er_flux_g_o2_d, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  left_join(retained_upstream_area, by = "downstream_comid")
+
+toc()
+```
+
+```{r}
+allometry_data <- cumulative_metabolism %>%
+  pivot_longer(
+    c(cumulative_gpp_g_o2_d, cumulative_er_g_o2_d),
+    names_to = "metabolism_metric",
+    values_to = "cumulative_flux_g_o2_d"
+  ) %>%
+  mutate(
+    metabolism_metric = recode(
+      metabolism_metric,
+      cumulative_gpp_g_o2_d = "GPP",
+      cumulative_er_g_o2_d = "ER"
+    )
+  ) %>%
+  filter(
+    !is.na(huc),
+    !is.na(month),
+    cumulative_area_km2 > 0,
+    cumulative_flux_g_o2_d > 0,
+    pct_area_missing < missing_area_threshold
+  )
+
+base::saveRDS(allometry_data, path_allometry_data)
+```
+
+```{r}
+allometry_data %>%
+  summarise(
+    n_rows = n(),
+    n_hucs = n_distinct(huc),
+    n_downstream_comids = n_distinct(downstream_comid),
+    n_months = n_distinct(month),
+    pct_gpp = mean(metabolism_metric == "GPP") * 100,
+    pct_er = mean(metabolism_metric == "ER") * 100
+  ) %>%
+  kable(digits = 2)
+```
+
+## 5. Select one example HUC8 for visual QC
+
+The example HUC is selected automatically to have many usable reaches, broad drainage-area range, and low missing upstream area.
+
+```{r}
+example_huc <- allometry_data %>%
+  group_by(huc) %>%
+  summarise(
+    n_reaches = n_distinct(downstream_comid),
+    log10_area_range = log10(max(cumulative_area_km2, na.rm = TRUE) / min(cumulative_area_km2, na.rm = TRUE)),
+    median_pct_area_missing = median(pct_area_missing, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(n_reaches >= 100, log10_area_range >= 2, median_pct_area_missing < 1) %>%
+  arrange(desc(log10_area_range), desc(n_reaches)) %>%
+  slice(1) %>%
+  pull(huc)
+
+example_huc
+```
+
+```{r}
+example_data <- allometry_data %>%
+  filter(huc == example_huc)
+
+example_month <- example_data %>%
+  filter(metabolism_metric == "GPP") %>%
+  count(month, sort = TRUE) %>%
+  slice(1) %>%
+  pull(month)
+
+example_month
+```
+
+```{r}
+example_map <- merit_riv_v2 %>%
+  semi_join(
+    example_data %>%
+      filter(month == example_month, metabolism_metric == "GPP") %>%
+      distinct(downstream_comid),
+    by = c("comid" = "downstream_comid")
+  ) %>%
+  left_join(
+    example_data %>%
+      filter(month == example_month, metabolism_metric == "GPP") %>%
+      select(downstream_comid, cumulative_area_km2, cumulative_flux_g_o2_d),
+    by = c("comid" = "downstream_comid")
+  )
+```
+
+```{r, fig.width=8, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = example_map,
+    aes(color = cumulative_area_km2, linewidth = cumulative_area_km2),
+    alpha = 0.9
+  ) +
+  scale_color_viridis_c(
+    option = "magma",
+    trans = "log10",
+    name = "Cumulative\narea (km²)"
+  ) +
+  scale_linewidth_continuous(
+    trans = "log10",
+    range = c(0.05, 1.1),
+    guide = "none"
+  ) +
+  labs(title = paste0("Example HUC8 ", example_huc, ": cumulative drainage area")) +
+  theme_map() +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+## 6. Visual proof of cumulative scaling for one HUC8
+
+```{r}
+example_labels <- example_data %>%
+  filter(month == example_month) %>%
+  group_by(metabolism_metric) %>%
+  arrange(cumulative_area_km2) %>%
+  slice(c(1, round(n() / 2), n())) %>%
+  ungroup() %>%
+  mutate(
+    label = paste0(
+      "A=", scales::comma(round(cumulative_area_km2)), " km²\n",
+      "F=", scales::scientific(cumulative_flux_g_o2_d, digits = 2)
+    )
+  )
+```
+
+```{r, fig.width=9, fig.height=5}
+ggplot(
+  example_data %>%
+    filter(month == example_month),
+  aes(x = cumulative_area_km2, y = cumulative_flux_g_o2_d)
+) +
+  geom_point(aes(color = pct_area_missing), alpha = 0.65, size = 1.2) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.8) +
+  geom_label_repel(
+    data = example_labels,
+    aes(label = label),
+    size = 3,
+    label.size = 0.15,
+    min.segment.length = 0
+  ) +
+  scale_x_log10() +
+  scale_y_log10() +
+  scale_color_viridis_c(
+    option = "magma",
+    limits = c(0, missing_area_threshold),
+    name = "% area\nmissing"
+  ) +
+  facet_wrap(~ metabolism_metric, scales = "free_y") +
+  labs(
+    title = paste0("Example HUC8 ", example_huc, ", month ", example_month),
+    x = "Cumulative upstream drainage area (km²)",
+    y = "Cumulative upstream metabolism (g O2 d-1)"
+  ) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+## 7. Fit HUC8 allometric scaling relationships
+
+Model: `log10(cumulative metabolism) ~ log10(cumulative upstream area)`.
+
+```{r}
+allometry_results <- allometry_data %>%
+  group_by(huc, month, metabolism_metric) %>%
+  filter(
+    n() >= min_reaches,
+    n_distinct(cumulative_area_km2) >= min_reaches,
+    log10(max(cumulative_area_km2, na.rm = TRUE) / min(cumulative_area_km2, na.rm = TRUE)) >= min_area_range_log10
+  ) %>%
+  group_modify(~ {
+    fit <- lm(log10(cumulative_flux_g_o2_d) ~ log10(cumulative_area_km2), data = .x)
+    
+    tibble(
+      n_reaches = nrow(.x),
+      log10_area_range = log10(max(.x$cumulative_area_km2, na.rm = TRUE) / min(.x$cumulative_area_km2, na.rm = TRUE)),
+      median_pct_area_missing = median(.x$pct_area_missing, na.rm = TRUE),
+      intercept = coef(fit)[1],
+      slope = coef(fit)[2],
+      r2 = summary(fit)$r.squared
+    )
+  }) %>%
+  ungroup() %>%
+  mutate(
+    slope_class_simple = case_when(
+      r2 < 0.8 ~ "low_r2",
+      slope < 0.95 ~ "sublinear",
+      slope <= 1.05 ~ "near_linear",
+      slope > 1.05 ~ "superlinear",
+      TRUE ~ NA_character_
+    )
+  )
+
+write_csv(allometry_results, path_allometry_results)
+```
+
+```{r}
+allometry_results %>%
+  summarise(
+    n_fits = n(),
+    n_hucs = n_distinct(huc),
+    median_slope = median(slope, na.rm = TRUE),
+    median_r2 = median(r2, na.rm = TRUE),
+    pct_r2_ge_08 = mean(r2 >= 0.8, na.rm = TRUE) * 100
+  ) %>%
+  kable(digits = 3)
+```
+
+```{r}
+allometry_results %>%
+  count(metabolism_metric, slope_class_simple, name = "n_fits") %>%
+  group_by(metabolism_metric) %>%
+  mutate(pct_fits = n_fits / sum(n_fits) * 100) %>%
+  ungroup() %>%
+  kable(digits = 2)
+```
+
+## 8. Result diagnostics
+
+```{r, fig.width=8, fig.height=4}
+ggplot(allometry_results, aes(x = slope, fill = metabolism_metric)) +
+  geom_density(alpha = 0.35) +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  facet_wrap(~ metabolism_metric, ncol = 1) +
+  labs(
+    x = "Allometric slope",
+    y = "Density"
+  ) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+```{r, fig.width=9, fig.height=5}
+ggplot(allometry_results, aes(x = factor(month), y = slope)) +
+  geom_hline(yintercept = 1, linetype = "dashed") +
+  geom_boxplot(outlier.alpha = 0.2) +
+  facet_wrap(~ metabolism_metric, ncol = 1) +
+  labs(
+    x = "Month",
+    y = "Allometric slope"
+  ) +
+  theme_bw()
+```
+
+```{r, fig.width=8, fig.height=5}
+ggplot(allometry_results, aes(x = slope, y = r2)) +
+  geom_point(alpha = 0.35, size = 0.8) +
+  geom_hline(yintercept = 0.8, linetype = "dashed") +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  facet_wrap(~ metabolism_metric) +
+  labs(
+    x = "Allometric slope",
+    y = expression(R^2)
+  ) +
+  theme_bw()
+```
+
+## 9. Optional example fits by month
+
+```{r, fig.width=10, fig.height=6}
+example_monthly_data <- example_data %>%
+  filter(month %in% c(1, 4, 7, 10))
+
+ggplot(example_monthly_data, aes(x = cumulative_area_km2, y = cumulative_flux_g_o2_d)) +
+  geom_point(alpha = 0.45, size = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.6) +
+  scale_x_log10() +
+  scale_y_log10() +
+  facet_grid(metabolism_metric ~ month, scales = "free_y") +
+  labs(
+    title = paste0("Example HUC8 ", example_huc, ": seasonal allometric fits"),
+    x = "Cumulative upstream drainage area (km²)",
+    y = "Cumulative upstream metabolism (g O2 d-1)"
+  ) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```

@@ -153,7 +153,7 @@ log_tbl
 
 tic("Write CONUS MERIT shapefiles")
 
-write_sf(cat_conus %>% filter(), path_cat_conus, delete_dsn = TRUE)
+write_sf(cat_conus, path_cat_conus, delete_dsn = TRUE)
 write_sf(riv_conus, path_riv_conus, delete_dsn = TRUE)
 
 toc()

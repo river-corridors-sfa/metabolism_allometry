@@ -1,7 +1,9 @@
-
 ---
-title: "Single-HUC analysis journey audit"
-output: html_document
+title: "002 Single-HUC pipeline audit"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r 1}
@@ -24,18 +26,8 @@ pacman::p_load(
   nhdplusTools,
   knitr,
   scales,
-  patchwork
-)
+  patchwork)
 ```
-
-### Initial decisions: 
-
-- `centroid_threshold_km <- 1`: We treat Maavara and MERIT catchments with centroids more than 1 km apart as mismatched, because this is a conservative spatial-identity filter meant to remove COMIDs where shared IDs may not represent the same landscape unit.
-
-- `min_reaches <- 10`: We require at least 10 reaches for a monthly HUC-level allometry fit to be interpretable, because smaller samples can produce unstable slopes and misleading high or low \(R^2\) values.
-
-- `min_valid_months <- 6`: We require at least 6 valid months for a HUC to be considered seasonally supported, because this prevents conclusions from being driven by only one or a few months of coherent behavior.
-
 
 ```{r 3}
 
@@ -46,52 +38,551 @@ centroid_threshold_km <- 1
 min_reaches <- 10
 min_valid_months <- 6
 
-path_maavara_cat <- "../data/raw/dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp"
-path_merit_cat <- file.path("../data/processed/merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_merit_riv <- file.path("../data//oricessedmerit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_metabolism <- "../data/processed/03_maavara_monthly_metabolism.rds"
-path_characteristics <- "../data/dryad_data/scaling_dataset_Qmonth_06082024.csv"
-path_existing_metrics <- "../data/processed/06_huc08_allometry_metrics.csv"
+dir_raw <- "../data/raw"
+dir_processed <- "../data/processed"
+
+path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
+path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
+path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
+
+```
+
+### First looks at the data
+
+We can confirm that COMIDs in our three spatial layers are unique, because `n(row) == n(comid)`. 
+
+```{r 4}
+
+maavara_cat <- read_sf(path_maavara_cat) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid)) %>%
+  st_transform(common_crs)
+
+merit_cat <- read_sf(path_merit_cat) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid)) %>%
+  st_transform(common_crs)
+
+merit_riv <- read_sf(path_merit_riv) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid), nxt_dw = as.character(nxt_dw)) %>%
+  st_transform(common_crs)
+
+metabolism <- base::readRDS(path_metabolism) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+comid_characteristics <- read_csv(path_characteristics, show_col_types = FALSE) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid)) %>%
+  select(comid, unitarea, lengthkm, merit_width, merit_qmean)
+
+riv_attrs <- merit_riv %>%
+  st_drop_geometry() %>%
+  select(comid, nxt_dw, uparea, order)
+
+tibble(
+  dataset = c("Maavara catchments", "MERIT catchments", "MERIT flowlines", "Metabolism"),
+  rows = c(nrow(maavara_cat), nrow(merit_cat), nrow(merit_riv), nrow(metabolism)),
+  comids = c(n_distinct(maavara_cat$comid), n_distinct(merit_cat$comid),
+             n_distinct(merit_riv$comid), n_distinct(metabolism$comid))) %>%
+  kable()
+
+```
+
+We can also check to confirm our projections match
+
+```{r}
+print(paste("maavara_cat EPSG:", st_crs(maavara_cat)$epsg))
+print(paste("merit_cat EPSG:", st_crs(merit_cat)$epsg))
+print(paste("merit_riv EPSG:", st_crs(merit_riv)$epsg))
 ```
 
 
-```{r 4}
-maavara_cat <- read_sf(path_maavara_cat) |>
-  clean_names() |>
-  mutate(comid = as.character(comid))
 
-merit_cat <- read_sf(path_merit_cat) |>
-  clean_names() |>
-  mutate(comid = as.character(comid)) |>
-  filter(comid %in% maavara_cat$comid)
+### Our example catchment
 
-merit_riv <- read_sf(path_merit_riv) |>
-  clean_names() |>
-  mutate(
-    comid = as.character(comid),
-    nxt_dw = as.character(nxt_dw)
-  ) |>
-  filter(comid %in% maavara_cat$comid)
+This workflow is designed to loop across HUC8s, so we'll run the full example on a single one to set up our workflow. Here's the HUC in question: 
 
-metabolism <- readRDS(path_metabolism) |>
-  mutate(comid = as.character(comid))
+```{r}
+target_huc_sf <- nhdplusTools::get_huc(
+  AOI = st_as_sfc(st_bbox(merit_riv)),
+  type = "huc08",
+  t_srs = st_crs(merit_riv)) %>%
+  clean_names() %>%
+  rename(huc = huc8) %>%
+  filter(huc == target_huc)
 
-comid_characteristics <- read_csv(path_characteristics, show_col_types = FALSE) |>
-  clean_names() |>
-  mutate(
-    comid = as.character(comid),
-    stream_area_m2 = lengthkm * 1000 * merit_width
-  ) |>
-  select(comid, unitarea, uparea, lengthkm, merit_width, order, merit_qmean, stream_area_m2)
+stopifnot(nrow(target_huc_sf) == 1)
 
-tibble(
-  data_object = c("Maavara catchments", "MERIT catchments", "MERIT rivers", "Monthly metabolism"),
-  n_rows = c(nrow(maavara_cat), nrow(merit_cat), nrow(merit_riv), nrow(metabolism)),
-  n_comids = c(n_distinct(maavara_cat$comid), n_distinct(merit_cat$comid),
-               n_distinct(merit_riv$comid), n_distinct(metabolism$comid))
-) |>
+ggplot() +
+  geom_sf(data = target_huc_sf, fill = "white", color = "black", linewidth = 0.4) +
+  geom_sf(data = merit_riv %>% st_crop(target_huc_sf), color = "steelblue", linewidth = 0.15) +
+  theme_map()
+```
+
+
+
+### Initial decisions:
+
+-   `centroid_threshold_km <- 1`: We treat Maavara and MERIT catchments with centroids more than 1 km apart as mismatched, because this is a conservative spatial-identity filter meant to remove COMIDs where shared IDs may not represent the same landscape unit.
+
+-   `min_reaches <- 10`: We require at least 10 reaches for a monthly HUC-level allometry fit to be interpretable, because smaller samples can produce unstable slopes and misleading high or low $R^2$ values.
+
+-   `min_valid_months <- 6`: We require at least 6 valid months for a HUC to be considered seasonally supported, because this prevents conclusions from being driven by only one or a few months of coherent behavior.
+
+```{r}
+
+```
+
+3.  Compare HUC membership rules
+
+The analysis domain is the set of focal reaches we will fit allometry for; here we compare several ways to assign COMIDs to the HUC.
+
+```{r}
+flowline_point_comids <- merit_riv %>%
+  st_point_on_surface() %>%
+  st_join(target_huc_sf %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  filter(huc == target_huc) %>%
+  pull(comid)
+
+flowline_intersect_comids <- merit_riv %>%
+  st_join(target_huc_sf %>% select(huc), join = st_intersects) %>%
+  st_drop_geometry() %>%
+  filter(huc == target_huc) %>%
+  pull(comid) %>%
+  unique()
+
+catchment_point_comids <- merit_cat %>%
+  st_point_on_surface() %>%
+  st_join(target_huc_sf %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  filter(huc == target_huc) %>%
+  pull(comid)
+
+huc_membership <- tibble(comid = union(union(flowline_point_comids, flowline_intersect_comids), catchment_point_comids)) %>%
+  mutate(in_flowline_point = comid %in% flowline_point_comids,
+         in_flowline_intersect = comid %in% flowline_intersect_comids,
+         in_catchment_point = comid %in% catchment_point_comids)
+
+huc_membership %>%
+  summarise(flowline_point = sum(in_flowline_point),
+            flowline_intersect = sum(in_flowline_intersect),
+            catchment_point = sum(in_catchment_point),
+            all_three = sum(in_flowline_point & in_flowline_intersect & in_catchment_point),
+            any_disagreement = sum(!(in_flowline_point & in_flowline_intersect & in_catchment_point))) %>%
   kable()
 ```
 
+```{r}
+membership_plot <- bind_rows(
+  merit_riv %>% mutate(rule = "Flowline point within HUC", in_huc = comid %in% flowline_point_comids),
+  merit_riv %>% mutate(rule = "Flowline intersects HUC", in_huc = comid %in% flowline_intersect_comids),
+  merit_riv %>% mutate(rule = "Catchment point within HUC", in_huc = comid %in% catchment_point_comids)
+) %>%
+  filter(comid %in% huc_membership$comid)
 
+ggplot() +
+  geom_sf(data = target_huc_sf, fill = "white", color = "black", linewidth = 0.3) +
+  geom_sf(data = membership_plot, aes(color = in_huc), linewidth = 0.25) +
+  facet_wrap(~rule, nrow = 1) +
+  scale_color_manual(values = c("FALSE" = "gray80", "TRUE" = "steelblue")) +
+  theme_map() +
+  theme(legend.position = "bottom")
+```
 
+4.  Build routing from MERIT flowlines
+
+Routing is built from the MERIT comid -\> nxt_dw relationship. The focal HUC is not assumed to be hydrologically closed.
+
+Need to decide which method - will probably need to find a HUC where this varies
+
+```{r}
+
+analysis_comids <- tibble(comid = flowline_point_comids)
+
+edges_downstream <- merit_riv %>%
+  st_drop_geometry() %>%
+  transmute(from_comid = comid, to_comid = nxt_dw) %>%
+  filter(!is.na(to_comid), to_comid != "0", to_comid %in% merit_riv$comid)
+
+upstream_full <- analysis_comids %>%
+  transmute(downstream_comid = comid, upstream_comid = comid)
+
+new_upstream <- upstream_full
+
+while (nrow(new_upstream) > 0) {
+  new_upstream <- new_upstream %>%
+    left_join(edges_downstream, by = c("upstream_comid" = "to_comid")) %>%
+    filter(!is.na(from_comid)) %>%
+    transmute(downstream_comid, upstream_comid = from_comid) %>%
+    anti_join(upstream_full, by = c("downstream_comid", "upstream_comid"))
+  
+  upstream_full <- bind_rows(upstream_full, new_upstream)
+}
+
+upstream_within_huc <- upstream_full %>%
+  semi_join(analysis_comids, by = c("upstream_comid" = "comid"))
+
+routing_summary <- upstream_full %>%
+  group_by(downstream_comid) %>%
+  summarise(n_upstream_full = n_distinct(upstream_comid), .groups = "drop") %>%
+  left_join(
+    upstream_within_huc %>%
+      group_by(downstream_comid) %>%
+      summarise(n_upstream_within_huc = n_distinct(upstream_comid), .groups = "drop"),
+    by = "downstream_comid"
+  ) %>%
+  mutate(n_upstream_within_huc = replace_na(n_upstream_within_huc, 0),
+         pct_upstream_within_huc = n_upstream_within_huc / n_upstream_full * 100)
+
+routing_summary %>%
+  summarise(focal_reaches = n(),
+            median_upstream_full = median(n_upstream_full),
+            max_upstream_full = max(n_upstream_full),
+            median_pct_upstream_within_huc = median(pct_upstream_within_huc),
+            min_pct_upstream_within_huc = min(pct_upstream_within_huc)) %>%
+  kable(digits = 2)
+
+```
+
+```{r}
+routing_comids <- tibble(comid = union(upstream_full$upstream_comid, analysis_comids$comid)) %>%
+  mutate(routing_role = case_when(
+    comid %in% analysis_comids$comid ~ "Focal HUC reach",
+    TRUE ~ "Upstream outside focal set"
+  ))
+
+routing_map <- merit_riv %>%
+  semi_join(routing_comids, by = "comid") %>%
+  left_join(routing_comids, by = "comid")
+
+ggplot() +
+  geom_sf(data = target_huc_sf, fill = "white", color = "black", linewidth = 0.3) +
+  geom_sf(data = routing_map, aes(color = routing_role), linewidth = 0.25) +
+  scale_color_manual(values = c("Focal HUC reach" = "steelblue", "Upstream outside focal set" = "gray55")) +
+  theme_map() +
+  theme(legend.position = "bottom")
+```
+
+5.  Maavara-MERIT centroid agreement
+
+We compare Maavara and MERIT catchment centroids for all COMIDs needed by this single-HUC routing problem.
+
+```{r}
+relevant_comids <- tibble(comid = union(upstream_full$upstream_comid, analysis_comids$comid))
+
+maavara_centroids <- maavara_cat %>%
+  semi_join(relevant_comids, by = "comid") %>%
+  st_transform(5070) %>%
+  st_centroid() %>%
+  mutate(x_maavara = st_coordinates(.)[, 1], y_maavara = st_coordinates(.)[, 2]) %>%
+  st_drop_geometry() %>%
+  select(comid, x_maavara, y_maavara)
+
+merit_centroids <- merit_cat %>%
+  semi_join(relevant_comids, by = "comid") %>%
+  st_transform(5070) %>%
+  st_centroid() %>%
+  mutate(x_merit = st_coordinates(.)[, 1], y_merit = st_coordinates(.)[, 2]) %>%
+  st_drop_geometry() %>%
+  select(comid, x_merit, y_merit)
+
+centroid_qc <- relevant_comids %>%
+  left_join(maavara_centroids, by = "comid") %>%
+  left_join(merit_centroids, by = "comid") %>%
+  mutate(centroid_distance_km = sqrt((x_maavara - x_merit)^2 + (y_maavara - y_merit)^2) / 1000,
+         centroid_status = case_when(
+           is.na(centroid_distance_km) ~ "missing_centroid_comparison",
+           centroid_distance_km > centroid_threshold_km ~ "mismatch_gt_1km",
+           centroid_distance_km <= 0.1 ~ "match_le_0.1km",
+           centroid_distance_km <= 1 ~ "match_0.1_to_1km"
+         ),
+         retained_centroid = centroid_status %in% c("match_le_0.1km", "match_0.1_to_1km"))
+
+centroid_qc %>%
+  count(centroid_status) %>%
+  kable()
+
+centroid_qc %>%
+  filter(!is.na(centroid_distance_km)) %>%
+  ggplot(aes(x = centroid_distance_km)) +
+  geom_histogram(bins = 40, color = "white") +
+  geom_vline(xintercept = centroid_threshold_km, linetype = "dashed") +
+  scale_x_continuous(labels = comma) +
+  labs(x = "Maavara-MERIT centroid distance (km)", y = "COMIDs") +
+  theme_bw()
+
+centroid_map <- merit_cat %>%
+  semi_join(centroid_qc, by = "comid") %>%
+  st_point_on_surface() %>%
+  left_join(centroid_qc %>% select(comid, centroid_status), by = "comid")
+
+ggplot() +
+  geom_sf(data = target_huc_sf, fill = "white", color = "black", linewidth = 0.3) +
+  geom_sf(data = centroid_map, aes(color = centroid_status), size = 0.7) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  theme_map() +
+  theme(legend.position = "bottom")
+```
+
+For the prototype calculation below, we keep only COMIDs with a successful centroid comparison within 1 km.
+
+```{r}
+retained_comids <- centroid_qc %>%
+  filter(retained_centroid) %>%
+  select(comid)
+
+analysis_comids_retained <- analysis_comids %>%
+  semi_join(retained_comids, by = "comid")
+```
+
+6.  Join metabolism to geometry
+
+Metabolism is stored as areal rates, so we multiply by estimated stream surface area before accumulating upstream.
+
+```{r}
+metabolism_scaled <- metabolism %>%
+  semi_join(retained_comids, by = "comid") %>%
+  left_join(comid_characteristics, by = "comid") %>%
+  left_join(riv_attrs, by = "comid") %>%
+  mutate(stream_area_m2 = lengthkm * 1000 * merit_width,
+         gpp_flux_gO2_d = gpp_g_o2_m2_d * stream_area_m2,
+         er_flux_gO2_d = er_g_o2_m2_d * stream_area_m2)
+
+metabolism_scaled %>%
+  summarise(rows = n(),
+            comids = n_distinct(comid),
+            months = n_distinct(month),
+            pct_missing_gpp = mean(is.na(gpp_g_o2_m2_d)) * 100,
+            pct_missing_er = mean(is.na(er_g_o2_m2_d)) * 100,
+            pct_missing_stream_area = mean(is.na(stream_area_m2)) * 100,
+            pct_nonpositive_stream_area = mean(stream_area_m2 <= 0, na.rm = TRUE) * 100) %>%
+  kable(digits = 2)
+
+metabolism_scaled %>%
+  count(month) %>%
+  mutate(month_name = month.abb[month]) %>%
+  select(month, month_name, n) %>%
+  kable()
+```
+
+7.  Compare accumulation domains
+
+Here we distinguish focal reaches from upstream contributing reaches. This is the main audit for whether cumulative metabolism and upstream area describe the same spatial domain.
+
+```{r}
+upstream_full_retained <- upstream_full %>%
+  semi_join(analysis_comids_retained, by = c("downstream_comid" = "comid")) %>%
+  semi_join(retained_comids, by = c("upstream_comid" = "comid"))
+
+upstream_huc_retained <- upstream_full_retained %>%
+  semi_join(analysis_comids_retained, by = c("upstream_comid" = "comid"))
+
+area_full_accumulation <- upstream_full_retained %>%
+  left_join(comid_characteristics %>% select(upstream_comid = comid, unitarea), by = "upstream_comid") %>%
+  group_by(downstream_comid) %>%
+  summarise(area_full_accumulation = sum(unitarea, na.rm = TRUE),
+            n_upstream_full_retained = n_distinct(upstream_comid), .groups = "drop")
+
+area_huc_accumulation <- upstream_huc_retained %>%
+  left_join(comid_characteristics %>% select(upstream_comid = comid, unitarea), by = "upstream_comid") %>%
+  group_by(downstream_comid) %>%
+  summarise(area_within_huc = sum(unitarea, na.rm = TRUE),
+            n_upstream_huc_retained = n_distinct(upstream_comid), .groups = "drop")
+
+area_alignment <- analysis_comids_retained %>%
+  rename(downstream_comid = comid) %>%
+  left_join(riv_attrs %>% select(downstream_comid = comid, uparea_full_merit = uparea), by = "downstream_comid") %>%
+  left_join(area_full_accumulation, by = "downstream_comid") %>%
+  left_join(area_huc_accumulation, by = "downstream_comid") %>%
+  mutate(area_full_accumulation = replace_na(area_full_accumulation, 0),
+         area_within_huc = replace_na(area_within_huc, 0),
+         n_upstream_full_retained = replace_na(n_upstream_full_retained, 0),
+         n_upstream_huc_retained = replace_na(n_upstream_huc_retained, 0),
+         ratio_within_huc_to_merit_uparea = area_within_huc / uparea_full_merit,
+         ratio_full_accumulation_to_merit_uparea = area_full_accumulation / uparea_full_merit)
+
+area_alignment %>%
+  summarise(focal_reaches = n(),
+            median_within_huc_to_merit = median(ratio_within_huc_to_merit_uparea, na.rm = TRUE),
+            median_full_accum_to_merit = median(ratio_full_accumulation_to_merit_uparea, na.rm = TRUE),
+            pct_within_huc_lt_50pct_merit = mean(ratio_within_huc_to_merit_uparea < 0.5, na.rm = TRUE) * 100,
+            pct_full_accum_lt_90pct_merit = mean(ratio_full_accumulation_to_merit_uparea < 0.9, na.rm = TRUE) * 100) %>%
+  kable(digits = 3)
+```
+
+```{r}
+area_alignment %>%
+  select(downstream_comid, uparea_full_merit, area_full_accumulation, area_within_huc) %>%
+  pivot_longer(c(area_full_accumulation, area_within_huc), names_to = "area_definition", values_to = "summed_area") %>%
+  ggplot(aes(x = uparea_full_merit, y = summed_area, color = area_definition)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  geom_point(alpha = 0.7) +
+  scale_x_log10(labels = comma) +
+  scale_y_log10(labels = comma) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(x = "MERIT full upstream area", y = "Summed retained upstream unit area", color = "Area definition") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+8.  Calculate cumulative metabolism
+
+We calculate cumulative metabolism two ways: using only upstream reaches inside the HUC, and using all retained upstream reaches available in the CONUS MERIT network.
+
+```{r}
+calculate_cumulative_metabolism <- function(upstream_lookup, accumulation_domain) {
+  upstream_lookup %>%
+    left_join(
+      metabolism_scaled %>% select(upstream_comid = comid, month, gpp_flux_gO2_d, er_flux_gO2_d),
+      by = "upstream_comid",
+      relationship = "many-to-many"
+    ) %>%
+    group_by(downstream_comid, month) %>%
+    summarise(c_gpp_flux_gO2_d = sum(gpp_flux_gO2_d, na.rm = TRUE),
+              c_er_flux_gO2_d = sum(er_flux_gO2_d, na.rm = TRUE),
+              n_upstream_with_metabolism = n_distinct(upstream_comid[!is.na(gpp_flux_gO2_d) | !is.na(er_flux_gO2_d)]),
+              .groups = "drop") %>%
+    mutate(accumulation_domain = accumulation_domain)
+}
+
+cumulative_huc <- calculate_cumulative_metabolism(upstream_huc_retained, "within_huc_metabolism")
+cumulative_full <- calculate_cumulative_metabolism(upstream_full_retained, "full_upstream_metabolism")
+
+cumulative_metabolism <- bind_rows(cumulative_huc, cumulative_full) %>%
+  left_join(area_alignment, by = "downstream_comid")
+
+cumulative_metabolism %>%
+  group_by(accumulation_domain) %>%
+  summarise(rows = n(),
+            downstream_comids = n_distinct(downstream_comid),
+            months = n_distinct(month),
+            pct_zero_gpp = mean(c_gpp_flux_gO2_d <= 0, na.rm = TRUE) * 100,
+            pct_zero_er = mean(c_er_flux_gO2_d <= 0, na.rm = TRUE) * 100,
+            .groups = "drop") %>%
+  kable(digits = 2)
+```
+
+9.  Fit candidate allometry definitions
+
+We compare three candidate interpretations: HUC-local metabolism against full MERIT area, HUC-local metabolism against HUC-local area, and full upstream metabolism against the retained full upstream area.
+
+```{r}
+allometry_input <- bind_rows(
+  cumulative_huc %>%
+    left_join(area_alignment, by = "downstream_comid") %>%
+    transmute(analysis_option = "within_huc_metabolism_vs_full_merit_area",
+              downstream_comid, month, area = uparea_full_merit, c_gpp_flux_gO2_d, c_er_flux_gO2_d),
+  cumulative_huc %>%
+    left_join(area_alignment, by = "downstream_comid") %>%
+    transmute(analysis_option = "within_huc_metabolism_vs_within_huc_area",
+              downstream_comid, month, area = area_within_huc, c_gpp_flux_gO2_d, c_er_flux_gO2_d),
+  cumulative_full %>%
+    left_join(area_alignment, by = "downstream_comid") %>%
+    transmute(analysis_option = "full_upstream_metabolism_vs_full_accumulation_area",
+              downstream_comid, month, area = area_full_accumulation, c_gpp_flux_gO2_d, c_er_flux_gO2_d)
+) %>%
+  pivot_longer(c(c_gpp_flux_gO2_d, c_er_flux_gO2_d), names_to = "metabolism_var", values_to = "cumulative_metabolism") %>%
+  mutate(metabolism_var = recode(metabolism_var,
+                                 c_gpp_flux_gO2_d = "GPP",
+                                 c_er_flux_gO2_d = "ER"))
+
+allometry_fits <- allometry_input %>%
+  filter(area > 0, cumulative_metabolism > 0, !is.na(area), !is.na(cumulative_metabolism)) %>%
+  group_by(analysis_option, month, metabolism_var) %>%
+  summarise(n = n(),
+            fit = list(if (n() >= 3) lm(log10(cumulative_metabolism) ~ log10(area)) else NULL),
+            .groups = "drop") %>%
+  mutate(intercept = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else coef(x)[1]),
+         slope = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else coef(x)[2]),
+         r2 = map_dbl(fit, \(x) if (is.null(x)) NA_real_ else summary(x)$r.squared)) %>%
+  select(-fit)
+
+allometry_fits %>%
+  group_by(analysis_option, metabolism_var) %>%
+  summarise(months = n(),
+            median_n = median(n),
+            median_slope = median(slope, na.rm = TRUE),
+            median_r2 = median(r2, na.rm = TRUE),
+            .groups = "drop") %>%
+  kable(digits = 3)
+```
+
+10. Visualize allometry for selected months
+
+These plots are diagnostic: they show whether area-definition choices alter the visual scaling relationship.
+
+```{r}
+selected_months <- c(1, 7)
+
+allometry_input %>%
+  filter(month %in% selected_months,
+         area > 0,
+         cumulative_metabolism > 0) %>%
+  mutate(month_name = month.abb[month]) %>%
+  ggplot(aes(x = area, y = cumulative_metabolism)) +
+  geom_point(alpha = 0.45, size = 1) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.6) +
+  scale_x_log10(labels = comma) +
+  scale_y_log10(labels = comma) +
+  facet_grid(metabolism_var + month_name ~ analysis_option, scales = "free") +
+  labs(x = "Upstream area", y = "Cumulative metabolism flux") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+allometry_fits %>%
+  ggplot(aes(x = month, y = r2, color = analysis_option)) +
+  geom_line() +
+  geom_point(size = 1.5) +
+  facet_wrap(~metabolism_var, ncol = 1) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(x = "Month", y = expression(R^2), color = "Analysis option") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+allometry_fits %>%
+  ggplot(aes(x = month, y = slope, color = analysis_option)) +
+  geom_hline(yintercept = 1, linetype = "dashed") +
+  geom_line() +
+  geom_point(size = 1.5) +
+  facet_wrap(~metabolism_var, ncol = 1) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb) +
+  scale_color_viridis_d(option = "C", end = 0.85) +
+  labs(x = "Month", y = "Allometric slope", color = "Analysis option") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+11. Diagnostic summary
+
+This table summarizes the diagnostics we likely want to scale up later as one row per HUC8.
+
+```{r}
+diagnostic_summary <- tibble(
+  huc = target_huc,
+  focal_comids_flowline_point = nrow(analysis_comids),
+  focal_comids_after_centroid_qc = nrow(analysis_comids_retained),
+  relevant_comids_for_routing = nrow(relevant_comids),
+  centroid_mismatch_gt_1km = sum(centroid_qc$centroid_status == "mismatch_gt_1km", na.rm = TRUE),
+  centroid_missing_comparison = sum(centroid_qc$centroid_status == "missing_centroid_comparison", na.rm = TRUE),
+  median_pct_upstream_within_huc = median(routing_summary$pct_upstream_within_huc, na.rm = TRUE),
+  median_within_huc_to_merit_area_ratio = median(area_alignment$ratio_within_huc_to_merit_uparea, na.rm = TRUE),
+  median_full_accum_to_merit_area_ratio = median(area_alignment$ratio_full_accumulation_to_merit_uparea, na.rm = TRUE),
+  metabolism_comids_available = n_distinct(metabolism_scaled$comid),
+  metabolism_months_available = n_distinct(metabolism_scaled$month)
+)
+
+diagnostic_summary %>%
+  kable(digits = 3)
+```
+
+12. Interim interpretation notes HUC membership is a decision, not a fact; this prototype compares flowline-point, flowline-intersection, and catchment-point assignments. The focal HUC is not assumed to be hydrologically closed; upstream contributors can occur outside the focal HUC. The key allometry question is whether cumulative metabolism and upstream area are calculated over matching spatial domains. The scale-up version should retain these diagnostics rather than only saving final slopes.

@@ -1,0 +1,479 @@
+---
+title: "002 Filter HUCs"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{r 1}
+rm(list = ls())
+
+start = Sys.time()
+
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  tidyverse,
+  sf,
+  tictoc,
+  janitor,
+  nhdplusTools,
+  rnaturalearth,
+  ggthemes,
+  glue,
+  knitr
+)
+
+theme_set(theme_bw())
+```
+
+```{r 2}
+dir_processed <- "../data/processed"
+dir_raw <- "../data/raw"
+
+path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
+path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
+path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
+path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
+```
+
+```{r 3}
+conus <- rnaturalearth::ne_states(country = "United States of America", returnclass = "sf") %>%
+  clean_names() %>%
+  filter(!postal %in% c("AK", "HI", "PR")) %>%
+  st_transform(common_crs) %>%
+  summarise(geometry = st_union(geometry), .groups = "drop")
+
+merit_cat <- read_sf(path_merit_cat) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid)) %>%
+  st_transform(common_crs)
+
+merit_riv <- read_sf(path_merit_riv) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid),
+         nxt_dw = as.character(nxt_dw)) %>%
+  st_transform(common_crs)
+
+maavara_cat <- read_sf(path_maavara_cat) %>% 
+  clean_names() 
+```
+
+### Raw catchment datasets
+
+The starting datasets include
+
+1.  Maavara et al.'s MERIT catchment dataset
+2.  my downloaded MERIT catchment dataset, and
+3.  my downloaded MERIT flowline dataset.
+
+My MERIT catchment and flowline datasets have been cropped to CONUS's spatial extent by `001_crop_merit_to_conus.R`.
+
+
+```{r 4}
+starting_summary <- tibble(
+  dataset = c(
+    "MERIT catchments",
+    "MERIT flowlines",
+    "Maavara catchments"),
+  rows = c(
+    nrow(merit_cat),
+    nrow(merit_riv),
+    nrow(maavara_cat)),
+  unique_comids = c(
+    n_distinct(merit_cat$comid),
+    n_distinct(merit_riv$comid),
+    n_distinct(maavara_cat$comid)))
+
+starting_summary %>%
+  kable()
+```
+
+This table confirms that all rows contain unique COMIDs - a good check before any filtering starts.
+
+
+
+### Decision #1: Which catchments match well enough to keep?
+
+Because flowlines are not provided with Maavara et al.'s dataset, we need to download flowlines. To make sure we're matching the MERIT dataset provided by Maavara et al., we first need to check if catchments provided by Maavara spatially match catchments. 
+
+```{r 5}
+sf_use_s2(FALSE)
+
+tic()
+maavara_cat_centroid <- maavara_cat |>
+  st_transform(5070) |>
+  mutate(centroid = st_centroid(geometry)) |>
+  st_transform(4326)
+
+merit_cat_centroid <- merit_cat |>
+  st_transform(5070) |>
+  mutate(centroid = st_centroid(geometry)) |>
+  st_transform(4326)
+toc()
+
+sf_use_s2(TRUE)
+```
+
+```{r 6}
+excluded_maavara <- maavara_cat %>% 
+  filter(!comid %in% unique(merit_cat$comid)) 
+
+n_maavara_unmatched = n_distinct(excluded_maavara$comid)
+```
+
+```{r 7, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+  geom_sf(data = excluded_maavara, color = "red") + 
+  labs(title = glue("{n_maavara_unmatched} Maavara catchments not accounted for in my MERIT catchments")) +
+  theme_map() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Now let's compare how close centroids are between the two MERIT datasets
+
+```{r 8}
+centroid_distance <- maavara_cat_centroid |>
+  mutate(comid = as.character(comid)) |>
+  select(comid, maavara_centroid = centroid) |>
+  inner_join(
+    merit_cat_centroid |>
+      st_drop_geometry() |>
+      select(comid, merit_centroid = centroid),
+    by = "comid") |>
+  mutate(
+    centroid_distance_m = as.numeric(st_distance(maavara_centroid, merit_centroid, by_element = TRUE)),
+    centroid_distance_km = centroid_distance_m / 1000)
+
+# ggplot() + 
+#   geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+#   geom_sf(data = centroid_distance, 
+#           aes(fill = centroid_distance_km),
+#           color = NA, alpha = 0.8) + 
+#   scale_fill_viridis_c(option = "turbo") + 
+#   theme_map() + 
+#   theme(legend.position = "bottom")
+```
+
+Not very many catchments have a large centroid distance
+
+```{r 9}
+
+threshold_km = 1
+
+catchments_to_remove1 <- centroid_distance %>% 
+  st_drop_geometry() %>% 
+  filter(centroid_distance_km > threshold_km) %>% 
+  pull(comid)
+
+n_centroids_greater_than_threshold = nrow(catchments_to_remove1)
+
+perc_centroids_greater_than_threshold = n_centroids_greater_than_threshold / 
+  nrow(centroid_distance %>% 
+  st_drop_geometry()) * 100
+
+centroid_distance %>% 
+  st_drop_geometry() %>% 
+  ggplot(aes(centroid_distance_km)) + 
+  geom_density() + 
+  scale_x_log10() + 
+  theme_bw() + 
+  geom_vline(xintercept = threshold_km, linetype = "dashed") + 
+  ggtitle(paste0(n_centroids_greater_than_threshold, " catchments > ", 
+                 threshold_km, " km", 
+                 " (", round(perc_centroids_greater_than_threshold, 2), "%)"))
+```
+
+
+Based on the data above, we set this threshold as a filtering decision
+
+-   `centroid_threshold_km <- 1`: We treat Maavara and MERIT catchments with centroids more than 1 km apart as mismatched, because this is a conservative spatial-identity filter meant to remove COMIDs where shared IDs may not represent the same landscape unit. Below are the catchments we'll remove from the pipeline at this point.
+
+```{r 10}
+ggplot() + 
+  geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+  geom_sf(data = centroid_distance %>% filter(centroid_distance_km > threshold_km), 
+          aes(fill = centroid_distance_km),
+          color = "red", alpha = 0.8) + 
+  scale_fill_viridis_c(option = "turbo") + 
+  theme_map() + 
+  theme(legend.position = "bottom")
+```
+
+
+```{r 11}
+merit_cat_v1 <- merit_cat %>% 
+  filter(!(comid %in% catchments_to_remove1))
+
+ggplot() + 
+  geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+  geom_sf(data = merit_riv %>% 
+  filter(!(comid %in% merit_cat_v1$comid))) + 
+  theme_map() + 
+  ggtitle("Flowline COMIDs not included in MERIT catchements")
+
+merit_riv_v1 <- merit_riv %>% 
+  filter(comid %in% merit_cat_v1$comid)
+```
+
+
+### Decision #2: We should only include HUCs with sufficent spatial coverage
+
+We'll be analyzing by HUC8s to give ourselves a manageable unit for "watershed". We will want to have enough reaches to effectively calculate allometric scaling relationships. Let's first  
+
+```{r 12}
+tic("read in HUCs")
+huc08_conus <- nhdplusTools::get_huc(
+  AOI = conus,
+  type = "huc08",
+  t_srs = st_crs(conus)
+) %>%
+  clean_names() %>%
+  rename(huc = huc8) %>%
+  mutate(huc = as.character(huc)) %>%
+  st_make_valid()
+
+huc08_merit_ids <- merit_riv_v1 %>%
+  st_point_on_surface() %>%
+  st_join(huc08_conus %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  filter(!is.na(huc)) %>%
+  distinct(huc)
+
+huc08_merit <- huc08_conus %>%
+  semi_join(huc08_merit_ids, by = "huc")
+
+n_hucs <- n_distinct(huc08_merit$huc)
+toc()
+```
+
+
+```{r 13, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+  geom_sf(data = huc08_merit, fill = NA, color = "gray35", linewidth = 0.15) +
+  labs(title = glue("{n_hucs} total HUC8s across CONUS")) +
+  theme_map() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r 14, message=TRUE}
+
+# 2. Spatial coverage of MERIT catchments by HUC8 ------------------------------
+
+path_huc_coverage <- file.path(dir_processed, "002_huc_spatial_coverage.rds")
+checkpoint_every <- 50
+
+huc08_merit_5070 <- huc08_merit %>%
+  mutate(huc_i = row_number(),
+         huc_n = n()) %>%
+  st_transform(5070)
+
+merit_cat_v1_5070 <- merit_cat_v1 %>%
+  select(comid, geometry) %>%
+  st_transform(5070)
+
+cat_huc_lookup <- merit_cat_v1_5070 %>%
+  st_point_on_surface() %>%
+  st_join(huc08_merit_5070 %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  filter(!is.na(huc)) %>%
+  distinct(comid, huc)
+
+## This whole section is run once - it takes a while...
+
+# assess_huc_coverage <- function(huc_i, huc_n, huc, geometry, ...) {
+#   
+#   huc_boundary <- st_sf(
+#     huc = huc,
+#     geometry = st_sfc(geometry, crs = st_crs(huc08_merit_5070))
+#   )
+#   
+#   huc_catchments <- merit_cat_v1_5070 %>%
+#     semi_join(cat_huc_lookup %>% filter(huc == !!huc), by = "comid")
+#   
+#   huc_area_km2 <- as.numeric(st_area(huc_boundary)) / 1e6
+#   
+#   if (nrow(huc_catchments) == 0) {
+#     return(tibble(
+#       huc = huc,
+#       huc_area_km2 = huc_area_km2,
+#       catchment_area_km2 = 0,
+#       pct_huc_covered_by_catchments = 0,
+#       n_catchments = 0
+#     ))
+#   }
+#   
+#   catchment_area_km2 <- huc_catchments %>%
+#     st_intersection(huc_boundary) %>%
+#     st_union() %>%
+#     st_area() %>%
+#     as.numeric() / 1e6
+#   
+#   tibble(
+#     huc = huc,
+#     huc_area_km2 = huc_area_km2,
+#     catchment_area_km2 = catchment_area_km2,
+#     pct_huc_covered_by_catchments = catchment_area_km2 / huc_area_km2 * 100,
+#     n_catchments = nrow(huc_catchments)
+#   )
+# }
+# 
+# huc_coverage <- tibble()
+# n_hucs <- nrow(huc08_merit_5070)
+# 
+# for (i in seq_len(n_hucs)) {
+#   
+#   result_i <- huc08_merit_5070 %>%
+#     slice(i) %>%
+#     pmap(assess_huc_coverage) %>%
+#     bind_rows()
+#   
+#   huc_coverage <- bind_rows(huc_coverage, result_i)
+#   
+#   if (i %% checkpoint_every == 0 || i == n_hucs) {
+#     
+#     pct_done <- round(i / n_hucs * 100, 1)
+#     start_i <- max(1, i - checkpoint_every + 1)
+#     
+#     base::saveRDS(huc_coverage, path_huc_coverage)
+#     
+#     cat(
+#       "HUCs ", start_i, "-", i, " processed (",
+#       pct_done, "% done); checkpoint saved to ",
+#       path_huc_coverage, "\n",
+#       sep = ""
+#     )
+#     flush.console()
+#   }
+# }
+
+```
+
+-   `min_coverage <- 75%`: We require at least 75% of the area within a HUC8 to be covered by catchments that match Maavara (see Decision #1 above), because poor coverage could lead to biased catchment calculations or spatial gaps, which could break allometry assumptions. 
+
+```{r 15}
+spatial_coverage <- readRDS("../data/processed/002_huc_spatial_coverage.rds")
+
+spatial_coverage %>% 
+  ggplot(aes(huc_area_km2, catchment_area_km2, 
+             color = pct_huc_covered_by_catchments, 
+             size = pct_huc_covered_by_catchments)) + 
+  geom_point()
+
+huc_coverage_threshold = 75
+
+# excluded_hucs should be one column named huc
+excluded_hucs <- spatial_coverage %>%
+  filter(pct_huc_covered_by_catchments < huc_coverage_threshold) %>%   # adjust threshold as needed
+  st_drop_geometry() %>%                           # harmless if not sf
+  distinct(huc)
+
+ggplot() +
+  geom_sf(data = conus, fill = "gray95", color = "gray70", linewidth = 0.2) +
+  geom_sf(data = huc08_merit %>% filter(huc %in% excluded_hucs$huc), 
+          fill = "red", alpha = 0.2, color = "red", linewidth = 0.15) +
+  labs(title = glue("{nrow(excluded_hucs)}  HUC8s w <{huc_coverage_threshold}% spatial coverage by catchments")) +
+  theme_map() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Decision 3 - remove HUCs with too few flowlines
+
+```{r 16}
+
+# assign MERIT catchments to HUC8
+merit_cat_huc <- merit_cat_v1 %>%
+  st_point_on_surface() %>%
+  st_join(huc08_merit %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  dplyr::select(comid, huc)
+
+# assign MERIT flowlines to HUC8
+merit_riv_huc <- merit_riv_v1 %>%
+  st_point_on_surface() %>%
+  st_join(huc08_merit %>% select(huc), join = st_within) %>%
+  st_drop_geometry() %>%
+  dplyr::select(comid, huc)
+
+# filter spatial datasets
+merit_cat_v2 <- merit_cat_v1 %>%
+  left_join(merit_cat_huc, by = "comid") %>%
+  anti_join(excluded_hucs, by = "huc")
+
+merit_riv_v2 <- merit_riv_v1 %>%
+  left_join(merit_riv_huc, by = "comid") %>%
+  anti_join(excluded_hucs, by = "huc")
+```
+
+```{r 17}
+
+min_n_flowlines = 10
+
+too_few_flowlines <- merit_riv_v2 %>%
+  st_drop_geometry() %>%
+  count(huc, name = "n_flowliness") %>%
+  arrange(huc) %>% 
+  filter(n_flowliness < min_n_flowlines)
+
+too_few_flowlines
+```
+
+-   `min_reaches <- 10`: We require at least 10 reaches for a monthly HUC-level allometry fit to be interpretable, because smaller samples can produce unstable slopes and misleading high or low $R^2$ values. We remove 3 HUCs with this decision.
+
+```{r 18}
+merit_cat_v3 <- merit_cat_v2 %>% 
+  filter(!(huc %in% too_few_flowlines$huc)) %>% 
+  drop_na(huc)
+
+merit_riv_v3 <- merit_riv_v2 %>% 
+  filter(!(huc %in% too_few_flowlines$huc)) %>% 
+  drop_na(huc)
+```
+
+
+### Decision 4 - we shouldn't use metabolism data for non-approved catchments / flowlines
+
+```{r 19}
+metabolism_all <- base::readRDS(path_metabolism) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+match_metabolism_to_flowlines <- metabolism_all %>% 
+  inner_join(merit_cat_v3 %>% st_drop_geometry() %>% dplyr::select(comid), by = "comid")
+
+# comid_characteristics <- read_csv(path_characteristics, show_col_types = FALSE) %>%
+#   clean_names() %>%
+#   mutate(comid = as.character(comid))
+
+tibble(cleaning_step = c(0, 1), 
+       data = c("all metabolism data", "matched to approved catchments"), 
+       n_gpp = c(nrow(metabolism_all %>% drop_na(gpp_g_o2_m2_d)), 
+                 nrow(match_metabolism_to_flowlines %>% drop_na(gpp_g_o2_m2_d))), 
+       n_er = c(nrow(metabolism_all %>% drop_na(er_g_o2_m2_d)), 
+                nrow(match_metabolism_to_flowlines %>% drop_na(er_g_o2_m2_d))))
+```
+
+
+```{r 20}
+
+## 1. Write out filtered catchments
+write_sf(merit_cat_v3, file.path(dir_processed, "merit_data/002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+
+## 2. Write out filtered flowlines
+write_sf(merit_riv_v3, file.path(dir_processed, "merit_data/002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+
+## 3. Write out filtered metabolism
+write_rds(match_metabolism_to_flowlines, "../data/processed/002_filtered_maavara_monthly_metabolism.rds")
+
+paste("This script took", round(as.numeric(Sys.time() - start, units = "mins"), 1), "minutes to run")
+```
+

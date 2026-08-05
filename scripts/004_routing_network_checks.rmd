@@ -1,0 +1,358 @@
+---
+title: "003 Routing Network Diagnostics"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## 0. Setup
+
+```{r}
+rm(list = ls())
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  tidyverse,
+  sf,
+  janitor,
+  ggplot2,
+  ggthemes,
+  viridis,
+  rnaturalearth, 
+  nhdplusTools,
+  knitr
+)
+
+dir_merit <- "/Users/regi350/offline_work/GitHub/RC/metabolism_allometry/data/processed/merit_data"
+
+path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
+path_drainage_missing <- file.path(dir_merit, "003_upstream_drainage_missing.rds")
+```
+
+## 1. Read routing inputs
+
+```{r}
+merit_cat_v2 <- read_sf(path_cat) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+
+merit_riv_v2 <- read_sf(path_riv) %>%
+  clean_names() %>%
+  mutate(
+    comid = as.character(comid),
+    nxt_dw = as.character(nxt_dw)
+  )
+
+upstream_lookup <- base::readRDS(path_upstream_lookup)
+```
+
+## 2. Calculate missing upstream drainage area
+
+```{r}
+catchment_area <- merit_cat_v2 %>%
+  st_drop_geometry() %>%
+  select(comid, unitarea)
+
+retained_upstream_area <- upstream_lookup %>%
+  left_join(
+    catchment_area %>%
+      rename(upstream_comid = comid,
+             upstream_unitarea = unitarea),
+    by = "upstream_comid"
+  ) %>%
+  group_by(downstream_comid) %>%
+  summarise(
+    retained_upstream_area_km2 = sum(upstream_unitarea, na.rm = TRUE),
+    n_upstream_reaches = n_distinct(upstream_comid),
+    .groups = "drop"
+  )
+
+drainage_missing <- merit_riv_v2 %>%
+  st_drop_geometry() %>%
+  select(comid, huc, uparea) %>%
+  rename(downstream_comid = comid) %>%
+  left_join(retained_upstream_area, by = "downstream_comid") %>%
+  mutate(
+    retained_upstream_area_km2 = replace_na(retained_upstream_area_km2, 0),
+    area_ratio_retained = retained_upstream_area_km2 / uparea,
+    pct_area_missing = pmax(0, 1 - area_ratio_retained) * 100,
+    missing_area_class = case_when(
+      pct_area_missing < 1 ~ "<1%",
+      pct_area_missing < 5 ~ "1-5%",
+      pct_area_missing < 10 ~ "5-10%",
+      pct_area_missing >= 10 ~ ">=10%",
+      TRUE ~ NA_character_
+    ),
+    missing_area_class = factor(
+      missing_area_class,
+      levels = c("<1%", "1-5%", "5-10%", ">=10%")
+    )
+  )
+
+base::saveRDS(drainage_missing, path_drainage_missing)
+```
+
+## 3. Summary table
+
+```{r}
+drainage_missing %>%
+  summarise(
+    n_reaches = n(),
+    median_pct_area_missing = median(pct_area_missing, na.rm = TRUE),
+    p90_pct_area_missing = quantile(pct_area_missing, 0.90, na.rm = TRUE),
+    p95_pct_area_missing = quantile(pct_area_missing, 0.95, na.rm = TRUE),
+    p99_pct_area_missing = quantile(pct_area_missing, 0.99, na.rm = TRUE),
+    n_ge_1pct = sum(pct_area_missing >= 1, na.rm = TRUE),
+    n_ge_5pct = sum(pct_area_missing >= 5, na.rm = TRUE),
+    n_ge_10pct = sum(pct_area_missing >= 10, na.rm = TRUE)
+  ) %>%
+  kable(digits = 2)
+```
+
+```{r}
+drainage_missing %>%
+  count(missing_area_class, name = "n_reaches") %>%
+  mutate(pct_reaches = n_reaches / sum(n_reaches) * 100) %>%
+  kable(digits = 2)
+```
+
+## 4. Plot missing drainage area
+
+```{r, fig.width=8, fig.height=5}
+ggplot(drainage_missing, aes(x = pct_area_missing)) +
+  geom_histogram(binwidth = 1, boundary = 0) +
+  geom_vline(xintercept = c(1, 5, 10), linetype = "dashed") +
+  coord_cartesian(xlim = c(0, 50)) +
+  labs(
+    x = "Upstream drainage area missing (%)",
+    y = "Number of focal reaches"
+  ) +
+  theme_bw()
+```
+
+```{r, fig.width=7, fig.height=4}
+ggplot(drainage_missing, aes(x = missing_area_class)) +
+  geom_bar() +
+  labs(
+    x = "Missing upstream drainage area class",
+    y = "Number of focal reaches"
+  ) +
+  theme_bw()
+```
+
+## 5. Map missing drainage area
+
+```{r}
+drainage_missing_map <- merit_riv_v2 %>%
+  left_join(
+    drainage_missing %>%
+      select(downstream_comid, pct_area_missing, missing_area_class),
+    by = c("comid" = "downstream_comid")
+  )
+```
+
+```{r, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = drainage_missing_map,
+    aes(color = pct_area_missing),
+    linewidth = 0.15
+  ) +
+  scale_color_viridis_c(
+    option = "magma",
+    trans = "sqrt",
+    limits = c(0, 50),
+    oob = scales::squish,
+    name = "% missing"
+  ) +
+  labs(color = "Missing upstream drainage area (%)") +
+  theme_map() +
+  theme(legend.position = "right")
+```
+
+```{r, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = drainage_missing_map %>%
+      filter(pct_area_missing >= 10),
+    aes(color = pct_area_missing),
+    linewidth = 0.25
+  ) +
+  scale_color_viridis_c(
+    option = "magma",
+    trans = "sqrt",
+    name = "% missing"
+  ) +
+  labs(color = "Missing upstream drainage area (%)") +
+  theme_map() +
+  theme(legend.position = "right")
+```
+
+## 6. HUC8-level summary map
+
+```{r}
+# 6. HUC8-level summary map ----------------------------------------------------
+
+huc_missing_summary <- drainage_missing %>%
+  group_by(huc) %>%
+  summarise(
+    n_reaches = n(),
+    median_pct_area_missing = median(pct_area_missing, na.rm = TRUE),
+    max_pct_area_missing = max(pct_area_missing, na.rm = TRUE),
+    pct_reaches_ge_10pct_missing = mean(pct_area_missing >= 10, na.rm = TRUE) * 100,
+    .groups = "drop"
+  )
+
+conus <- rnaturalearth::ne_states(
+  country = "United States of America",
+  returnclass = "sf"
+) %>%
+  clean_names() %>%
+  filter(!postal %in% c("AK", "HI", "PR")) %>%
+  st_transform(common_crs) %>%
+  summarise(geometry = st_union(geometry), .groups = "drop")
+
+huc08_conus <- nhdplusTools::get_huc(
+  AOI = conus,
+  type = "huc08"
+) %>%
+  clean_names() %>%
+  rename(huc = huc8) %>%
+  mutate(huc = as.character(huc)) %>%
+  st_transform(common_crs)
+
+huc_map <- huc08_conus %>%
+  semi_join(huc_missing_summary, by = "huc") %>%
+  left_join(huc_missing_summary, by = "huc")
+```
+
+
+```{r, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = huc_map,
+    aes(fill = max_pct_area_missing),
+    color = NA
+  ) +
+  scale_fill_viridis_c(
+    option = "magma",
+    limits = c(0, 100),
+    oob = scales::squish,
+    name = "% reaches >=10%\nmissing area",
+    na.value = "gray90"
+  ) +
+  theme_map() +
+  theme(legend.position = "right")
+```
+
+## 7. Cumulative upstream area check
+
+This check compares cumulative upstream catchment area reconstructed from the routing network against MERIT `uparea`. Values near 1 indicate that retained upstream catchments reproduce MERIT drainage area for a focal reach.
+
+```{r}
+cumulative_area_check <- drainage_missing %>%
+  mutate(
+    area_ratio_retained = retained_upstream_area_km2 / uparea,
+    log10_uparea = log10(uparea),
+    log10_retained_upstream_area = log10(retained_upstream_area_km2),
+    area_ratio_class = case_when(
+      area_ratio_retained < 0.90 ~ "<0.90",
+      area_ratio_retained <= 1.10 ~ "0.90-1.10",
+      area_ratio_retained > 1.10 ~ ">1.10",
+      TRUE ~ NA_character_
+    ),
+    area_ratio_class = factor(area_ratio_class, levels = c("<0.90", "0.90-1.10", ">1.10"))
+  ) %>% 
+  mutate(
+  pct_area_missing = pmax(0, 1 - retained_upstream_area_km2 / uparea) * 100,
+  drainage_area_quality = case_when(
+    pct_area_missing < 2 ~ "1. complete",
+    pct_area_missing < 10 ~ "2. minor_missing",
+    pct_area_missing < 20 ~ "3. moderate_missing",
+    TRUE ~ "4. major_missing"
+  )
+)
+
+cumulative_area_check %>%
+  summarise(
+    n_reaches = n(),
+    median_area_ratio = median(area_ratio_retained, na.rm = TRUE),
+    p05_area_ratio = quantile(area_ratio_retained, 0.05, na.rm = TRUE),
+    p95_area_ratio = quantile(area_ratio_retained, 0.95, na.rm = TRUE),
+    n_lt_090 = sum(area_ratio_retained < 0.90, na.rm = TRUE),
+    n_gt_110 = sum(area_ratio_retained > 1.10, na.rm = TRUE),
+    pct_outside_10pct = mean(area_ratio_retained < 0.90 | area_ratio_retained > 1.10, na.rm = TRUE) * 100
+  ) %>%
+  kable(digits = 3)
+```
+
+
+
+```{r, fig.width=6, fig.height=5}
+ggplot(cumulative_area_check, aes(x = uparea, y = retained_upstream_area_km2)) +
+  geom_point(alpha = 0.3, size = 1, aes(color = drainage_area_quality), show.legend = F) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  scale_x_log10() +
+  scale_y_log10() +
+  facet_wrap(~drainage_area_quality) + 
+  labs(
+    x = "MERIT upstream drainage area, uparea (km²)",
+    y = "Retained cumulative upstream catchment area (km²)"
+  ) +
+  theme_bw()
+```
+
+
+```{r, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = cumulative_area_map,
+    aes(color = area_ratio_retained),
+    linewidth = 0.15
+  ) +
+  scale_color_viridis_c(
+    option = "magma",
+    trans = "sqrt",
+    limits = c(0, 1.2),
+    oob = scales::squish,
+    name = "Retained area /\nMERIT uparea"
+  ) +
+  theme_map() +
+  theme(legend.position = "right")
+```
+
+```{r, fig.width=9, fig.height=6}
+ggplot() +
+  geom_sf(
+    data = cumulative_area_map,
+    color = "gray50",
+    linewidth = 0.08
+  ) +
+  geom_sf(
+    data = cumulative_area_map %>%
+      filter(uparea >= 1000),
+    aes(color = uparea, linewidth = uparea),
+    alpha = 0.95
+  ) +
+  scale_color_viridis_c(
+    option = "A",
+    trans = "log10",
+    name = "MERIT upstream\ndrainage area (km²)"
+  ) +
+  scale_linewidth_continuous(
+    trans = "log10",
+    range = c(0, 0.8),
+    guide = "none"
+  ) +
+  theme_map() +
+  theme(legend.position = "right")
+```
+
+ 

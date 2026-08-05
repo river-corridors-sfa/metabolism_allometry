@@ -1,0 +1,526 @@
+---
+title: "006b HUC4 Scaling Deep Dive"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## 0. Setup
+
+This report repeats the selected-watershed deep dive at the HUC4 scale. HUC4 assignment is inherited from the trusted HUC8 assignment using the first four HUC digits.
+
+```{r}
+rm(list = ls())
+source("../scripts/00_setup.R")
+
+pacman::p_load(
+  tidyverse,
+  sf,
+  janitor,
+  nhdplusTools,
+  rnaturalearth,
+  ggplot2,
+  ggthemes,
+  viridis,
+  knitr
+)
+
+dir_project <- "/Users/regi350/offline_work/GitHub/RC/metabolism_allometry"
+dir_processed <- file.path(dir_project, "data/processed")
+dir_merit <- file.path(dir_processed, "merit_data")
+
+path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
+path_allometry_data <- file.path(dir_processed, "005_huc08_allometry_input.rds")
+path_characteristics <- file.path(dir_project, "data/raw/dryad_data/scaling_dataset_Qmonth_06082024.csv")
+
+example_month <- 7
+missing_area_threshold <- 10
+min_reaches <- 20
+min_area_range_log10 <- 1
+max_terminals_per_order <- 25
+```
+
+## 1. Read data
+
+```{r}
+merit_cat_v2 <- read_sf(path_cat) %>%
+  clean_names() %>%
+  mutate(
+    comid = as.character(comid),
+    huc = as.character(huc),
+    huc4 = substr(huc, 1, 4)
+  )
+
+merit_riv_v2 <- read_sf(path_riv) %>%
+  clean_names() %>%
+  mutate(
+    comid = as.character(comid),
+    nxt_dw = as.character(nxt_dw),
+    huc = as.character(huc),
+    huc4 = substr(huc, 1, 4)
+  )
+
+upstream_lookup <- base::readRDS(path_upstream_lookup) %>%
+  mutate(
+    downstream_comid = as.character(downstream_comid),
+    upstream_comid = as.character(upstream_comid)
+  )
+
+allometry_data <- base::readRDS(path_allometry_data) %>%
+  mutate(
+    downstream_comid = as.character(downstream_comid),
+    huc = as.character(huc),
+    huc4 = substr(huc, 1, 4)
+  )
+
+comid_characteristics <- read_csv(path_characteristics, show_col_types = FALSE) %>%
+  clean_names() %>%
+  mutate(comid = as.character(comid))
+```
+
+```{r}
+reach_attributes <- merit_riv_v2 %>%
+  st_drop_geometry() %>%
+  select(comid, huc, huc4, uparea, any_of("order")) %>%
+  left_join(
+    merit_cat_v2 %>%
+      st_drop_geometry() %>%
+      select(comid, unitarea),
+    by = "comid"
+  ) %>%
+  left_join(
+    comid_characteristics %>%
+      select(comid, lengthkm, merit_width, any_of("order")),
+    by = "comid",
+    suffix = c("_riv", "_dryad")
+  ) %>%
+  mutate(
+    order = coalesce(order_riv, order_dryad),
+    stream_area_m2 = lengthkm * 1000 * merit_width
+  ) %>%
+  select(comid, huc, huc4, uparea, unitarea, lengthkm, merit_width, order, stream_area_m2)
+```
+
+## 2. Build HUC4 boundaries
+
+```{r}
+conus <- rnaturalearth::ne_states(
+  country = "United States of America",
+  returnclass = "sf"
+) %>%
+  clean_names() %>%
+  filter(!postal %in% c("AK", "HI", "PR")) %>%
+  st_transform(common_crs) %>%
+  summarise(geometry = st_union(geometry), .groups = "drop")
+
+huc04_conus <- nhdplusTools::get_huc(
+  AOI = conus,
+  type = "huc04"
+) %>%
+  clean_names()
+
+huc_col <- names(huc04_conus)[names(huc04_conus) %in% c("huc4", "huc_4", "huc04")][1]
+
+huc04_conus <- huc04_conus %>%
+  rename(huc4 = all_of(huc_col)) %>%
+  mutate(huc4 = as.character(huc4)) %>%
+  st_transform(common_crs)
+```
+
+## 3. Select six HUC4s
+
+Selection favors HUC4s with many usable reaches, low missing upstream area, broad drainage-area range, and contrasting stream densities.
+
+```{r}
+huc4_diagnostics <- allometry_data %>%
+  filter(metabolism_metric == "GPP", month == example_month) %>%
+  group_by(huc4) %>%
+  summarise(
+    n_reaches = n_distinct(downstream_comid),
+    median_pct_area_missing = median(pct_area_missing, na.rm = TRUE),
+    pct_reaches_ge_10pct_missing = mean(pct_area_missing >= 10, na.rm = TRUE) * 100,
+    log10_area_range = log10(max(cumulative_area_km2, na.rm = TRUE) / min(cumulative_area_km2, na.rm = TRUE)),
+    .groups = "drop"
+  ) %>%
+  left_join(
+    reach_attributes %>%
+      group_by(huc4) %>%
+      summarise(total_length_km = sum(lengthkm, na.rm = TRUE), .groups = "drop"),
+    by = "huc4"
+  ) %>%
+  left_join(
+    huc04_conus %>%
+      mutate(huc4_area_km2 = as.numeric(st_area(geometry)) / 1e6) %>%
+      st_drop_geometry() %>%
+      select(huc4, huc4_area_km2),
+    by = "huc4"
+  ) %>%
+  mutate(stream_density_km_km2 = total_length_km / huc4_area_km2)
+```
+
+```{r}
+selected_huc4s <- huc4_diagnostics %>%
+  filter(
+    n_reaches >= 500,
+    median_pct_area_missing < 1,
+    pct_reaches_ge_10pct_missing < 5,
+    log10_area_range >= 3,
+    !is.na(stream_density_km_km2)
+  ) %>%
+  mutate(stream_density_bin = ntile(stream_density_km_km2, 6)) %>%
+  group_by(stream_density_bin) %>%
+  arrange(desc(log10_area_range), desc(n_reaches), .by_group = TRUE) %>%
+  slice(1) %>%
+  ungroup() %>%
+  arrange(stream_density_km_km2) %>%
+  pull(huc4)
+
+selected_huc4s
+```
+
+```{r}
+huc4_diagnostics %>%
+  filter(huc4 %in% selected_huc4s) %>%
+  arrange(stream_density_km_km2) %>%
+  kable(digits = 3)
+```
+
+## 4a. Location of selected HUC4s
+
+```{r}
+selected_huc4_location_map <- huc04_conus %>%
+  mutate(
+    selected = huc4 %in% selected_huc4s,
+    label_huc4 = if_else(selected, huc4, NA_character_)
+  )
+
+selected_huc4_labels <- selected_huc4_location_map %>%
+  filter(selected) %>%
+  st_point_on_surface()
+
+ggplot() +
+  geom_sf(
+    data = selected_huc4_location_map,
+    fill = "gray94",
+    color = "white",
+    linewidth = 0.15
+  ) +
+  geom_sf(
+    data = selected_huc4_location_map %>% filter(selected),
+    fill = "#d7191c",
+    color = "black",
+    linewidth = 0.45,
+    alpha = 0.75
+  ) +
+  geom_sf_text(
+    data = selected_huc4_labels,
+    aes(label = huc4),
+    size = 3.2,
+    fontface = "bold"
+  ) +
+  labs(title = "Selected HUC4s for scaling deep dive") +
+  theme_map() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+
+## 4. Maps of selected HUC4s {.tabset}
+
+Catchment fill shows local catchment area. Flowline color and width show July cumulative GPP and cumulative drainage area.
+
+```{r}
+selected_huc4_boundaries <- huc04_conus %>%
+  filter(huc4 %in% selected_huc4s)
+
+selected_catchments <- merit_cat_v2 %>%
+  filter(huc4 %in% selected_huc4s)
+
+selected_flowlines <- merit_riv_v2 %>%
+  filter(huc4 %in% selected_huc4s) %>%
+  left_join(
+    allometry_data %>%
+      filter(month == example_month, metabolism_metric == "GPP") %>%
+      select(downstream_comid, cumulative_gpp = cumulative_flux_g_o2_d, cumulative_area_km2),
+    by = c("comid" = "downstream_comid")
+  )
+```
+
+```{r results='asis', fig.width=8, fig.height=6}
+for (selected_huc4 in selected_huc4s) {
+  
+  cat("\n\n### HUC4 ", selected_huc4, "\n\n", sep = "")
+  
+  print(
+    ggplot() +
+      geom_sf(
+        data = selected_catchments %>% filter(huc4 == selected_huc4),
+        aes(fill = pmax(unitarea, 0.01)),
+        color = NA,
+        alpha = 0.6
+      ) +
+      geom_sf(
+        data = selected_flowlines %>% filter(huc4 == selected_huc4, !is.na(cumulative_gpp)),
+        aes(color = cumulative_gpp, linewidth = cumulative_area_km2),
+        alpha = 0.95
+      ) +
+      geom_sf(
+        data = selected_huc4_boundaries %>% filter(huc4 == selected_huc4),
+        fill = NA,
+        color = "black",
+        linewidth = 0.4
+      ) +
+      scale_fill_gradient(
+        low = "gray96",
+        high = "gray35",
+        trans = "log10",
+        name = "Local catchment\narea (km²)"
+      ) +
+      scale_color_viridis_c(
+        option = "magma",
+        trans = "log10",
+        name = "Cumulative GPP\n(g O2 d-1)"
+      ) +
+      scale_linewidth_continuous(
+        trans = "log10",
+        range = c(0.03, 0.9),
+        guide = "none"
+      ) +
+      labs(title = paste0("HUC4 ", selected_huc4)) +
+      theme_map() +
+      theme(
+        legend.position = "right",
+        plot.title = element_text(hjust = 0.5, face = "bold")
+      )
+  )
+}
+```
+
+## 5. Build HUC4 subwatershed dataset
+
+Terminal reaches are selected across stream orders. Each terminal reach defines a subwatershed from the routing lookup. Fits use upstream focal reaches assigned to the same HUC4 reporting unit.
+
+```{r}
+terminal_candidates <- upstream_lookup %>%
+  count(downstream_comid, name = "n_upstream_lookup_reaches") %>%
+  inner_join(
+    reach_attributes %>%
+      filter(huc4 %in% selected_huc4s) %>%
+      select(
+        terminal_comid = comid,
+        terminal_huc4 = huc4,
+        terminal_order = order,
+        terminal_uparea = uparea
+      ),
+    by = c("downstream_comid" = "terminal_comid")
+  ) %>%
+  filter(!is.na(terminal_order), n_upstream_lookup_reaches >= min_reaches) %>%
+  group_by(terminal_huc4, terminal_order) %>%
+  arrange(desc(n_upstream_lookup_reaches), .by_group = TRUE) %>%
+  slice_head(n = max_terminals_per_order) %>%
+  ungroup() %>%
+  rename(terminal_comid = downstream_comid)
+```
+
+```{r}
+subwatershed_data <- upstream_lookup %>%
+  inner_join(terminal_candidates, by = c("downstream_comid" = "terminal_comid")) %>%
+  rename(
+    terminal_comid = downstream_comid,
+    reach_comid = upstream_comid
+  ) %>%
+  inner_join(
+    allometry_data %>%
+      rename(
+        reach_comid = downstream_comid,
+        reach_huc4 = huc4
+      ),
+    by = "reach_comid"
+  ) %>%
+  filter(reach_huc4 == terminal_huc4) %>%
+  select(
+    terminal_huc4,
+    terminal_comid,
+    terminal_order,
+    terminal_uparea,
+    reach_comid,
+    month,
+    metabolism_metric,
+    cumulative_area_km2,
+    cumulative_flux_g_o2_d,
+    pct_area_missing
+  )
+```
+
+```{r}
+subwatershed_data %>%
+  summarise(
+    n_rows = n(),
+    n_huc4s = n_distinct(terminal_huc4),
+    n_terminal_reaches = n_distinct(terminal_comid),
+    n_reach_points = n_distinct(reach_comid)
+  ) %>%
+  kable()
+```
+
+## 6. Fit HUC4 subwatershed scaling relationships
+
+```{r}
+subwatershed_fits <- subwatershed_data %>%
+  group_by(terminal_huc4, terminal_comid, terminal_order, month, metabolism_metric) %>%
+  filter(
+    n() >= min_reaches,
+    n_distinct(cumulative_area_km2) >= min_reaches,
+    log10(max(cumulative_area_km2, na.rm = TRUE) / min(cumulative_area_km2, na.rm = TRUE)) >= min_area_range_log10
+  ) %>%
+  group_modify(~ {
+    fit <- lm(log10(cumulative_flux_g_o2_d) ~ log10(cumulative_area_km2), data = .x)
+    
+    tibble(
+      n_reaches = nrow(.x),
+      log10_area_range = log10(max(.x$cumulative_area_km2, na.rm = TRUE) / min(.x$cumulative_area_km2, na.rm = TRUE)),
+      median_pct_area_missing = median(.x$pct_area_missing, na.rm = TRUE),
+      slope = coef(fit)[2],
+      r2 = summary(fit)$r.squared
+    )
+  }) %>%
+  ungroup()
+
+write_csv(
+  subwatershed_fits,
+  file.path(dir_processed, "006b_selected_huc4_subwatershed_fits.csv")
+)
+```
+
+```{r}
+subwatershed_fits %>%
+  group_by(terminal_huc4, metabolism_metric) %>%
+  summarise(
+    n_fits = n(),
+    median_slope = median(slope, na.rm = TRUE),
+    median_r2 = median(r2, na.rm = TRUE),
+    min_order = min(terminal_order, na.rm = TRUE),
+    max_order = max(terminal_order, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  kable(digits = 3)
+```
+
+## 7. Order screening audit
+
+```{r}
+order_screen_summary <- reach_attributes %>%
+  filter(huc4 %in% selected_huc4s) %>%
+  count(huc4, order, name = "n_flowlines") %>%
+  left_join(
+    terminal_candidates %>%
+      count(terminal_huc4, terminal_order, name = "n_terminal_candidates"),
+    by = c("huc4" = "terminal_huc4", "order" = "terminal_order")
+  ) %>%
+  left_join(
+    subwatershed_fits %>%
+      count(terminal_huc4, terminal_order, metabolism_metric, name = "n_fits") %>%
+      pivot_wider(
+        names_from = metabolism_metric,
+        values_from = n_fits,
+        names_prefix = "n_fits_",
+        values_fill = 0
+      ),
+    by = c("huc4" = "terminal_huc4", "order" = "terminal_order")
+  ) %>%
+  mutate(
+    n_terminal_candidates = replace_na(n_terminal_candidates, 0),
+    n_fits_GPP = replace_na(n_fits_GPP, 0),
+    n_fits_ER = replace_na(n_fits_ER, 0)
+  )
+
+order_screen_summary %>%
+  arrange(huc4, order) %>%
+  kable()
+```
+
+## 8. Scaling changes with terminal stream order {.tabset}
+
+```{r results='asis', fig.width=10, fig.height=5}
+for (selected_huc4 in selected_huc4s) {
+  
+  cat("\n\n### HUC4 ", selected_huc4, "\n\n", sep = "")
+  
+  plot_data <- subwatershed_fits %>%
+    filter(terminal_huc4 == selected_huc4)
+  
+  p_slope <- ggplot(plot_data, aes(x = terminal_order, y = slope)) +
+    geom_hline(yintercept = 1, linetype = "dashed") +
+    geom_point(aes(color = r2), alpha = 0.65, size = 1.8) +
+    geom_smooth(se = FALSE, color = "black", linewidth = 0.7) +
+    scale_color_viridis_c(option = "magma", limits = c(0, 1), name = expression(R^2)) +
+    facet_wrap(~ metabolism_metric, ncol = 1) +
+    labs(
+      x = "Terminal reach order passing fit screens",
+      y = "Allometric slope"
+    ) +
+    theme_bw()
+  
+  print(p_slope)
+  
+  p_r2 <- ggplot(plot_data, aes(x = terminal_order, y = r2)) +
+    geom_hline(yintercept = 0.8, linetype = "dashed") +
+    geom_point(aes(color = slope), alpha = 0.65, size = 1.8) +
+    geom_smooth(se = FALSE, color = "black", linewidth = 0.7) +
+    scale_color_viridis_c(option = "magma", name = "Slope") +
+    facet_wrap(~ metabolism_metric, ncol = 1) +
+    labs(
+      x = "Terminal reach order passing fit screens",
+      y = expression(R^2)
+    ) +
+    theme_bw()
+  
+  print(p_r2)
+}
+```
+
+## 9. All selected HUC4s together
+
+```{r, fig.width=11, fig.height=6}
+ggplot(subwatershed_fits, aes(x = terminal_order, y = slope)) +
+  geom_hline(yintercept = 1, linetype = "dashed") +
+  geom_point(aes(color = r2), alpha = 0.55, size = 1.4) +
+  geom_smooth(se = FALSE, color = "black", linewidth = 0.6) +
+  scale_color_viridis_c(option = "magma", limits = c(0, 1), name = expression(R^2)) +
+  facet_grid(metabolism_metric ~ terminal_huc4) +
+  labs(
+    x = "Terminal reach order passing fit screens",
+    y = "Allometric slope"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.background = element_rect(fill = "gray92", color = NA),
+    strip.text = element_text(face = "bold")
+  )
+```
+
+```{r, fig.width=11, fig.height=6}
+ggplot(subwatershed_fits, aes(x = terminal_order, y = r2)) +
+  geom_hline(yintercept = 0.8, linetype = "dashed") +
+  geom_point(aes(color = slope), alpha = 0.55, size = 1.4) +
+  geom_smooth(se = FALSE, color = "black", linewidth = 0.6) +
+  scale_color_viridis_c(option = "magma", name = "Slope") +
+  facet_grid(metabolism_metric ~ terminal_huc4) +
+  labs(
+    x = "Terminal reach order passing fit screens",
+    y = expression(R^2)
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.background = element_rect(fill = "gray92", color = NA),
+    strip.text = element_text(face = "bold")
+  )
+```

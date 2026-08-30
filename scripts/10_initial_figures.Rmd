@@ -297,7 +297,8 @@ p_slope_class_map <- ggplot() +
       "Superlinear" = "#d7191c",
       "Low R2" = "gray80"
     ),
-    drop = FALSE,
+    # Drop slope classes with no annual HUC8 members (currently Sublinear).
+    drop = TRUE,
     na.value = "gray95",
     name = "Slope class"
   ) +
@@ -334,7 +335,8 @@ p_er_slope_class_map <- annual_slope_class_map %>%
       "Superlinear" = "#d7191c",
       "Low R2" = "gray80"
     ),
-    drop = FALSE,
+    # Drop slope classes with no annual HUC8 members (currently Sublinear).
+    drop = TRUE,
     na.value = "gray95",
     name = "Slope class"
   ) +
@@ -368,7 +370,8 @@ p_gpp_slope_class_map <- annual_slope_class_map %>%
       "Superlinear" = "#d7191c",
       "Low R2" = "gray80"
     ),
-    drop = FALSE,
+    # Drop slope classes with no annual HUC8 members (currently Sublinear).
+    drop = TRUE,
     na.value = "gray95",
     name = "Slope class"
   ) +

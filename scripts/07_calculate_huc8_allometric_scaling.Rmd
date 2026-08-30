@@ -49,6 +49,7 @@ path_allometry_data <- file.path(dir_processed, "005_huc08_allometry_input.rds")
 path_allometry_results <- file.path(dir_processed, "005_huc08_allometry_results.csv")
 
 missing_area_threshold <- 10
+missing_metabolism_threshold <- 10
 min_reaches <- 20
 min_area_range_log10 <- 1
 ```
@@ -166,6 +167,7 @@ reach_attributes %>%
 ```
 
 ```{r, fig.width=7, fig.height=4}
+
 local_metabolism %>%
   filter(month == 7) %>%
   pivot_longer(
@@ -254,6 +256,7 @@ cumulative_metabolism <- upstream_lookup %>%
       select(
         upstream_comid = comid,
         month,
+        unitarea,
         gpp_flux_g_o2_d,
         er_flux_g_o2_d
       ),
@@ -262,11 +265,39 @@ cumulative_metabolism <- upstream_lookup %>%
   ) %>%
   group_by(downstream_comid, month) %>%
   summarise(
-    cumulative_gpp_g_o2_d = sum(gpp_flux_g_o2_d, na.rm = TRUE),
-    cumulative_er_g_o2_d = sum(er_flux_g_o2_d, na.rm = TRUE),
+    cumulative_gpp_g_o2_d = if_else(
+      any(!is.na(gpp_flux_g_o2_d)),
+      sum(gpp_flux_g_o2_d, na.rm = TRUE),
+      NA_real_
+    ),
+    cumulative_er_g_o2_d = if_else(
+      any(!is.na(er_flux_g_o2_d)),
+      sum(er_flux_g_o2_d, na.rm = TRUE),
+      NA_real_
+    ),
+    
+    gpp_covered_area_km2 = sum(
+      unitarea[!is.na(gpp_flux_g_o2_d)],
+      na.rm = TRUE
+    ),
+    er_covered_area_km2 = sum(
+      unitarea[!is.na(er_flux_g_o2_d)],
+      na.rm = TRUE
+    ),
+    
+    n_gpp_reaches = sum(!is.na(gpp_flux_g_o2_d)),
+    n_er_reaches = sum(!is.na(er_flux_g_o2_d)),
+    
     .groups = "drop"
   ) %>%
-  left_join(retained_upstream_area, by = "downstream_comid")
+  left_join(retained_upstream_area, by = "downstream_comid") %>%
+  mutate(
+    pct_gpp_metabolism_missing =
+      (1 - gpp_covered_area_km2 / cumulative_area_km2) * 100,
+    
+    pct_er_metabolism_missing =
+      (1 - er_covered_area_km2 / cumulative_area_km2) * 100
+  )
 
 toc()
 ```
@@ -452,6 +483,7 @@ allometry_results <- allometry_data %>%
       n_reaches = nrow(.x),
       log10_area_range = log10(max(.x$cumulative_area_km2, na.rm = TRUE) / min(.x$cumulative_area_km2, na.rm = TRUE)),
       median_pct_area_missing = median(.x$pct_area_missing, na.rm = TRUE),
+      median_pct_metabolism_missing = median(.x$pct_metabolism_missing, na.rm = TRUE),
       intercept = coef(fit)[1],
       slope = coef(fit)[2],
       r2 = summary(fit)$r.squared

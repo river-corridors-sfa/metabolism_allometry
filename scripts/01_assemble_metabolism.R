@@ -16,8 +16,8 @@ tic("run 01") # 7s
 dir_er_raw <- "data/raw/dryad_data/scaling_ER_pred"
 dir_gpp_raw <- "data/raw/dryad_data/scaling_GPP_pred"
 dir_processed <- "data/processed"
-path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
-path_log <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism_log.csv")
+path_metabolism <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
+path_log <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism_log.csv")
 
 dir.create(dir_processed, recursive = TRUE, showWarnings = FALSE)
 

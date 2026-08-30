@@ -1,5 +1,5 @@
 ---
-title: "002 Filter HUCs"
+title: "03 Filter HUCs"
 output:
   html_document:
     toc: true
@@ -11,20 +11,12 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 ```{r 1}
-rm(list = ls())
-
-start = Sys.time()
 
 source("../scripts/00_setup.R")
 
+start = Sys.time()
+
 pacman::p_load(
-  tidyverse,
-  sf,
-  tictoc,
-  janitor,
-  nhdplusTools,
-  rnaturalearth,
-  ggthemes,
   glue,
   knitr
 )
@@ -38,7 +30,7 @@ dir_raw <- "../data/raw"
 
 path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
+path_metabolism <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
 path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
 path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
 ```
@@ -73,7 +65,7 @@ The starting datasets include
 2.  my downloaded MERIT catchment dataset, and
 3.  my downloaded MERIT flowline dataset.
 
-My MERIT catchment and flowline datasets have been cropped to CONUS's spatial extent by `001_crop_merit_to_conus.R`.
+My MERIT catchment and flowline datasets have been cropped to CONUS's spatial extent by `02_crop_merit_to_conus.R`.
 
 
 ```{r 4}
@@ -269,7 +261,7 @@ ggplot() +
 
 # 2. Spatial coverage of MERIT catchments by HUC8 ------------------------------
 
-path_huc_coverage <- file.path(dir_processed, "002_huc_spatial_coverage.rds")
+path_huc_coverage <- file.path(dir_processed, "03_huc_spatial_coverage.rds")
 checkpoint_every <- 50
 
 huc08_merit_5070 <- huc08_merit %>%
@@ -290,78 +282,78 @@ cat_huc_lookup <- merit_cat_v1_5070 %>%
 
 ## This whole section is run once - it takes a while...
 
-# assess_huc_coverage <- function(huc_i, huc_n, huc, geometry, ...) {
-#   
-#   huc_boundary <- st_sf(
-#     huc = huc,
-#     geometry = st_sfc(geometry, crs = st_crs(huc08_merit_5070))
-#   )
-#   
-#   huc_catchments <- merit_cat_v1_5070 %>%
-#     semi_join(cat_huc_lookup %>% filter(huc == !!huc), by = "comid")
-#   
-#   huc_area_km2 <- as.numeric(st_area(huc_boundary)) / 1e6
-#   
-#   if (nrow(huc_catchments) == 0) {
-#     return(tibble(
-#       huc = huc,
-#       huc_area_km2 = huc_area_km2,
-#       catchment_area_km2 = 0,
-#       pct_huc_covered_by_catchments = 0,
-#       n_catchments = 0
-#     ))
-#   }
-#   
-#   catchment_area_km2 <- huc_catchments %>%
-#     st_intersection(huc_boundary) %>%
-#     st_union() %>%
-#     st_area() %>%
-#     as.numeric() / 1e6
-#   
-#   tibble(
-#     huc = huc,
-#     huc_area_km2 = huc_area_km2,
-#     catchment_area_km2 = catchment_area_km2,
-#     pct_huc_covered_by_catchments = catchment_area_km2 / huc_area_km2 * 100,
-#     n_catchments = nrow(huc_catchments)
-#   )
-# }
-# 
-# huc_coverage <- tibble()
-# n_hucs <- nrow(huc08_merit_5070)
-# 
-# for (i in seq_len(n_hucs)) {
-#   
-#   result_i <- huc08_merit_5070 %>%
-#     slice(i) %>%
-#     pmap(assess_huc_coverage) %>%
-#     bind_rows()
-#   
-#   huc_coverage <- bind_rows(huc_coverage, result_i)
-#   
-#   if (i %% checkpoint_every == 0 || i == n_hucs) {
-#     
-#     pct_done <- round(i / n_hucs * 100, 1)
-#     start_i <- max(1, i - checkpoint_every + 1)
-#     
-#     base::saveRDS(huc_coverage, path_huc_coverage)
-#     
-#     cat(
-#       "HUCs ", start_i, "-", i, " processed (",
-#       pct_done, "% done); checkpoint saved to ",
-#       path_huc_coverage, "\n",
-#       sep = ""
-#     )
-#     flush.console()
-#   }
-# }
+assess_huc_coverage <- function(huc_i, huc_n, huc, geometry, ...) {
+
+  huc_boundary <- st_sf(
+    huc = huc,
+    geometry = st_sfc(geometry, crs = st_crs(huc08_merit_5070))
+  )
+
+  huc_catchments <- merit_cat_v1_5070 %>%
+    semi_join(cat_huc_lookup %>% filter(huc == !!huc), by = "comid")
+
+  huc_area_km2 <- as.numeric(st_area(huc_boundary)) / 1e6
+
+  if (nrow(huc_catchments) == 0) {
+    return(tibble(
+      huc = huc,
+      huc_area_km2 = huc_area_km2,
+      catchment_area_km2 = 0,
+      pct_huc_covered_by_catchments = 0,
+      n_catchments = 0
+    ))
+  }
+
+  catchment_area_km2 <- huc_catchments %>%
+    st_intersection(huc_boundary) %>%
+    st_union() %>%
+    st_area() %>%
+    as.numeric() / 1e6
+
+  tibble(
+    huc = huc,
+    huc_area_km2 = huc_area_km2,
+    catchment_area_km2 = catchment_area_km2,
+    pct_huc_covered_by_catchments = catchment_area_km2 / huc_area_km2 * 100,
+    n_catchments = nrow(huc_catchments)
+  )
+}
+
+huc_coverage <- tibble()
+n_hucs <- nrow(huc08_merit_5070)
+
+for (i in seq_len(n_hucs)) {
+
+  result_i <- huc08_merit_5070 %>%
+    slice(i) %>%
+    pmap(assess_huc_coverage) %>%
+    bind_rows()
+
+  huc_coverage <- bind_rows(huc_coverage, result_i)
+
+  if (i %% checkpoint_every == 0 || i == n_hucs) {
+
+    pct_done <- round(i / n_hucs * 100, 1)
+    start_i <- max(1, i - checkpoint_every + 1)
+
+    base::saveRDS(huc_coverage, path_huc_coverage)
+
+    cat(
+      "HUCs ", start_i, "-", i, " processed (",
+      pct_done, "% done); checkpoint saved to ",
+      path_huc_coverage, "\n",
+      sep = ""
+    )
+    flush.console()
+  }
+}
 
 ```
 
 -   `min_coverage <- 75%`: We require at least 75% of the area within a HUC8 to be covered by catchments that match Maavara (see Decision #1 above), because poor coverage could lead to biased catchment calculations or spatial gaps, which could break allometry assumptions. 
 
 ```{r 15}
-spatial_coverage <- readRDS("../data/processed/002_huc_spatial_coverage.rds")
+spatial_coverage <- readRDS("../data/processed/03_huc_spatial_coverage.rds")
 
 spatial_coverage %>% 
   ggplot(aes(huc_area_km2, catchment_area_km2, 
@@ -466,13 +458,13 @@ tibble(cleaning_step = c(0, 1),
 ```{r 20}
 
 ## 1. Write out filtered catchments
-write_sf(merit_cat_v3, file.path(dir_processed, "merit_data/002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+write_sf(merit_cat_v3, file.path(dir_processed, "merit_data/03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
 
 ## 2. Write out filtered flowlines
-write_sf(merit_riv_v3, file.path(dir_processed, "merit_data/002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+write_sf(merit_riv_v3, file.path(dir_processed, "merit_data/03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
 
 ## 3. Write out filtered metabolism
-write_rds(match_metabolism_to_flowlines, "../data/processed/002_filtered_maavara_monthly_metabolism.rds")
+write_rds(match_metabolism_to_flowlines, "../data/processed/03_filtered_maavara_monthly_metabolism.rds")
 
 paste("This script took", round(as.numeric(Sys.time() - start, units = "mins"), 1), "minutes to run")
 ```

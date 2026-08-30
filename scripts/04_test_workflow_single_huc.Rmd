@@ -1,5 +1,5 @@
 ---
-title: "002 Single-HUC pipeline audit"
+title: "04 Single-HUC pipeline audit"
 output:
   html_document:
     toc: true
@@ -15,15 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r 2}
-rm(list = ls())
 
 source("../scripts/00_setup.R")
 
 pacman::p_load(
-  tidyverse,
-  sf,
-  janitor,
-  nhdplusTools,
   knitr,
   scales,
   patchwork)
@@ -44,7 +39,7 @@ dir_processed <- "../data/processed"
 path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
 path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
+path_metabolism <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
 path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
 
 ```
@@ -133,9 +128,6 @@ ggplot() +
 
 -   `min_valid_months <- 6`: We require at least 6 valid months for a HUC to be considered seasonally supported, because this prevents conclusions from being driven by only one or a few months of coherent behavior.
 
-```{r}
-
-```
 
 3.  Compare HUC membership rules
 

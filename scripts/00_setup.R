@@ -10,16 +10,13 @@ rm(list = ls())
 ## Load packages
 require(pacman)
 
-pacman::p_load(tidyverse,
-               sf,
+pacman::p_load(tidyverse, janitor, # keep it tidy
+               sf, ggthemes, ggsflabel, # spatial things
                here,
-               ggthemes,
-               nhdplusTools,
-               ggsflabel,
-               rnaturalearth,
-               cowplot,
-               tictoc,
-               janitor)
+               nhdplusTools, # USGS data
+               rnaturalearth, # map spatial features
+               cowplot, # combine plots
+               tictoc) # time things
 
 
 # 3. other standards -----------------------------------------------------------

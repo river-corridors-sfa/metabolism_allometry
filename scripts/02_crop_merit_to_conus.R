@@ -8,29 +8,20 @@
 
 # 0. Setup ---------------------------------------------------------------------
 
-rm(list = ls())
 source("scripts/00_setup.R")
-
-pacman::p_load(
-  tidyverse,
-  ggthemes,
-  sf,
-  janitor,
-  tictoc)
+tic("run 02") # Takes 4.5 minutes  
 
 
 # 0. Settings ------------------------------------------------------------------
 
+## Set directories and paths
 dir_merit_raw <- "data/raw/merit_data"
 dir_merit_processed <- "data/processed/merit_data"
-
 path_cat_raw <- file.path(dir_merit_raw, "cat_pfaf_7_MERIT_Hydro_v07_Basins_v01.shp")
 path_riv_raw <- file.path(dir_merit_raw, "riv_pfaf_7_MERIT_Hydro_v07_Basins_v01.shp")
-
 path_cat_conus <- file.path(dir_merit_processed, "cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_riv_conus <- file.path(dir_merit_processed, "riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_log <- file.path(dir_merit_processed, "001_crop_merit_to_conus_log.csv")
-
+path_log <- file.path(dir_merit_processed, "02_crop_merit_to_conus_log.csv")
 dir.create(dir_merit_processed, recursive = TRUE, showWarnings = FALSE)
 
 
@@ -40,15 +31,15 @@ dir.create(dir_merit_processed, recursive = TRUE, showWarnings = FALSE)
 # excluding AK, HI, and territories.
 conus <- rnaturalearth::ne_states(
   country = "United States of America",
-  returnclass = "sf"
-) |>
+  returnclass = "sf") |>
   clean_names() |>
   filter(!postal %in% c("AK", "HI", "PR")) |>
   summarise(geometry = st_union(geometry)) |>
   st_transform(common_crs)
 
-ggplot() + 
-  geom_sf(data = conus)
+## Check plot
+# ggplot() + 
+#   geom_sf(data = conus)
 
 
 # 2. Read MERIT inputs ---------------------------------------------------------
@@ -86,7 +77,7 @@ toc()
 
 # 4. Visual checks -------------------------------------------------------------
 
-## Calculate rows for 
+## Calculate rows for validation
 cats_kept <- nrow(cat_conus_assigned %>% filter(in_conus == TRUE))
 cats_total <- nrow(cat_raw)
 rivs_kept <- nrow(riv_conus_assigned %>% filter(in_conus == TRUE))
@@ -98,22 +89,22 @@ p_cat_crop <- ggplot() +
   geom_sf(data = conus, color = "black", fill = "white", linewidth = 0.3) +
   geom_sf(data = cat_conus_assigned, linewidth = 0.1, color = "blue") +
   facet_wrap(~in_conus, ncol = 1) +
-  ggtitle(paste0(cats_kept, "catchments of ", cats_total, " kept")) + 
+  ggtitle(paste0(cats_kept, " catchments of ", cats_total, " kept")) + 
   theme_map() +
   theme(strip.text = element_text(face = "bold"))
 
-ggsave(file.path(dir_merit_processed, "001_cat_conus_crop_check.png"),
+ggsave(file.path(dir_merit_processed, "02_cat_conus_crop_check.png"),
   p_cat_crop, width = 7, height = 9, dpi = 300)
 
 p_riv_crop <- ggplot() +
   geom_sf(data = conus, color = "black", fill = "white", linewidth = 0.3) +
   geom_sf(data = riv_conus_assigned, linewidth = 0.1, color = "blue") +
   facet_wrap(~in_conus, ncol = 1) +
-  ggtitle(paste0(rivs_kept, "flowlines of ", rivs_total, " kept")) + 
+  ggtitle(paste0(rivs_kept, " flowlines of ", rivs_total, " kept")) + 
   theme_void() +
   theme(strip.text = element_text(face = "bold"))
 
-ggsave(file.path(dir_merit_processed, "001_riv_conus_crop_check.png"),
+ggsave(file.path(dir_merit_processed, "02_riv_conus_crop_check.png"),
        p_riv_crop, width = 7, height = 9, dpi = 300)
 toc()
 
@@ -150,8 +141,6 @@ log_tbl
 
 
 # 7. Write outputs -------------------------------------------------------------
-
-tic("Write CONUS MERIT shapefiles")
 
 write_sf(cat_conus, path_cat_conus, delete_dsn = TRUE)
 write_sf(riv_conus, path_riv_conus, delete_dsn = TRUE)

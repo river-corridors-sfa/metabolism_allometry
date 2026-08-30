@@ -8,18 +8,20 @@
 
 source("scripts/00_setup.R")
 
+tic("run 01") # 7s
 
 # 0. Settings ------------------------------------------------------------------
 
+## Paths
 dir_er_raw <- "data/raw/dryad_data/scaling_ER_pred"
 dir_gpp_raw <- "data/raw/dryad_data/scaling_GPP_pred"
 dir_processed <- "data/processed"
-
 path_metabolism <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism.rds")
 path_log <- file.path(dir_processed, "001_assembled_maavara_monthly_metabolism_log.csv")
 
 dir.create(dir_processed, recursive = TRUE, showWarnings = FALSE)
 
+## map month numbers to month abbreviations
 month_lookup <- tibble(
   month_name = month.abb,
   month = 1:12
@@ -28,25 +30,30 @@ month_lookup <- tibble(
 
 # 1. Identify input files -------------------------------------------------------
 
+## Create lists of files to read
 er_files <- list.files(dir_er_raw, pattern = "\\.csv$", full.names = TRUE)
 gpp_files <- list.files(dir_gpp_raw, pattern = "\\.csv$", full.names = TRUE)
 
+## Create a tibble for mapping months to ER monthly files
 er_file_tbl <- tibble(path = er_files) %>%
   mutate(month_name = str_extract(basename(path), paste(month.abb, collapse = "|"))) %>%
   left_join(month_lookup, by = "month_name") %>%
   arrange(month)
 
+## Create a tibble for mapping months to GPP monthly files
 gpp_file_tbl <- tibble(path = gpp_files) %>%
   mutate(month_name = str_extract(basename(path), paste(month.abb, collapse = "|"))) %>%
   left_join(month_lookup, by = "month_name") %>%
   arrange(month)
 
+## Safeties in case months are missing (they're not)
 stopifnot(nrow(er_file_tbl) == 12, nrow(gpp_file_tbl) == 12)
 stopifnot(!any(is.na(er_file_tbl$month)), !any(is.na(gpp_file_tbl$month)))
 
 
 # 2. Read and standardize GPP and ER ----------------------------------------------------
 
+## Function for reading each file
 read_metabolism_file <- function(path, metabolism_col) {
   month_name <- str_extract(basename(path), paste(month.abb, collapse = "|"))
   
@@ -57,10 +64,13 @@ read_metabolism_file <- function(path, metabolism_col) {
               !!metabolism_col := .[[2]])
 }
 
+
+## Create ER dataset
 er_monthly <- er_files %>%
   map(read_metabolism_file, metabolism_col = "er_gO2_m2_d") %>%
   bind_rows()
 
+## Create GPP dataset
 gpp_monthly <- gpp_files %>%
   map(read_metabolism_file, metabolism_col = "gpp_gO2_m2_d") %>%
   bind_rows()
@@ -68,9 +78,11 @@ gpp_monthly <- gpp_files %>%
 
 # 4. Assemble metabolism --------------------------------------------------------
 
+## Bind together
 metabolism <- full_join(gpp_monthly, er_monthly, by = c("comid", "month")) %>%
   arrange(comid, month)
 
+## Diagnostics
 metabolism_log <- tibble(
   dataset = c("ER", "GPP", "assembled"),
   n_files = c(nrow(er_file_tbl), nrow(gpp_file_tbl), NA_integer_),
@@ -94,18 +106,17 @@ metabolism %>%
   select(month, month_name, n)
 
 metabolism %>%
-  summarise(
+  summarize(
     n_rows = n(),
     n_comids = n_distinct(comid),
     n_months = n_distinct(month),
     n_duplicate_comid_months = n() - n_distinct(paste(comid, month)),
-    pct_missing_gpp = mean(is.na(gpp)) * 100,
-    pct_missing_er = mean(is.na(er)) * 100,
-    pct_missing_nep = mean(is.na(nep)) * 100
-  )
+    pct_missing_gpp = mean(is.na(gpp_gO2_m2_d)) * 100,
+    pct_missing_er = mean(is.na(er_gO2_m2_d)) * 100)
 
 
 # 6. Write outputs -------------------------------------------------------------
 
 saveRDS(metabolism, path_metabolism)
-#write_csv(metabolism_log, path_log)
+
+toc()

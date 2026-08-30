@@ -1,8 +1,13 @@
 # 00_setup.R
 # Monthly metabolism scaling: proof-of-concept setup
 
+## Start with a clean environment
+rm(list = ls())
+
+
 # 1. Packages ---------------------------------------------------------------
 
+## Load packages
 require(pacman)
 
 pacman::p_load(tidyverse,
@@ -15,11 +20,6 @@ pacman::p_load(tidyverse,
                cowplot,
                tictoc,
                janitor)
-
-
-# 2. Paths ------------------------------------------------------------------
-
-dir_dryad <- file.path("data/dryad_data")
 
 
 # 3. other standards -----------------------------------------------------------

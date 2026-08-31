@@ -3,20 +3,21 @@
 
 # 0. Setup ---------------------------------------------------------------------
 
-rm(list = ls())
 source("scripts/00_setup.R")
 
-pacman::p_load(tidyverse, sf, janitor, knitr, tictoc)
+tic("run 05") #2250s, 37.5 minutes
+
+pacman::p_load(knitr)
 
 dir_merit <- "data/processed/merit_data"
 
 ## Input paths
-path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
-path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_cat <- file.path(dir_merit, "03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
 
 ## Build output paths
-path_edges_downstream <- file.path(dir_merit, "003_edges_downstream.rds")
-path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
+path_edges_downstream <- file.path(dir_merit, "05_edges_downstream.rds")
+path_upstream_lookup <- file.path(dir_merit, "05_upstream_lookup.rds")
 
 
 # 1. Read in data --------------------------------------------------------------
@@ -125,7 +126,7 @@ network_summary %>%
 upstream_summary %>%
   kable()
 
-
+toc()
 
 
 

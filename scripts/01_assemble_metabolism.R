@@ -91,9 +91,8 @@ metabolism_log <- tibble(
   n_comid_months = c(n_distinct(paste(er_monthly$comid, er_monthly$month)),
                      n_distinct(paste(gpp_monthly$comid, gpp_monthly$month)),
                      n_distinct(paste(metabolism$comid, metabolism$month))),
-  n_missing_gpp = c(NA_integer_, sum(is.na(gpp_monthly$gpp)), sum(is.na(metabolism$gpp))),
-  n_missing_er = c(sum(is.na(er_monthly$er)), NA_integer_, sum(is.na(metabolism$er))),
-  n_missing_nep = c(NA_integer_, NA_integer_, sum(is.na(metabolism$nep))))
+  n_missing_gpp = c(NA_integer_, sum(is.na(gpp_monthly$gpp_gO2_m2_d)), sum(is.na(metabolism$gpp_gO2_m2_d))),
+  n_missing_er = c(sum(is.na(er_monthly$er_gO2_m2_d)), NA_integer_, sum(is.na(metabolism$er_gO2_m2_d))))
 
 
 # 5. Checks --------------------------------------------------------------------

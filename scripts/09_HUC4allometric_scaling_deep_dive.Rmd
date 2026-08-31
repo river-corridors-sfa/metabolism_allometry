@@ -382,7 +382,7 @@ subwatershed_fits <- subwatershed_data %>%
 
 write_csv(
   subwatershed_fits,
-  file.path(dir_processed, "006b_selected_huc4_subwatershed_fits.csv")
+  file.path(dir_processed, "09_selected_huc4_subwatershed_fits.csv")
 )
 ```
 

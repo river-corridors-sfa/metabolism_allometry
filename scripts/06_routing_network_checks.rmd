@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 source("../scripts/00_setup.R")
 
+tic("run 06")
+
 pacman::p_load(knitr)
 
 dir_merit <- "../data/processed/merit_data"
@@ -61,6 +63,7 @@ retained_upstream_area <- upstream_lookup %>%
   summarise(
     retained_upstream_area_km2 = sum(upstream_unitarea, na.rm = TRUE),
     n_upstream_reaches = n_distinct(upstream_comid),
+    n_upstream_with_catchment = n_distinct(upstream_comid[!is.na(upstream_unitarea)]),
     .groups = "drop"
   )
 
@@ -69,10 +72,15 @@ drainage_missing <- merit_riv_v2 %>%
   select(comid, huc, uparea) %>%
   rename(downstream_comid = comid) %>%
   left_join(retained_upstream_area, by = "downstream_comid") %>%
+  filter(is.finite(uparea), uparea > 0) %>%
   mutate(
     retained_upstream_area_km2 = replace_na(retained_upstream_area_km2, 0),
+    n_upstream_reaches = replace_na(n_upstream_reaches, 0L),
+    n_upstream_with_catchment = replace_na(n_upstream_with_catchment, 0L),
     area_ratio_retained = retained_upstream_area_km2 / uparea,
-    pct_area_missing = pmax(0, 1 - area_ratio_retained) * 100,
+    pct_area_difference = (area_ratio_retained - 1) * 100,
+    pct_area_missing = pmax(0, -pct_area_difference),
+    pct_area_excess = pmax(0, pct_area_difference),
     missing_area_class = case_when(
       pct_area_missing < 1 ~ "<1%",
       pct_area_missing < 5 ~ "1-5%",
@@ -99,6 +107,7 @@ drainage_missing %>%
     p90_pct_area_missing = quantile(pct_area_missing, 0.90, na.rm = TRUE),
     p95_pct_area_missing = quantile(pct_area_missing, 0.95, na.rm = TRUE),
     p99_pct_area_missing = quantile(pct_area_missing, 0.99, na.rm = TRUE),
+    median_pct_area_excess = median(pct_area_excess, na.rm = TRUE),
     n_ge_1pct = sum(pct_area_missing >= 1, na.rm = TRUE),
     n_ge_5pct = sum(pct_area_missing >= 5, na.rm = TRUE),
     n_ge_10pct = sum(pct_area_missing >= 10, na.rm = TRUE)
@@ -228,7 +237,7 @@ huc_map <- huc08_conus %>%
 ggplot() +
   geom_sf(
     data = huc_map,
-    aes(fill = max_pct_area_missing),
+    aes(fill = pct_reaches_ge_10pct_missing),
     color = NA
   ) +
   scale_fill_viridis_c(
@@ -249,26 +258,26 @@ This check compares cumulative upstream catchment area reconstructed from the ro
 ```{r}
 cumulative_area_check <- drainage_missing %>%
   mutate(
-    area_ratio_retained = retained_upstream_area_km2 / uparea,
     log10_uparea = log10(uparea),
-    log10_retained_upstream_area = log10(retained_upstream_area_km2),
+    log10_retained_upstream_area = if_else(
+      retained_upstream_area_km2 > 0,
+      log10(retained_upstream_area_km2),
+      NA_real_
+    ),
     area_ratio_class = case_when(
       area_ratio_retained < 0.90 ~ "<0.90",
       area_ratio_retained <= 1.10 ~ "0.90-1.10",
       area_ratio_retained > 1.10 ~ ">1.10",
       TRUE ~ NA_character_
     ),
-    area_ratio_class = factor(area_ratio_class, levels = c("<0.90", "0.90-1.10", ">1.10"))
-  ) %>% 
-  mutate(
-  pct_area_missing = pmax(0, 1 - retained_upstream_area_km2 / uparea) * 100,
-  drainage_area_quality = case_when(
-    pct_area_missing < 2 ~ "1. complete",
-    pct_area_missing < 10 ~ "2. minor_missing",
-    pct_area_missing < 20 ~ "3. moderate_missing",
-    TRUE ~ "4. major_missing"
+    area_ratio_class = factor(area_ratio_class, levels = c("<0.90", "0.90-1.10", ">1.10")),
+    drainage_area_quality = case_when(
+      pct_area_missing < 2 ~ "1. complete",
+      pct_area_missing < 10 ~ "2. minor_missing",
+      pct_area_missing < 20 ~ "3. moderate_missing",
+      TRUE ~ "4. major_missing"
+    )
   )
-)
 
 cumulative_area_check %>%
   summarise(
@@ -351,6 +360,7 @@ ggplot() +
   ) +
   theme_map() +
   theme(legend.position = "right")
+
+toc()
 ```
 
- 

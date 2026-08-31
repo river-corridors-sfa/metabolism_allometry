@@ -165,7 +165,7 @@ catchments_to_remove1 <- centroid_distance %>%
   filter(centroid_distance_km > threshold_km) %>% 
   pull(comid)
 
-n_centroids_greater_than_threshold = nrow(catchments_to_remove1)
+n_centroids_greater_than_threshold = length(catchments_to_remove1)
 
 perc_centroids_greater_than_threshold = n_centroids_greater_than_threshold / 
   nrow(centroid_distance %>% 

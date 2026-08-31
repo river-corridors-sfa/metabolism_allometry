@@ -1,5 +1,5 @@
 ---
-title: "003 Routing Network Diagnostics"
+title: "06 Routing Network Diagnostics"
 output:
   html_document:
     toc: true
@@ -13,27 +13,17 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ## 0. Setup
 
 ```{r}
-rm(list = ls())
+
 source("../scripts/00_setup.R")
 
-pacman::p_load(
-  tidyverse,
-  sf,
-  janitor,
-  ggplot2,
-  ggthemes,
-  viridis,
-  rnaturalearth, 
-  nhdplusTools,
-  knitr
-)
+pacman::p_load(knitr)
 
-dir_merit <- "/Users/regi350/offline_work/GitHub/RC/metabolism_allometry/data/processed/merit_data"
+dir_merit <- "../data/processed/merit_data"
 
-path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
-path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
-path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
-path_drainage_missing <- file.path(dir_merit, "003_upstream_drainage_missing.rds")
+path_cat <- file.path(dir_merit, "03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_upstream_lookup <- file.path(dir_merit, "05_upstream_lookup.rds")
+path_drainage_missing <- file.path(dir_merit, "06_upstream_drainage_missing.rds")
 ```
 
 ## 1. Read routing inputs
@@ -311,6 +301,14 @@ ggplot(cumulative_area_check, aes(x = uparea, y = retained_upstream_area_km2)) +
 
 
 ```{r, fig.width=9, fig.height=6}
+
+cumulative_area_map <- merit_riv_v2 %>%
+  left_join(
+    cumulative_area_check %>%
+      select(downstream_comid, area_ratio_retained),
+    by = c("comid" = "downstream_comid")
+  )
+
 ggplot() +
   geom_sf(
     data = cumulative_area_map,

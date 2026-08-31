@@ -1,5 +1,5 @@
 ---
-title: "006b HUC4 Scaling Deep Dive"
+title: "09 HUC4 Scaling Deep Dive"
 output:
   html_document:
     toc: true
@@ -15,30 +15,18 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 This report repeats the selected-watershed deep dive at the HUC4 scale. HUC4 assignment is inherited from the trusted HUC8 assignment using the first four HUC digits.
 
 ```{r}
-rm(list = ls())
 source("../scripts/00_setup.R")
 
-pacman::p_load(
-  tidyverse,
-  sf,
-  janitor,
-  nhdplusTools,
-  rnaturalearth,
-  ggplot2,
-  ggthemes,
-  viridis,
-  knitr
-)
+pacman::p_load(knitr)
 
-dir_project <- "/Users/regi350/offline_work/GitHub/RC/metabolism_allometry"
-dir_processed <- file.path(dir_project, "data/processed")
+dir_processed <- file.path("../data/processed")
 dir_merit <- file.path(dir_processed, "merit_data")
 
-path_cat <- file.path(dir_merit, "002_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
-path_riv <- file.path(dir_merit, "002_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
-path_upstream_lookup <- file.path(dir_merit, "003_upstream_lookup.rds")
-path_allometry_data <- file.path(dir_processed, "005_huc08_allometry_input.rds")
-path_characteristics <- file.path(dir_project, "data/raw/dryad_data/scaling_dataset_Qmonth_06082024.csv")
+path_cat <- file.path(dir_merit, "03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_riv <- file.path(dir_merit, "03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_upstream_lookup <- file.path(dir_merit, "05_upstream_lookup.rds")
+path_allometry_data <- file.path(dir_processed, "07_huc08_allometry_input.rds")
+path_characteristics <- file.path("../data/raw/dryad_data/scaling_dataset_Qmonth_06082024.csv")
 
 example_month <- 7
 missing_area_threshold <- 10

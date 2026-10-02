@@ -1,0 +1,218 @@
+---
+title: "GPP projection from median cumulative allometry"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Purpose
+
+This report uses no-watershed-area GPP fits to calculate a median cumulative-GPP
+relationship, project it to a vector of HUC8 upstream areas, and then normalize
+the predictions by upstream area. `max_uparea_km2` is used as the HUC8 area
+vector because it matches the cumulative-area predictor used in the fits.
+
+```{r packages-and-paths}
+source("00_setup.R")
+pacman::p_load(knitr)
+
+dir_processed <- "../data/processed"
+path_fits <- file.path(dir_processed, "18_refit_allometry_results.csv")
+path_huc8_areas <- file.path(dir_processed, "04c_huc08_summary.csv")
+path_scatter_input <- file.path(dir_processed, "18_refit_no_uparea_scatter_input.rds")
+```
+
+## 1. Median cumulative GPP relationship
+
+```{r read-fits}
+gpp_fits <- read_csv(path_fits, show_col_types = FALSE) %>%
+  filter(
+    model == "without_uparea",
+    metabolism == "GPP",
+    is.finite(slope),
+    is.finite(intercept)
+  )
+
+median_fit <- gpp_fits %>%
+  summarise(
+    median_slope = median(slope),
+    median_intercept = median(intercept),
+    n_huc8_month_fits = n(),
+    n_huc8 = n_distinct(huc)
+  )
+
+kable(median_fit, digits = 3)
+```
+
+The fitted median relationship is:
+
+$$\log_{10}(\mathrm{cumulative\ GPP}) = \mathrm{intercept} + \mathrm{slope} \times \log_{10}(\mathrm{cumulative\ area}).$$
+
+```{r plot-median-fit, fig.width=9, fig.height=6}
+scatter_data <- readRDS(path_scatter_input) %>%
+  filter(metabolism == "GPP")
+
+# This is the orange line. Fit it in log10-log10 space to match the axes.
+smooth_fit <- lm(
+  log10(cumulative_flux_g_o2_d) ~ log10(cumulative_area_km2),
+  data = scatter_data
+)
+
+# LOESS is fit to a fixed subset only because fitting it to every reach-month
+# point is unnecessarily slow. The GAM uses the complete scatter data.
+set.seed(28)
+loess_data <- scatter_data %>%
+  slice_sample(n = min(20000, nrow(scatter_data)))
+
+ggplot(scatter_data, aes(cumulative_area_km2, cumulative_flux_g_o2_d)) +
+  geom_hex(bins = 75) +
+  geom_abline(
+    slope = median_fit$median_slope,
+    intercept = median_fit$median_intercept,
+    colour = "black",
+    linewidth = 1
+  ) +
+  geom_smooth(
+    method = "gam",
+    formula = y ~ s(x, bs = "cs"),
+    se = FALSE,
+    colour = "#0072B2",
+    linewidth = 1
+  ) +
+  geom_smooth(
+    data = loess_data,
+    method = "loess",
+    formula = y ~ x,
+    span = 0.4,
+    se = FALSE,
+    colour = "#D55E00",
+    linewidth = 1
+  ) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") + 
+  scale_x_log10(labels = scales::label_number_auto()) +
+  scale_y_log10(labels = scales::label_number_auto()) +
+  scale_fill_viridis_c(option = "D", trans = "log10", name = "Reach-month count") +
+  labs(
+    title = "Median no-area-model GPP allometry",
+    subtitle = paste0(
+      "Median slope = ", round(median_fit$median_slope, 3),
+      "; median intercept = ", round(median_fit$median_intercept, 3),
+      ". Black = median HUC8 fit; blue = GAM; orange = LOESS"
+    ),
+    x = expression("Cumulative upstream area (km"^2*")"),
+    y = expression("Cumulative GPP (g O"[2]*" d"^-1*")")
+  ) +
+  theme_bw()
+```
+
+## 2. Predicted cumulative GPP for each HUC8 area
+
+```{r calculate-huc8-predictions}
+huc8_predictions <- read_csv(path_huc8_areas, show_col_types = FALSE) %>%
+  transmute(
+    huc8 = str_pad(as.character(huc8), width = 8, pad = "0"),
+    huc8_name,
+    l1_ecoregion,
+    huc8_area_km2,
+    cumulative_area_km2 = max_uparea_km2
+  ) %>%
+  filter(is.finite(cumulative_area_km2), cumulative_area_km2 > 0) %>%
+  mutate(
+    predicted_cumulative_gpp_g_o2_d = 10 ^ (
+      median_fit$median_intercept +
+        median_fit$median_slope * log10(cumulative_area_km2)
+    ),
+    lm_cumulative_gpp_g_o2_d = 10 ^ predict(
+      smooth_fit,
+      newdata = tibble(cumulative_area_km2)
+    )
+  )
+
+huc8_predictions %>%
+  select(huc8, huc8_name, cumulative_area_km2, predicted_cumulative_gpp_g_o2_d) %>%
+  head(10) %>%
+  kable(digits = 2)
+```
+
+```{r plot-predicted-gpp, fig.width=9, fig.height=6}
+ggplot(huc8_predictions,
+       aes(cumulative_area_km2, predicted_cumulative_gpp_g_o2_d)) +
+  geom_point(alpha = 0.5, colour = "black", size = 3) +
+  scale_x_log10(labels = scales::label_number_auto()) +
+  scale_y_log10(labels = scales::label_number_auto()) +
+  labs(
+    title = "Median-fit cumulative GPP projected to HUC8 areas",
+    x = expression("Maximum upstream area in HUC8 (km"^2*")"),
+    y = expression("Predicted cumulative GPP (g O"[2]*" d"^-1*")")
+  ) +
+  theme_bw()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 3. Predicted cumulative GPP normalized by HUC8 watershed area
+
+```{r normalize-to-watershed-area}
+huc8_predictions <- huc8_predictions %>%
+  mutate(
+    predicted_gpp_per_huc8_km2_d =
+      predicted_cumulative_gpp_g_o2_d / huc8_area_km2
+  )
+```
+
+```{r plot-watershed-normalized-gpp, fig.width=9, fig.height=6}
+ggplot(huc8_predictions,
+       aes(cumulative_area_km2, predicted_gpp_per_huc8_km2_d)) +
+  geom_point(alpha = 0.5, colour = "black", size = 3) +
+  geom_abline(slope = 1, intercept = 0) +
+  geom_smooth(se = FALSE) +
+  labs(
+    title = "Predicted cumulative GPP normalized by HUC8 watershed area",
+    x = expression("Maximum upstream area in HUC8 (km"^2*")"),
+    y = expression("Predicted cumulative GPP / HUC8 area (g O"[2]*" km"^-2*" d"^-1*")")
+  ) +
+  theme_bw()
+```
+
+## 4. Predicted cumulative GPP normalized by upstream area
+
+```{r normalize-to-upstream-area}
+huc8_predictions <- huc8_predictions %>%
+  mutate(
+    predicted_gpp_per_upstream_km2_d =
+      predicted_cumulative_gpp_g_o2_d / cumulative_area_km2,
+    lm_gpp_per_upstream_km2_d =
+      lm_cumulative_gpp_g_o2_d / cumulative_area_km2
+  )
+```
+
+```{r plot-upstream-normalized-gpp, fig.width=9, fig.height=6}
+ggplot(huc8_predictions,
+       aes(cumulative_area_km2, predicted_gpp_per_upstream_km2_d)) +
+    geom_point(data = scatter_data, aes(cumulative_area_km2, cumulative_flux_g_o2_d / cumulative_area_km2), color = "gray") + 
+  geom_line(colour = "black", linewidth = 1) +
+  geom_point(alpha = 0.5, colour = "black", size = 3) +
+  #geom_line(aes(y = lm_gpp_per_upstream_km2_d), colour = "orangered", linewidth = 1) +
+  #scale_x_log10(labels = scales::label_number_auto()) +
+  #scale_y_log10(labels = scales::label_number_auto()) +
+  labs(
+    title = "Predicted cumulative GPP normalized by upstream area",
+    x = expression("Maximum upstream area in HUC8 (km"^2*")"),
+    y = expression("Predicted cumulative GPP / upstream area (g O"[2]*" km"^-2*" d"^-1*")")
+  ) +
+  theme_bw()
+```

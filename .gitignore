@@ -49,6 +49,9 @@ po/*~
 rsconnect/
 .DS_Store
 
+# Project-local Python environment for the Maavara model replication
+.venv-maavara/
+
 # Ignore data by default
 data/*
 

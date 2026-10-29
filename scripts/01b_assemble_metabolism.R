@@ -15,8 +15,9 @@ tic("run 01") # 7s
 ## Paths
 dir_er_raw <- "data/processed/17_maavara_refits/without_uparea/ER"
 dir_gpp_raw <- "data/processed/17_maavara_refits/without_uparea/GPP"
+dir_original_er <- "data/raw/dryad_data/scaling_ER_pred"
+dir_original_gpp <- "data/raw/dryad_data/scaling_GPP_pred"
 dir_processed <- "data/processed"
-path_baseline <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
 path_metabolism <- file.path(dir_processed, "01_assembled_no_uparea_monthly_metabolism.rds")
 path_log <- file.path(dir_processed, "01_assembled_no_uparea_monthly_metabolism_log.csv")
 
@@ -85,13 +86,27 @@ gpp_monthly <- gpp_files %>%
 ## Bind together
 metabolism <- full_join(gpp_monthly, er_monthly, by = c("comid", "month")) %>%
   arrange(comid, month)
-baseline <- readRDS(path_baseline) %>%
-  mutate(comid = as.character(comid)) %>% select(comid, month)
-if (anyDuplicated(baseline) || anyDuplicated(metabolism[c("comid", "month")]) ||
-    nrow(anti_join(baseline, metabolism, by = c("comid", "month"))) ||
-    nrow(anti_join(metabolism, baseline, by = c("comid", "month")))) {
-  stop("No-uparea and original COMID-month coverage differ; investigate before ingestion")
+read_original_keys <- function(directory, process) {
+  map_dfr(month.abb, function(month_name) {
+    path <- file.path(directory, paste0("scaling_", process, "_pred_", month_name, ".csv"))
+    if (!file.exists(path)) stop("Missing original prediction file: ", path)
+    keys <- read_csv(path, show_col_types = FALSE,
+                     col_select = "COMID", col_types = cols(COMID = col_character()))
+    if (anyNA(keys$COMID) || anyDuplicated(keys$COMID)) stop("Invalid original COMIDs in ", path)
+    tibble(comid = keys$COMID, month = match(month_name, month.abb))
+  })
 }
+assert_same_keys <- function(original, remodeled, process) {
+  remodeled <- remodeled %>% select(comid, month)
+  if (anyDuplicated(original) || anyDuplicated(remodeled) ||
+      nrow(anti_join(original, remodeled, by = c("comid", "month"))) ||
+      nrow(anti_join(remodeled, original, by = c("comid", "month")))) {
+    stop(process, " no-uparea and original raw COMID-month coverage differ")
+  }
+}
+assert_same_keys(read_original_keys(dir_original_gpp, "GPP"), gpp_monthly, "GPP")
+assert_same_keys(read_original_keys(dir_original_er, "ER"), er_monthly, "ER")
+if (anyDuplicated(metabolism[c("comid", "month")])) stop("Duplicate assembled COMID-month keys")
 if (any(!metabolism$month %in% 1:12)) stop("Invalid month")
 
 ## Diagnostics

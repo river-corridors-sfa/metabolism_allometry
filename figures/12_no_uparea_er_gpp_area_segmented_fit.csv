@@ -1,0 +1,3 @@
+input_dataset,metabolism,n_reach_months,n_reaches,breakpoint_km2,slope_below_breakpoint,slope_above_breakpoint,linear_aic,segmented_aic
+07_no_uparea_huc08_allometry_input.rds,GPP,1951894,163024,62.51609495165632,3.1555,1.2541,2506436.3985753437,2125275.5499523696
+07_no_uparea_huc08_allometry_input.rds,ER,1659023,156665,65.19504058378456,2.9766,1.2654,2250431.2944126367,1972633.1685024807

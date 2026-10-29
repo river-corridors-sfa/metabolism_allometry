@@ -17,11 +17,11 @@ Original inputs: `data/raw/dryad_data/scaling_{GPP,ER}_pred/scaling_{GPP,ER}_pre
 | 00 | Reuse | Package setup, no prediction dependency. |
 | 01 | Edited; run | Explicit no-uparea 17 CSVs → `01_assembled_no_uparea_monthly_metabolism.rds` and log. Strict month, columns, unique keys, and original key coverage checks. |
 | 02 | Reuse | MERIT crop and geometry do not depend on rates. |
-| 03 | Edited reference; **do not rerender for migration** | Full Rmd now points to no-uparea input/output, but its spatial recomputation and shapefile writes are unnecessary. Run `03_refresh_no_uparea_metabolism.R`, which joins the existing approved catchments and writes `03_filtered_no_uparea_monthly_metabolism.rds`; it asserts exact baseline filtered key coverage. Existing 03 spatial layers and coverage remain authoritative. |
+| 03 | Edited; render after 01 | The full Rmd performs its existing spatial filtering, then joins no-uparea 01 rates and writes `03_filtered_no_uparea_monthly_metabolism.rds`. It writes a separate no-uparea spatial-coverage checkpoint. If approved spatial layers already exist, it checks their COMID/HUC and routing keys and preserves them; a spatial-key change stops the run for review. It asserts exact original filtered metabolism key coverage. |
 | 04 | Edited reference; optional diagnostic only | Single-HUC diagnostic is not production input. No rerun required for the primary pipeline. |
 | 04b | Reuse | Ecoregion lookup depends on HUC geometry, not rates. |
-| 05 | Reuse | Routing edges and upstream lookup depend on 03 spatial layers, not rates. |
-| 04c | Edited; run **after 05 exists** | No-uparea filtered rates → variant-specific COMID key and HUC8 summary. Cached `04c_huc08_boundaries.gpkg` is reused when present; do not refresh it for this migration. |
+| 04c | Edited; run after 04b | No-uparea filtered rates and 03 spatial coverage → variant-specific COMID key and HUC8 summary. Its retained-edge indicator is computed directly from filtered flowlines using 05's rule, so 04c no longer depends on a later script. Cached `04c_huc08_boundaries.gpkg` is reused when present; do not refresh it for this migration. |
+| 05 | Reuse | Routing edges and upstream lookup depend on 03 spatial layers, not rates. In a fresh full build, run 05 after 04c and before 07. |
 | 06 | Reuse | Routing diagnostic, no production output required. |
 | 07 | Edited; render | Reads no-uparea 01 independently of 03; writes variant-specific screened input, fits, negative-rate summary, and ordered screen attrition. Same network, thresholds, recode, and fit criteria. |
 | 08 | Edited; run | No-uparea 07 input and 04c key → `08_no_uparea_huc08_fit_stability.csv`. |
@@ -37,7 +37,7 @@ Run from repository root in an R environment with the packages used by the scrip
 
 ```bash
 Rscript scripts/01_assemble_metabolism.R
-Rscript scripts/03_refresh_no_uparea_metabolism.R
+Rscript -e 'rmarkdown::render("scripts/03_filter_HUC8s.Rmd", output_file = "03_no_uparea_filter_HUC8s.html")'
 Rscript scripts/04c_build_huc08_index.R
 Rscript -e 'rmarkdown::render("scripts/07_calculate_huc8_allometric_scaling.Rmd", output_file = "07_no_uparea_huc8_allometric_scaling.html")'
 Rscript scripts/08_huc8_fit_stability.R
@@ -47,7 +47,7 @@ Rscript scripts/12_er_gpp_area_segmented_hex.R
 Rscript scripts/validation/validate_no_uparea_migration.R
 ```
 
-01 succeeds only if all 24 CSVs match their expected schema and the original COMID-month key universe exactly. 03 refresh succeeds only if approved-catchment filtering reproduces original 03 keys. 04c should create its two `04c_no_uparea_*` outputs. 07 should create `07_no_uparea_huc08_allometry_input.rds`, `07_no_uparea_huc08_allometry_results.csv`, `07_no_uparea_negative_rate_recode_summary.csv`, and `07_no_uparea_screen_attrition.csv`. 08 should create its no-uparea CSV. 10–12 should create `figure_1_no_uparea*`, `figure_2_no_uparea*`, `figure_3_no_uparea*`, `figure_s2_no_uparea*`, and `12_no_uparea_er_gpp_area_segmented_fit.csv`. Final validation writes CSV ledgers, `summary.txt`, and two paired plots to `reports/no_uparea_migration/`. Existing original outputs are never target paths in this run order.
+01 succeeds only if all 24 CSVs match their expected schema and the original COMID-month key universe exactly. 03 succeeds only if spatial keys agree with existing approved layers and the filtered metabolism keys match the original 03 output; it creates `03_filtered_no_uparea_monthly_metabolism.rds`, `03_no_uparea_huc_spatial_coverage.rds`, and variant-specific HTML. 04c should create its two `04c_no_uparea_*` outputs. 07 should create `07_no_uparea_huc08_allometry_input.rds`, `07_no_uparea_huc08_allometry_results.csv`, `07_no_uparea_negative_rate_recode_summary.csv`, and `07_no_uparea_screen_attrition.csv`. 08 should create its no-uparea CSV. 10–12 should create `figure_1_no_uparea*`, `figure_2_no_uparea*`, `figure_3_no_uparea*`, `figure_s2_no_uparea*`, and `12_no_uparea_er_gpp_area_segmented_fit.csv`. Final validation writes CSV ledgers, `summary.txt`, and two paired plots to `reports/no_uparea_migration/`. Existing original outputs are never target paths in this run order.
 
 Inspect `source_coverage.csv` for unmatched keys, `source_rate_counts.csv` for missing/negative/zero/nonfinite changes, `paired_refit_test_skill.csv` for paired test R²/RMSE/MAE changes, `screened_composition.csv` and `no_uparea_screen_attrition.csv` for filtering effects, `paired_allometry_fits.csv` and `classification_transitions.csv` for changed fits/classes, and `segmented_comparison.csv` for breakpoints/slopes. The model-skill table compares **two new refits on the same seeded 70/30 split** (147,108 test rows per process in saved metrics). It does not establish test skill relative to the published original forest; the latter has only full-network prediction comparisons. The saved metric CSV gives identical test counts but not held-out row IDs or predictions, so exact record-level identity is inferred from script 17's shared split and source, rather than independently verifiable from saved test artifacts.
 
@@ -55,7 +55,8 @@ Inspect `source_coverage.csv` for unmatched keys, `source_rate_counts.csv` for m
 
 | Item | Status | Observed / acceptance work |
 |---|---|---|
-| 01, 03 refresh, 04c, 07, 08, 10, 11, 12 | USER RUN REQUIRED | No new outputs generated by this migration yet. |
+| 01 | OUTPUT GENERATED — VALIDATION PENDING | User ran it on 2026-10-29; its assembly log reports 2,101,392 COMID-month rows, 175,116 COMIDs, and 60 missing values per process. Full validation remains pending. |
+| 03, 04c, 07, 08, 10, 11, 12 | USER RUN REQUIRED | No new outputs generated for these steps yet. |
 | 00, 02, 04b, 05, 06 | VALIDATED FOR REUSE BY DEPENDENCY | Their existing outputs are independent of rate values; provenance caveats below remain. |
 | Predictive skill | USER RUN REQUIRED | Saved paired refit test metrics exist; inspect emitted deltas. No arbitrary deterioration tolerance. |
 | Source substitution and coverage | USER RUN REQUIRED | Exact key equality is a hard ingestion gate; inspect rate distributions and negative/missing changes. |

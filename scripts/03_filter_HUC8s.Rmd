@@ -261,7 +261,7 @@ ggplot() +
 
 # 2. Spatial coverage of MERIT catchments by HUC8 ------------------------------
 
-path_huc_coverage <- file.path(dir_processed, "03_huc_spatial_coverage.rds")
+path_huc_coverage <- file.path(dir_processed, "03_no_uparea_huc_spatial_coverage.rds")
 checkpoint_every <- 50
 
 huc08_merit_5070 <- huc08_merit %>%
@@ -353,7 +353,7 @@ for (i in seq_len(n_hucs)) {
 -   `min_coverage <- 75%`: We require at least 75% of the area within a HUC8 to be covered by catchments that match Maavara (see Decision #1 above), because poor coverage could lead to biased catchment calculations or spatial gaps, which could break allometry assumptions. 
 
 ```{r 15}
-spatial_coverage <- readRDS("../data/processed/03_huc_spatial_coverage.rds")
+spatial_coverage <- readRDS(path_huc_coverage)
 
 spatial_coverage %>% 
   ggplot(aes(huc_area_km2, catchment_area_km2, 
@@ -458,12 +458,48 @@ tibble(cleaning_step = c(0, 1),
 ```{r 20}
 
 ## 1. Write out filtered catchments
-write_sf(merit_cat_v3, file.path(dir_processed, "merit_data/03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+path_filtered_cat <- file.path(dir_processed, "merit_data/03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+path_filtered_riv <- file.path(dir_processed, "merit_data/03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp")
+assert_same_spatial_keys <- function(rebuilt, existing_path, fields) {
+  existing <- read_sf(existing_path) %>% clean_names() %>% st_drop_geometry()
+  rebuilt <- rebuilt %>% clean_names() %>% st_drop_geometry()
+  if (!setequal(as.character(rebuilt$comid), as.character(existing$comid)) || anyDuplicated(rebuilt$comid) ||
+      anyDuplicated(existing$comid)) stop("03 spatial COMID keys changed: ", existing_path)
+  for (field in fields) {
+    check <- full_join(
+      rebuilt %>% transmute(comid = as.character(comid), value = as.character(.data[[field]])),
+      existing %>% transmute(comid = as.character(comid), value = as.character(.data[[field]])),
+      by = "comid", suffix = c("_rebuilt", "_existing"))
+    if (any(is.na(check$value_rebuilt) != is.na(check$value_existing)) ||
+        any(check$value_rebuilt != check$value_existing, na.rm = TRUE)) {
+      stop("03 spatial field changed: ", field, " in ", existing_path,
+           ". Review before rebuilding routing and replacing baseline spatial files.")
+    }
+  }
+}
+if (file.exists(path_filtered_cat)) {
+  assert_same_spatial_keys(merit_cat_v3, path_filtered_cat, "huc")
+} else {
+  write_sf(merit_cat_v3, path_filtered_cat)
+}
 
 ## 2. Write out filtered flowlines
-write_sf(merit_riv_v3, file.path(dir_processed, "merit_data/03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
+if (file.exists(path_filtered_riv)) {
+  assert_same_spatial_keys(merit_riv_v3, path_filtered_riv, c("huc", "nxt_dw"))
+} else {
+  write_sf(merit_riv_v3, path_filtered_riv)
+}
 
 ## 3. Write out filtered metabolism
+baseline_keys <- readRDS("../data/processed/03_filtered_maavara_monthly_metabolism.rds") %>%
+  transmute(comid = as.character(comid), month)
+new_keys <- match_metabolism_to_flowlines %>%
+  transmute(comid = as.character(comid), month)
+if (anyDuplicated(new_keys) || anyDuplicated(baseline_keys) ||
+    nrow(anti_join(new_keys, baseline_keys, by = c("comid", "month"))) ||
+    nrow(anti_join(baseline_keys, new_keys, by = c("comid", "month")))) {
+  stop("03 no-uparea metabolism keys differ from the original filtered output")
+}
 write_rds(match_metabolism_to_flowlines, "../data/processed/03_filtered_no_uparea_monthly_metabolism.rds")
 
 paste("This script took", round(as.numeric(Sys.time() - start, units = "mins"), 1), "minutes to run")

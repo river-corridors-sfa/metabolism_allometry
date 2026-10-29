@@ -30,7 +30,6 @@ path_catchments <- file.path(
   dir_merit,
   "03_cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"
 )
-path_edges <- file.path(dir_merit, "05_edges_downstream.rds")
 path_metabolism <- file.path(
   dir_processed,
   "03_filtered_no_uparea_monthly_metabolism.rds"
@@ -41,7 +40,7 @@ path_ecoregions <- file.path(
 )
 path_spatial_coverage <- file.path(
   dir_processed,
-  "03_huc_spatial_coverage.rds"
+  "03_no_uparea_huc_spatial_coverage.rds"
 )
 
 path_boundaries <- file.path(dir_processed, "04c_huc08_boundaries.gpkg")
@@ -147,11 +146,11 @@ metabolism_coverage <- readRDS(path_metabolism) %>%
 ## reach have another reach upstream within the retained, filtered network?
 ## `is_headwater_merit` preserves the source-network indicator for comparison.
 
-edges_downstream <- readRDS(path_edges) %>%
-  transmute(
-    from_comid = as.character(from_comid),
-    to_comid = as.character(to_comid)
-  )
+# Same retained-edge rule as 05, computed from 03 flowlines so 04c runs before 05.
+edges_downstream <- flowlines %>%
+  st_drop_geometry() %>%
+  transmute(from_comid = as.character(comid), to_comid = as.character(nxt_dw)) %>%
+  filter(!is.na(to_comid), to_comid != "0", to_comid %in% flowlines$comid)
 
 ecoregions <- read_csv(path_ecoregions, show_col_types = FALSE) %>%
   transmute(

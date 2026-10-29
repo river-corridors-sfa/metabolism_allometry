@@ -8,9 +8,9 @@ local({
   library(hexbin)
   library(segmented)
 
-  path_input <- "data/processed/07_huc08_allometry_input.rds"
-  path_figure <- "figures/figure_3_er_gpp_area_segmented_hex.png"
-  path_summary <- "figures/12_er_gpp_area_segmented_fit.csv"
+  path_input <- "data/processed/07_no_uparea_huc08_allometry_input.rds"
+  path_figure <- "figures/figure_3_no_uparea_er_gpp_area_segmented_hex.png"
+  path_summary <- "figures/12_no_uparea_er_gpp_area_segmented_fit.csv"
   
   hex_bins <- 65
   
@@ -117,14 +117,14 @@ local({
   message("Saved: ", path_summary)
 
   # 4. Supplemental figures: one breakpoint per Level I ecoregion ------------
-  path_key <- "data/processed/04c_comid_huc08_key.rds"
+  path_key <- "data/processed/04c_no_uparea_comid_huc08_key.rds"
   if (!file.exists(path_key)) stop("Missing reach/ecoregion lookup: ", path_key)
   reach_regions <- readRDS(path_key) %>%
     dplyr::select(comid, l1_ecoregion) %>%
     distinct(comid, .keep_all = TRUE)
   for (metric in c("GPP", "ER")) {
   path_supplement <- file.path("figures", paste0(
-    "figure_s2_", tolower(metric), "_ecoregion_segmented_hex.png"))
+    "figure_s2_no_uparea_", tolower(metric), "_ecoregion_segmented_hex.png"))
   region_data <- plot_data %>%
     filter(metabolism == metric) %>%
     inner_join(reach_regions, by = "comid", relationship = "many-to-one") %>%

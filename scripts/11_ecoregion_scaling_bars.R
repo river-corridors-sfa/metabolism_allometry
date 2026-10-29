@@ -18,8 +18,8 @@ local({
   dir_figures <- "figures"
   dir.create(dir_figures, recursive = TRUE, showWarnings = FALSE)
   path_input <- file.path(dir_processed, if (use_test_output) {
-    "08_huc08_fit_stability_test.csv"
-  } else "08_huc08_fit_stability.csv")
+    "08_no_uparea_huc08_fit_stability_test.csv"
+  } else "08_no_uparea_huc08_fit_stability.csv")
   if (!file.exists(path_input)) stop("Missing 08 summary: ", path_input,
     ". Run 08 in full mode, or set use_test_output <- TRUE for a preview.")
 
@@ -134,8 +134,8 @@ local({
            plot.title = element_text(face = "bold"), plot.caption = element_text(hjust = 0)) +
     guides(fill = guide_legend(nrow = 2, byrow = TRUE))
   path_output <- file.path(dir_figures, if (use_test_output) {
-    "figure_2_ecoregion_scaling_bars_test.png"
-  } else "figure_2_ecoregion_scaling_bars.png")
+    "figure_2_no_uparea_ecoregion_scaling_bars_test.png"
+  } else "figure_2_no_uparea_ecoregion_scaling_bars.png")
   ggsave(path_output, figure, width = 14,
           height = max(5, 2.5 + 0.38 * length(region_order)), dpi = 300, bg = "white")
   message("Saved: ", path_output)

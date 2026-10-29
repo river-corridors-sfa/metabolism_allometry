@@ -33,7 +33,7 @@ path_catchments <- file.path(
 path_edges <- file.path(dir_merit, "05_edges_downstream.rds")
 path_metabolism <- file.path(
   dir_processed,
-  "03_filtered_maavara_monthly_metabolism.rds"
+  "03_filtered_no_uparea_monthly_metabolism.rds"
 )
 path_ecoregions <- file.path(
   dir_processed,
@@ -45,8 +45,8 @@ path_spatial_coverage <- file.path(
 )
 
 path_boundaries <- file.path(dir_processed, "04c_huc08_boundaries.gpkg")
-path_comid_key <- file.path(dir_processed, "04c_comid_huc08_key.rds")
-path_summary <- file.path(dir_processed, "04c_huc08_summary.csv")
+path_comid_key <- file.path(dir_processed, "04c_no_uparea_comid_huc08_key.rds")
+path_summary <- file.path(dir_processed, "04c_no_uparea_huc08_summary.csv")
 
 
 # 1. Read the retained network -------------------------------------------------

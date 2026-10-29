@@ -19,8 +19,8 @@ local({
   dir_figures <- "figures"
   dir.create(dir_figures, recursive = TRUE, showWarnings = FALSE)
   path_input <- file.path(dir_processed, if (use_test_output) {
-    "08_huc08_fit_stability_test.csv"
-  } else "08_huc08_fit_stability.csv")
+    "08_no_uparea_huc08_fit_stability_test.csv"
+  } else "08_no_uparea_huc08_fit_stability.csv")
   if (!file.exists(path_input)) stop("Missing 08 summary: ", path_input,
     ". Run 08 in full mode, or set use_test_output <- TRUE for a preview.")
 
@@ -119,8 +119,8 @@ local({
            plot.title = element_text(face = "bold"), plot.caption = element_text(hjust = 0)) +
     guides(fill = guide_legend(nrow = 2, byrow = TRUE))
   path_map <- file.path(dir_figures, if (use_test_output) {
-    "figure_1_scaling_maps_test.png"
-  } else "figure_1_scaling_maps.png")
+    "figure_1_no_uparea_scaling_maps_test.png"
+  } else "figure_1_no_uparea_scaling_maps.png")
   ggsave(path_map, figure1, width = 14, height = 6.4, dpi = 300, bg = "white")
 
   # 5. Supplemental criteria table -------------------------------------------
@@ -175,7 +175,7 @@ local({
       sep = "\n"), x = 0, hjust = 0, gp = grid::gpar(fontsize = 10)),
     ncol = 1, heights = c(0.07, 0.78, 0.15)
   )
-  path_table <- file.path(dir_figures, "figure_S1_scaling_criteria.png")
+  path_table <- file.path(dir_figures, "figure_S1_no_uparea_scaling_criteria.png")
   ggsave(path_table, supplement, width = 15, height = 9, dpi = 300, bg = "white")
   message("Saved: ", path_map, "\nSaved: ", path_table)
   invisible(NULL)

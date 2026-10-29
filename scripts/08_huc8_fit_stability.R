@@ -31,16 +31,16 @@ local({
   dir_processed <- "data/processed"
   dir_merit <- file.path(dir_processed, "merit_data")
   path_output <- file.path(dir_processed, if (test_mode) {
-    "08_huc08_fit_stability_test.csv"
+    "08_no_uparea_huc08_fit_stability_test.csv"
   } else {
-    "08_huc08_fit_stability.csv"
+    "08_no_uparea_huc08_fit_stability.csv"
   })
 
   # 2. Read only the needed attributes ---------------------------------------
   # RDS must be read in full once; narrow immediately. A fresh R session avoids
   # retaining 07's large spatial tables and expanded upstream lookup alongside it.
   message("Reading cumulative input from 07...")
-  input_07 <- readRDS(file.path(dir_processed, "07_huc08_allometry_input.rds"))
+  input_07 <- readRDS(file.path(dir_processed, "07_no_uparea_huc08_allometry_input.rds"))
   required_07 <- c("huc", "downstream_comid", "month", "metabolism_metric",
                    "cumulative_area_km2", "cumulative_flux_g_o2_d",
                    "pct_area_missing", "pct_metabolism_missing")
@@ -86,7 +86,7 @@ local({
   # Use 07's labels for sections so they match the HUC8s being refit.
   key <- input %>% distinct(comid, huc)
   stopifnot(!anyDuplicated(key$comid))
-  retained_comids <- readRDS(file.path(dir_processed, "04c_comid_huc08_key.rds")) %>%
+  retained_comids <- readRDS(file.path(dir_processed, "04c_no_uparea_comid_huc08_key.rds")) %>%
     transmute(comid = as.character(comid))
   stopifnot(!anyDuplicated(retained_comids$comid),
             nrow(anti_join(key, retained_comids, by = "comid")) == 0)

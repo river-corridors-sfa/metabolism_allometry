@@ -39,7 +39,7 @@ dir_processed <- "../data/processed"
 path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
 path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_metabolism <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
+path_metabolism <- file.path(dir_processed, "01_assembled_no_uparea_monthly_metabolism.rds")
 path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
 
 ```

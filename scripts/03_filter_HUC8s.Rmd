@@ -30,7 +30,7 @@ dir_raw <- "../data/raw"
 
 path_merit_cat <- file.path(dir_processed, "merit_data/cat_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
 path_merit_riv <- file.path(dir_processed, "merit_data/riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS.shp")
-path_metabolism <- file.path(dir_processed, "01_assembled_maavara_monthly_metabolism.rds")
+path_metabolism <- file.path(dir_processed, "01_assembled_no_uparea_monthly_metabolism.rds")
 path_characteristics <- file.path(dir_raw, "dryad_data/scaling_dataset_Qmonth_06082024.csv")
 path_maavara_cat <- file.path(dir_raw, "dryad_data/MERIT_Hydro_CONUS_catchments/MERIT_Hydro_CONUS_catchments.shp")
 ```
@@ -464,7 +464,7 @@ write_sf(merit_cat_v3, file.path(dir_processed, "merit_data/03_cat_pfaf_7_MERIT_
 write_sf(merit_riv_v3, file.path(dir_processed, "merit_data/03_riv_pfaf_7_MERIT_Hydro_v07_Basins_v01_CONUS_filtered.shp"), delete_dsn = TRUE)
 
 ## 3. Write out filtered metabolism
-write_rds(match_metabolism_to_flowlines, "../data/processed/03_filtered_maavara_monthly_metabolism.rds")
+write_rds(match_metabolism_to_flowlines, "../data/processed/03_filtered_no_uparea_monthly_metabolism.rds")
 
 paste("This script took", round(as.numeric(Sys.time() - start, units = "mins"), 1), "minutes to run")
 ```

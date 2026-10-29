@@ -41,6 +41,11 @@ vignettes/*.pdf
 
 # pkgdown site
 docs/
+!docs/
+docs/*
+!docs/paperbot/
+docs/paperbot/*
+!docs/paperbot/no_uparea_migration.md
 
 # translation temp files
 po/*~

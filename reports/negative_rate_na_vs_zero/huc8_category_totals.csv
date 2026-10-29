@@ -1,0 +1,17 @@
+policy,metabolism_metric,scaling_class,n_hucs
+missing,ER,Insufficient data,26
+missing,ER,Seasonally variable,483
+missing,ER,Super-linear,1350
+missing,ER,Uncertain,35
+missing,GPP,Insufficient data,24
+missing,GPP,Seasonally variable,129
+missing,GPP,Super-linear,1724
+missing,GPP,Uncertain,17
+zero,ER,Insufficient data,24
+zero,ER,Seasonally variable,143
+zero,ER,Super-linear,1704
+zero,ER,Uncertain,23
+zero,GPP,Insufficient data,24
+zero,GPP,Seasonally variable,120
+zero,GPP,Super-linear,1732
+zero,GPP,Uncertain,18

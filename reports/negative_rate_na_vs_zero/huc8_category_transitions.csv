@@ -1,0 +1,19 @@
+metabolism_metric,scaling_class_missing,scaling_class_zero,n_hucs
+ER,Super-linear,Super-linear,1346
+ER,Seasonally variable,Super-linear,351
+ER,Seasonally variable,Seasonally variable,129
+ER,Insufficient data,Insufficient data,24
+ER,Uncertain,Uncertain,20
+ER,Uncertain,Seasonally variable,9
+ER,Uncertain,Super-linear,6
+ER,Super-linear,Seasonally variable,4
+ER,Seasonally variable,Uncertain,3
+ER,Insufficient data,Seasonally variable,1
+ER,Insufficient data,Super-linear,1
+GPP,Super-linear,Super-linear,1723
+GPP,Seasonally variable,Seasonally variable,119
+GPP,Insufficient data,Insufficient data,24
+GPP,Uncertain,Uncertain,17
+GPP,Seasonally variable,Super-linear,9
+GPP,Seasonally variable,Uncertain,1
+GPP,Super-linear,Seasonally variable,1

@@ -1,0 +1,4 @@
+metabolism,current_included,current_excluded_by_na,pct_current_included_excluded,revised_included,revised_eligible_denominator,pct_hucs_passing_revised
+ANY,1807,0,0,1807,1894,95.4065469904963
+GPP,1797,0,0,1797,1894,94.8785638859557
+ER,1802,2,0.110987791342952,1801,1894,95.0897571277719

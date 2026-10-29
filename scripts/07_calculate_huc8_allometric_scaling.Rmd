@@ -38,6 +38,7 @@ path_characteristics <- file.path("../data/raw/dryad_data/scaling_dataset_Qmonth
 
 path_allometry_data <- file.path(dir_processed, "07_huc08_allometry_input.rds")
 path_allometry_results <- file.path(dir_processed, "07_huc08_allometry_results.csv")
+path_negative_rate_log <- file.path(dir_processed, "07_negative_rate_recode_summary.csv")
 
 missing_area_threshold <- 10
 missing_metabolism_threshold <- 10
@@ -98,6 +99,30 @@ if ("gpp_g_o2_m2_d" %in% names(metabolism)) {
 
 metabolism <- metabolism %>%
   select(comid, month, gpp_rate_g_o2_m2_d, er_rate_g_o2_m2_d)
+
+# Preserve the assembled source in 01; only the analysis copy is recoded.
+# Negative local metabolism rates cannot contribute to cumulative flux.
+negative_rate_log <- tibble(
+  metabolism_metric = c("GPP", "ER"),
+  n_rates = rep(nrow(metabolism), 2),
+  n_negative_set_na = c(
+    sum(metabolism$gpp_rate_g_o2_m2_d < 0, na.rm = TRUE),
+    sum(metabolism$er_rate_g_o2_m2_d < 0, na.rm = TRUE)
+  )
+)
+write_csv(negative_rate_log, path_negative_rate_log)
+metabolism <- metabolism %>%
+  mutate(
+    gpp_rate_g_o2_m2_d = if_else(
+      !is.na(gpp_rate_g_o2_m2_d) & gpp_rate_g_o2_m2_d < 0,
+      NA_real_, gpp_rate_g_o2_m2_d
+    ),
+    er_rate_g_o2_m2_d = if_else(
+      !is.na(er_rate_g_o2_m2_d) & er_rate_g_o2_m2_d < 0,
+      NA_real_, er_rate_g_o2_m2_d
+    )
+  )
+negative_rate_log %>% kable()
 ```
 
 ```{r}
@@ -305,6 +330,11 @@ allometry_data <- cumulative_metabolism %>%
       metabolism_metric,
       cumulative_gpp_g_o2_d = "GPP",
       cumulative_er_g_o2_d = "ER"
+    ),
+    pct_metabolism_missing = if_else(
+      metabolism_metric == "GPP",
+      pct_gpp_metabolism_missing,
+      pct_er_metabolism_missing
     )
   ) %>%
   filter(
@@ -312,7 +342,9 @@ allometry_data <- cumulative_metabolism %>%
     !is.na(month),
     cumulative_area_km2 > 0,
     cumulative_flux_g_o2_d > 0,
-    pct_area_missing < missing_area_threshold
+    pct_area_missing < missing_area_threshold,
+    is.finite(pct_metabolism_missing),
+    pct_metabolism_missing < missing_metabolism_threshold
   )
 
 base::saveRDS(allometry_data, path_allometry_data)

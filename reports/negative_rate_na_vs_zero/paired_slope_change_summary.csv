@@ -1,0 +1,3 @@
+metabolism,n_shared_fits,n_missing_only,n_zero_only,median_delta_slope,q05_delta_slope,q95_delta_slope
+ER,22002,0,450,0,-0.295605768720946,0.000245680040480456
+GPP,22448,0,4,0,0,0

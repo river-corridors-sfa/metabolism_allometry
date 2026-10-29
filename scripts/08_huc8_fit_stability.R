@@ -2,6 +2,8 @@
 # Run from the project root after 07. Tests deletion sensitivity, not confidence.
 # Sections end before confluences and at HUC8 / retained-network boundaries.
 # Cumulative flux and area NEVER change when a section leaves the regression.
+# Input from 07 must already exclude negative local rates and reach-months with
+# >=10% missing upstream area or metabolism coverage.
 # Network dependence: Ver Hoef & Peterson (2010), doi:10.1198/jasa.2009.ap08248;
 # Kojevnikov (2021), doi:10.48550/arXiv.2101.12312. This is an adaptation.
 
@@ -17,6 +19,8 @@ local({
   seed <- 20261002L
   min_reaches <- 20L                 # Same eligibility rules as 07
   min_area_range_log10 <- 1
+  missing_area_threshold <- 10       # Must match 07's strict <10% filters
+  missing_metabolism_threshold <- 10
   r2_cutoff <- 0.8
   slope_bounds <- c(0.95, 1.05)
 
@@ -36,12 +40,33 @@ local({
   # RDS must be read in full once; narrow immediately. A fresh R session avoids
   # retaining 07's large spatial tables and expanded upstream lookup alongside it.
   message("Reading cumulative input from 07...")
-  input <- readRDS(file.path(dir_processed, "07_huc08_allometry_input.rds")) %>%
+  input_07 <- readRDS(file.path(dir_processed, "07_huc08_allometry_input.rds"))
+  required_07 <- c("huc", "downstream_comid", "month", "metabolism_metric",
+                   "cumulative_area_km2", "cumulative_flux_g_o2_d",
+                   "pct_area_missing", "pct_metabolism_missing")
+  missing_07 <- setdiff(required_07, names(input_07))
+  if (length(missing_07)) {
+    stop("07 input lacks the new coverage field(s): ",
+         paste(missing_07, collapse = ", "), ". Rerun 07 before 08.")
+  }
+  if (any(!is.finite(input_07$pct_area_missing) |
+          input_07$pct_area_missing >= missing_area_threshold) ||
+      any(!is.finite(input_07$pct_metabolism_missing) |
+          input_07$pct_metabolism_missing >= missing_metabolism_threshold) ||
+      any(!is.finite(input_07$cumulative_area_km2) |
+          input_07$cumulative_area_km2 <= 0) ||
+      any(!is.finite(input_07$cumulative_flux_g_o2_d) |
+          input_07$cumulative_flux_g_o2_d <= 0)) {
+    stop("07 input violates the positive-flux or <10% coverage rules.")
+  }
+  input <- input_07 %>%
     transmute(
       huc = str_pad(as.character(huc), 8, pad = "0"),
       comid = as.character(downstream_comid), month, metabolism_metric,
-      x = log10(cumulative_area_km2), y = log10(cumulative_flux_g_o2_d)
+      x = log10(cumulative_area_km2), y = log10(cumulative_flux_g_o2_d),
+      pct_metabolism_missing
     )
+  rm(input_07)
   stopifnot(all(is.finite(input$x)), all(is.finite(input$y)))
 
   if (test_mode) {
@@ -162,6 +187,8 @@ local({
     tibble(
       n_reaches = n_total, n_unique_areas = n_unique,
       log10_area_range = area_range,
+      median_pct_metabolism_missing = median(data$pct_metabolism_missing),
+      max_pct_metabolism_missing = max(data$pct_metabolism_missing),
       baseline_slope = baseline$slope, baseline_r2 = baseline$r2,
       baseline_intercept = mean(data$y) - baseline$slope * mean(data$x),
       baseline_class = base_class,

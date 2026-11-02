@@ -74,3 +74,9 @@ scripts/x_l1_conus_nm_oneoff.R
 /figures/x_*
 
 *.[rR][dD][sS]
+
+# Generated monthly CONUS predictions
+/reports/no_uparea_migration/er_qc_sensitivity/conus/*/scaling_ER_pred_*.csv
+
+# Python bytecode
+__pycache__/

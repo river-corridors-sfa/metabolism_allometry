@@ -1,0 +1,9 @@
+metabolism_metric,change,reason_original,reason_no_uparea,n
+GPP,original_only,retained,metabolism_coverage,2481
+ER,original_only,retained,positive_flux,72181
+ER,original_only,retained,metabolism_coverage,159910
+GPP,original_only,retained,positive_flux,1460
+GPP,no_uparea_only,metabolism_coverage,retained,1290
+GPP,no_uparea_only,positive_flux,retained,317
+ER,no_uparea_only,positive_flux,retained,885
+ER,no_uparea_only,metabolism_coverage,retained,29377

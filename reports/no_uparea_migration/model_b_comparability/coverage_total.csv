@@ -1,0 +1,3 @@
+definition,total,original,modified,overlap,original_only,modified_only,retained_pct,modified_pct_of_total
+both_nonmissing,2101392,2101392,2101332,2101332,60,0,99.9971447497659,99.9971447497659
+both_positive,2101392,2026579,2092482,2019033,7546,73449,99.6276483670264,99.5759953402316

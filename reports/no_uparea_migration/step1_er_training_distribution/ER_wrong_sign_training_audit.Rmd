@@ -1,0 +1,210 @@
+---
+title: "Where are the 43,010 wrong-sign ER training estimates?"
+subtitle: "Site concentration, stream setting, geography, and Appling confidence assessments"
+date: "2026-10-30"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(scales)
+library(knitr)
+library(maps)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.width = 9, fig.height = 5.5, dpi = 130)
+theme_set(theme_minimal(base_size = 12))
+source_path <- "data/raw/dryad_data/appling_data_06202024.csv"
+assess_dir <- "reports/no_uparea_migration/step1_er_training_distribution/source_data"
+raw <- fread(source_path, select = c("site_name", "date", "month", "ER", "ER.lower",
+                                    "ER.upper", "ER.Rhat", "ER.n_eff", "uparea",
+                                    "discharge", "latitude", "longitude"))
+raw[, wrong_sign := ER > 0]
+raw[, clearly_wrong_sign := ER > 0.5]
+site_data <- fread(file.path(assess_dir, "site_data.tsv"))
+diagnostics <- as.data.table(read.delim(unz(file.path(assess_dir, "diagnostics.zip"),
+                                           "diagnostics.tsv"), check.names = FALSE))
+site_conf <- diagnostics[, .(site_min_confidence = unique(site_min_confidence),
+                             n_models = .N,
+                             model_confidences = paste(sort(unique(model_confidence)),
+                                                       collapse = ",")), by = site]
+stopifnot(nrow(site_conf) == uniqueN(diagnostics$site),
+          !anyDuplicated(site_conf$site))
+setnames(site_conf, "site", "site_name")
+x <- merge(raw, site_conf, by = "site_name", all.x = TRUE)
+stopifnot(nrow(x) == nrow(raw), !anyNA(x$site_min_confidence))
+x[, site_min_confidence := factor(site_min_confidence, levels = c("H", "M", "L"))]
+site <- x[, .(n = .N, wrong = sum(wrong_sign), clearly_wrong = sum(clearly_wrong_sign),
+              lat_training = median(latitude), lon_training = median(longitude)),
+          by = .(site_name, site_min_confidence, n_models)]
+site[, wrong_pct := 100 * wrong / n]
+site <- merge(site, site_data[, .(site_name, lat_source = lat, lon_source = lon)],
+              by = "site_name", all.x = TRUE)
+stopifnot(!anyNA(site$lat_source), !anyNA(site$lon_source))
+site[, region := fcase(lon_source < -105, "West (<105°W)",
+                       lon_source < -90, "Central (105–90°W)",
+                       default = "East (>90°W)")]
+x[, region := fcase(longitude < -105, "West (<105°W)",
+                    longitude < -90, "Central (105–90°W)",
+                    default = "East (>90°W)")]
+fmt <- function(z) format(z, big.mark = ",", scientific = FALSE, trim = TRUE)
+```
+
+# Question and definitions
+
+The archived Maavara ER notebook converts negative StreamMetabolizer ER estimates to **positive respiration magnitudes** by multiplying the response by −1. It retains all training rows. I call a row *wrong-sign* when its **raw** `ER > 0`; it becomes a negative training target after that sign flip. This report locates those rows. It does **not** refit either model or prescribe an exclusion rule.
+
+Appling and colleagues describe raw `ER > 0.5` g O₂ m⁻² d⁻¹ as biologically unrealistic while treating estimates within ±0.5 as difficult to distinguish from zero. Their release provides model-level Low/Medium/High confidence assessments based on several diagnostics, including wrong-sign frequency. Those assessments are guidance, not a row-level validity decision. [Appling et al. 2018, Scientific Data](https://pmc.ncbi.nlm.nih.gov/articles/PMC6289110/); [USGS data release](https://doi.org/10.5066/F70864KX).
+
+The training file has `r fmt(nrow(x))` rows from `r fmt(uniqueN(x$site_name))` monitoring sites. `r fmt(sum(x$wrong_sign))` rows (`r percent(mean(x$wrong_sign), accuracy=.1)`) have raw positive ER; `r fmt(sum(x$clearly_wrong_sign))` exceed +0.5. The median positive raw ER is `r round(median(x[wrong_sign == TRUE, ER]), 2)` g O₂ m⁻² d⁻¹.
+
+# Are a few sites responsible?
+
+```{r site-concentration}
+site_rank <- copy(site)[order(-wrong)]
+site_rank[, rank := seq_len(.N)]
+site_rank[, cumulative_wrong_share := cumsum(wrong) / sum(wrong)]
+top10_share <- sum(site_rank$wrong[1:10]) / sum(site_rank$wrong)
+top20_share <- sum(site_rank$wrong[1:20]) / sum(site_rank$wrong)
+site_metrics <- data.table(
+  measure = c("Sites with any wrong-sign estimate", "Sites with ≥10% wrong-sign estimates",
+              "Sites with ≥50% wrong-sign estimates", "Sites with all rows wrong-sign",
+              "Share of wrong-sign rows from top 10 sites",
+              "Share of wrong-sign rows from top 20 sites"),
+  value = c(fmt(sum(site$wrong > 0)), fmt(sum(site$wrong_pct >= 10)),
+            fmt(sum(site$wrong_pct >= 50)), fmt(sum(site$wrong == site$n)),
+            percent(top10_share, accuracy = .1), percent(top20_share, accuracy = .1)))
+kable(site_metrics, caption = "Site concentration")
+ggplot(site_rank, aes(rank, cumulative_wrong_share)) +
+  geom_line(linewidth = 1, color = "#b04721") +
+  geom_abline(slope = 1/nrow(site_rank), intercept = 0, linetype = "dashed",
+              color = "grey50") +
+  scale_y_continuous(labels = percent_format()) +
+  labs(x = "Sites ranked by number of wrong-sign rows", y = "Cumulative share of wrong-sign rows",
+       title = "Wrong-sign estimates are concentrated, but not confined to a few sites",
+       subtitle = "Dashed line shows equal contribution across sites")
+```
+
+Wrong-sign estimates occur at `r fmt(sum(site$wrong > 0))` of `r fmt(nrow(site))` training sites. The ten largest contributors account for `r percent(top10_share, accuracy=.1)` of wrong-sign rows, leaving most spread across other sites. Site counts reflect unequal time-series lengths, so the fraction within each site is also important. Two sites have no nonpositive ER training rows; removing all raw-positive ER would remove those sites entirely.
+
+# Does Appling's confidence classification isolate them?
+
+```{r confidence}
+confidence <- x[, .(training_rows = .N, wrong_rows = sum(wrong_sign),
+                    clearly_wrong_rows = sum(clearly_wrong_sign),
+                    sites = uniqueN(site_name)), by = site_min_confidence]
+confidence[, `:=`(wrong_pct = 100 * wrong_rows / training_rows,
+                  share_of_all_wrong = 100 * wrong_rows / sum(wrong_rows))]
+setorder(confidence, site_min_confidence)
+kable(confidence, digits = 1,
+      caption = "Training rows by the lowest confidence assigned to any model at each site")
+ggplot(confidence, aes(site_min_confidence, wrong_pct, fill = site_min_confidence)) +
+  geom_col(width = .62, show.legend = FALSE) +
+  geom_text(aes(label = sprintf("%.1f%%", wrong_pct)), vjust = -.35) +
+  scale_y_continuous(limits = c(0, 26), breaks = seq(0, 25, 5)) +
+  scale_fill_manual(values = c(H = "#247c5b", M = "#d49b32", L = "#b04721")) +
+  labs(x = "Minimum site confidence (H/M/L)", y = "Wrong-sign ER rows (%)",
+       title = "Medium- and Low-confidence sites have much higher wrong-sign rates")
+```
+
+All `r fmt(uniqueN(x$site_name))` training sites match Appling's diagnostics. The release has `r fmt(nrow(diagnostics))` models for `r fmt(uniqueN(diagnostics$site))` sites; `r fmt(sum(site$n_models > 1))` training sites have multiple models. The training CSV identifies site and date but **not which model/resolution generated each daily estimate**. This report therefore uses the release's *minimum site confidence* as a conservative site-level descriptor. It does not assign an individual model's H/M/L label to each training row. `ER.Rhat` and `ER.n_eff` in the training file are parameter diagnostics and cannot substitute for the full model assessment.
+
+```{r interval-evidence}
+positive <- x[wrong_sign == TRUE]
+interval_table <- data.table(
+  category = c("0 < raw ER ≤ 0.5", "Raw ER > 0.5; interval overlaps zero",
+               "Raw ER > 0.5; interval entirely positive"),
+  rows = c(sum(positive$ER <= .5),
+           sum(positive$ER > .5 & positive$ER.lower <= 0),
+           sum(positive$ER > .5 & positive$ER.lower > 0)))
+interval_table[, share := 100 * rows / sum(rows)]
+kable(interval_table, digits = 1,
+      caption = "How far from zero are the raw-positive ER estimates?")
+```
+
+`r fmt(sum(positive$ER.lower > 0))` raw-positive rows have a 95% interval entirely above zero. Normal-looking per-row convergence statistics do not make these estimates biologically plausible. Appling notes that positive ER can reflect oxygen-sensor calibration problems; this report cannot assign that cause to individual rows.
+
+# Are they spread across stream sizes and discharge?
+
+```{r size-flow}
+make_bins <- function(dat, variable, label) {
+  breaks <- unique(as.numeric(quantile(dat[[variable]], probs = seq(0, 1, .1),
+                                      na.rm = TRUE)))
+  tmp <- dat[!is.na(get(variable)), .(value = get(variable), wrong_sign)]
+  tmp[, bin := cut(value, breaks = breaks, include.lowest = TRUE)]
+  tmp[, .(rows = .N, wrong_rows = sum(wrong_sign),
+          median_value = median(value), wrong_pct = 100 * mean(wrong_sign)),
+      by = bin][, variable := label][]
+}
+size_bins <- make_bins(x, "uparea", "Upstream area (km²)")
+flow_bins <- make_bins(x, "discharge", "Discharge (m³/s)")
+bins <- rbindlist(list(size_bins, flow_bins), use.names = TRUE)
+kable(bins[, .(variable, bin, rows, wrong_rows, wrong_pct)], digits = 1,
+      caption = "Wrong-sign prevalence by approximately equal-row source-data bins")
+ggplot(bins, aes(median_value, wrong_pct)) +
+  geom_line(color = "#346c91", linewidth = .9) +
+  geom_point(color = "#346c91", size = 2.5) +
+  scale_x_log10(labels = label_number()) +
+  facet_wrap(~variable, scales = "free_x") +
+  labs(x = "Median value within bin (log scale)", y = "Wrong-sign ER rows (%)",
+       title = "Wrong-sign estimates occur across size and flow ranges")
+```
+
+Raw-positive ER rows have median upstream area `r round(median(x[wrong_sign == TRUE, uparea]), 0)` km² and discharge `r round(median(x[wrong_sign == TRUE, discharge]), 2)` m³/s, compared with `r round(median(x[wrong_sign == FALSE, uparea]), 0)` km² and `r round(median(x[wrong_sign == FALSE, discharge]), 2)` m³/s for the other rows. They occur in every displayed size and discharge bin. A simple sign-based removal would shift the training distribution toward smaller streams and lower flows.
+
+# Where are the sites?
+
+```{r geography}
+geography <- x[, .(training_rows = .N, wrong_rows = sum(wrong_sign),
+                   sites = uniqueN(site_name)), by = region]
+geography[, wrong_pct := 100 * wrong_rows / training_rows]
+kable(geography, digits = 1,
+      caption = "Broad longitude bands; boundaries are descriptive, not ecoregions")
+states <- ggplot2::map_data("state")
+ggplot() +
+  geom_polygon(data = states, aes(long, lat, group = group), fill = "grey96",
+               color = "grey75", linewidth = .18) +
+  geom_point(data = site, aes(lon_source, lat_source, color = wrong_pct),
+             size = 2.5, alpha = .85) +
+  scale_color_viridis_c(option = "C", name = "Wrong-sign\nrows (%)", limits = c(0, 100)) +
+  coord_quickmap(xlim = c(-126, -66), ylim = c(24, 50), expand = FALSE) +
+  labs(x = "Longitude", y = "Latitude",
+       title = "Wrong-sign ER occurs across the monitoring network",
+       subtitle = "Each point is a training site; color is its within-site wrong-sign fraction") +
+  theme(panel.grid = element_blank())
+```
+
+Western sites (`<105°W`) have a higher row-weighted wrong-sign fraction than the central or eastern bands, but the phenomenon is geographically widespread. Site sampling is uneven, and these longitude bands are not causal regions.
+
+# Season and representativeness if rows were removed
+
+```{r season}
+season <- x[, .(training_rows = .N, wrong_rows = sum(wrong_sign)), by = month]
+season[, wrong_pct := 100 * wrong_rows / training_rows]
+ggplot(season, aes(month, wrong_pct)) +
+  geom_line(color = "#b04721", linewidth = .9) +
+  geom_point(color = "#b04721", size = 2.5) +
+  scale_x_continuous(breaks = 1:12) +
+  labs(x = "Month", y = "Wrong-sign ER rows (%)",
+       title = "Wrong-sign training estimates are more frequent in winter")
+```
+
+Dropping all `ER > 0` training rows would remove `r percent(mean(x$wrong_sign), accuracy=.1)` of training records and all records from `r fmt(sum(site$wrong == site$n))` sites. It would also disproportionately remove western and winter observations and observations from higher-discharge settings. Dropping only `ER > 0.5` would remove `r fmt(sum(x$clearly_wrong_sign))` records (`r percent(mean(x$clearly_wrong_sign), accuracy=.1)`), still with uneven support. Neither rule has been applied; these are **support calculations**, not held-out model evaluations.
+
+# Answer to the proposed decision
+
+The 43,010 rows are **not confined to a few problematic sites**. They occur at 318 of 355 training sites and across the mapped regions, upstream-area bins, and discharge bins. At the same time, they are **not evenly distributed**: the top 10 sites contribute about 28%, western sites have much higher prevalence, and Medium/Low minimum-confidence sites have roughly five times the wrong-sign rate of High minimum-confidence sites. High-confidence sites still contribute over 15,000 wrong-sign rows. Removing them would change training support and erase two sites, so it should be treated as a substantive modeling choice rather than harmless cleaning.
+
+The most defensible next analysis is a **pre-specified sensitivity design**, pending research-team approval: compare no exclusion, a documented near-zero allowance (e.g., the source paper's ±0.5 interpretation), and any confidence-informed rule using the *same* train/test records and predictor sets. Report retained site/day and predictor support, held-out skill by season and size, wrong-sign network predictions, and downstream 07/10/11 outcomes. This report makes no such refit.
+
+# Source and join notes
+
+- Maavara training table: `data/raw/dryad_data/appling_data_06202024.csv` and archived `random_forest_CONUS_ER.ipynb`.
+- Appling source files downloaded from the [USGS release](https://doi.org/10.5066/F70864KX) and saved in `reports/no_uparea_migration/step1_er_training_distribution/source_data/`. The report joins training `site_name` to site and diagnostic `site` identifiers; all 355 training sites match. `config.zip` confirms model configurations but does not provide a daily row-to-model key. Exact download links and hashes are in `source_data/PROVENANCE.md`.
+- Appling assessments are site/model diagnostics, not independent validation of each daily ER estimate. Site minimum confidence is intentionally conservative and may label a date from one model by a different model's lowest rating at the same site.
+- Figures use raw training rows; repeated dates within sites are not independent observations. Site-level counts and fractions are shown separately to avoid interpreting a long monitoring record as many independent sites.

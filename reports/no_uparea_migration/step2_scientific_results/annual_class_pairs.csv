@@ -1,0 +1,3789 @@
+huc,metabolism_metric,original,no_uparea,changed
+01010002,ER,Super-linear,Seasonally variable,TRUE
+01010002,GPP,Super-linear,Super-linear,FALSE
+01010003,ER,Super-linear,Super-linear,FALSE
+01010003,GPP,Super-linear,Super-linear,FALSE
+01010004,ER,Super-linear,Super-linear,FALSE
+01010004,GPP,Super-linear,Super-linear,FALSE
+01010005,ER,Super-linear,Seasonally variable,TRUE
+01010005,GPP,Seasonally variable,Seasonally variable,FALSE
+01020001,ER,Super-linear,Seasonally variable,TRUE
+01020001,GPP,Super-linear,Super-linear,FALSE
+01020002,ER,Super-linear,Super-linear,FALSE
+01020002,GPP,Super-linear,Super-linear,FALSE
+01020003,ER,Super-linear,Super-linear,FALSE
+01020003,GPP,Super-linear,Super-linear,FALSE
+01020004,ER,Seasonally variable,Seasonally variable,FALSE
+01020004,GPP,Super-linear,Super-linear,FALSE
+01020005,ER,Super-linear,Super-linear,FALSE
+01020005,GPP,Super-linear,Super-linear,FALSE
+01030001,ER,Super-linear,Seasonally variable,TRUE
+01030001,GPP,Super-linear,Super-linear,FALSE
+01030002,ER,Seasonally variable,Seasonally variable,FALSE
+01030002,GPP,Super-linear,Super-linear,FALSE
+01030003,ER,Super-linear,Super-linear,FALSE
+01030003,GPP,Super-linear,Super-linear,FALSE
+01040001,ER,Seasonally variable,Seasonally variable,FALSE
+01040001,GPP,Super-linear,Super-linear,FALSE
+01040002,ER,Seasonally variable,Seasonally variable,FALSE
+01040002,GPP,Super-linear,Super-linear,FALSE
+01060002,ER,Super-linear,Seasonally variable,TRUE
+01060002,GPP,Super-linear,Super-linear,FALSE
+01060003,ER,Super-linear,Seasonally variable,TRUE
+01060003,GPP,Super-linear,Super-linear,FALSE
+01070001,ER,Seasonally variable,Seasonally variable,FALSE
+01070001,GPP,Super-linear,Super-linear,FALSE
+01070002,ER,Seasonally variable,Seasonally variable,FALSE
+01070002,GPP,Super-linear,Super-linear,FALSE
+01070003,ER,Super-linear,Super-linear,FALSE
+01070003,GPP,Super-linear,Super-linear,FALSE
+01070004,ER,Super-linear,Seasonally variable,TRUE
+01070004,GPP,Super-linear,Super-linear,FALSE
+01070005,ER,Insufficient data,Insufficient data,FALSE
+01070005,GPP,Insufficient data,Insufficient data,FALSE
+01070006,ER,Super-linear,Seasonally variable,TRUE
+01070006,GPP,Super-linear,Super-linear,FALSE
+01080101,ER,Seasonally variable,Uncertain,TRUE
+01080101,GPP,Super-linear,Seasonally variable,TRUE
+01080102,ER,Seasonally variable,Seasonally variable,FALSE
+01080102,GPP,Super-linear,Super-linear,FALSE
+01080103,ER,Seasonally variable,Seasonally variable,FALSE
+01080103,GPP,Super-linear,Super-linear,FALSE
+01080104,ER,Seasonally variable,Seasonally variable,FALSE
+01080104,GPP,Super-linear,Super-linear,FALSE
+01080105,ER,Seasonally variable,Seasonally variable,FALSE
+01080105,GPP,Super-linear,Super-linear,FALSE
+01080106,ER,Seasonally variable,Seasonally variable,FALSE
+01080106,GPP,Super-linear,Super-linear,FALSE
+01080107,ER,Seasonally variable,Seasonally variable,FALSE
+01080107,GPP,Super-linear,Super-linear,FALSE
+01080201,ER,Seasonally variable,Seasonally variable,FALSE
+01080201,GPP,Super-linear,Super-linear,FALSE
+01080202,ER,Super-linear,Seasonally variable,TRUE
+01080202,GPP,Super-linear,Super-linear,FALSE
+01080203,ER,Seasonally variable,Seasonally variable,FALSE
+01080203,GPP,Super-linear,Super-linear,FALSE
+01080204,ER,Super-linear,Seasonally variable,TRUE
+01080204,GPP,Super-linear,Super-linear,FALSE
+01080205,ER,Seasonally variable,Seasonally variable,FALSE
+01080205,GPP,Super-linear,Super-linear,FALSE
+01080206,ER,Seasonally variable,Seasonally variable,FALSE
+01080206,GPP,Super-linear,Super-linear,FALSE
+01080207,ER,Super-linear,Super-linear,FALSE
+01080207,GPP,Super-linear,Super-linear,FALSE
+01090003,ER,Super-linear,Seasonally variable,TRUE
+01090003,GPP,Super-linear,Seasonally variable,TRUE
+01100001,ER,Super-linear,Super-linear,FALSE
+01100001,GPP,Super-linear,Super-linear,FALSE
+01100002,ER,Super-linear,Super-linear,FALSE
+01100002,GPP,Super-linear,Super-linear,FALSE
+01100004,ER,Seasonally variable,Uncertain,TRUE
+01100004,GPP,Seasonally variable,Seasonally variable,FALSE
+01100005,ER,Super-linear,Super-linear,FALSE
+01100005,GPP,Super-linear,Super-linear,FALSE
+01100006,ER,Insufficient data,Insufficient data,FALSE
+01100006,GPP,Insufficient data,Insufficient data,FALSE
+02020001,ER,Seasonally variable,Seasonally variable,FALSE
+02020001,GPP,Super-linear,Super-linear,FALSE
+02020002,ER,Super-linear,Seasonally variable,TRUE
+02020002,GPP,Super-linear,Super-linear,FALSE
+02020003,ER,Seasonally variable,Seasonally variable,FALSE
+02020003,GPP,Super-linear,Super-linear,FALSE
+02020004,ER,Seasonally variable,Seasonally variable,FALSE
+02020004,GPP,Super-linear,Super-linear,FALSE
+02020005,ER,Seasonally variable,Seasonally variable,FALSE
+02020005,GPP,Super-linear,Super-linear,FALSE
+02020006,ER,Seasonally variable,Seasonally variable,FALSE
+02020006,GPP,Super-linear,Super-linear,FALSE
+02020007,ER,Super-linear,Seasonally variable,TRUE
+02020007,GPP,Super-linear,Super-linear,FALSE
+02020008,ER,Seasonally variable,Seasonally variable,FALSE
+02020008,GPP,Super-linear,Super-linear,FALSE
+02030101,ER,Seasonally variable,Seasonally variable,FALSE
+02030101,GPP,Super-linear,Super-linear,FALSE
+02030103,ER,Super-linear,Super-linear,FALSE
+02030103,GPP,Super-linear,Super-linear,FALSE
+02030105,ER,Super-linear,Super-linear,FALSE
+02030105,GPP,Seasonally variable,Super-linear,TRUE
+02040101,ER,Super-linear,Seasonally variable,TRUE
+02040101,GPP,Super-linear,Super-linear,FALSE
+02040102,ER,Seasonally variable,Seasonally variable,FALSE
+02040102,GPP,Super-linear,Super-linear,FALSE
+02040103,ER,Seasonally variable,Seasonally variable,FALSE
+02040103,GPP,Super-linear,Super-linear,FALSE
+02040104,ER,Seasonally variable,Seasonally variable,FALSE
+02040104,GPP,Super-linear,Super-linear,FALSE
+02040105,ER,Seasonally variable,Seasonally variable,FALSE
+02040105,GPP,Super-linear,Super-linear,FALSE
+02040106,ER,Super-linear,Super-linear,FALSE
+02040106,GPP,Super-linear,Super-linear,FALSE
+02040201,ER,Super-linear,Super-linear,FALSE
+02040201,GPP,Super-linear,Super-linear,FALSE
+02040202,ER,Super-linear,Seasonally variable,TRUE
+02040202,GPP,Super-linear,Super-linear,FALSE
+02040203,ER,Seasonally variable,Seasonally variable,FALSE
+02040203,GPP,Super-linear,Super-linear,FALSE
+02040205,ER,Seasonally variable,Seasonally variable,FALSE
+02040205,GPP,Seasonally variable,Seasonally variable,FALSE
+02050101,ER,Super-linear,Seasonally variable,TRUE
+02050101,GPP,Super-linear,Super-linear,FALSE
+02050102,ER,Super-linear,Seasonally variable,TRUE
+02050102,GPP,Super-linear,Super-linear,FALSE
+02050103,ER,Super-linear,Seasonally variable,TRUE
+02050103,GPP,Super-linear,Super-linear,FALSE
+02050104,ER,Super-linear,Super-linear,FALSE
+02050104,GPP,Super-linear,Super-linear,FALSE
+02050105,ER,Super-linear,Seasonally variable,TRUE
+02050105,GPP,Super-linear,Super-linear,FALSE
+02050106,ER,Seasonally variable,Seasonally variable,FALSE
+02050106,GPP,Super-linear,Super-linear,FALSE
+02050107,ER,Seasonally variable,Seasonally variable,FALSE
+02050107,GPP,Super-linear,Super-linear,FALSE
+02050201,ER,Super-linear,Super-linear,FALSE
+02050201,GPP,Super-linear,Super-linear,FALSE
+02050202,ER,Seasonally variable,Super-linear,TRUE
+02050202,GPP,Super-linear,Super-linear,FALSE
+02050203,ER,Seasonally variable,Seasonally variable,FALSE
+02050203,GPP,Super-linear,Super-linear,FALSE
+02050204,ER,Super-linear,Seasonally variable,TRUE
+02050204,GPP,Seasonally variable,Super-linear,TRUE
+02050205,ER,Seasonally variable,Seasonally variable,FALSE
+02050205,GPP,Super-linear,Super-linear,FALSE
+02050206,ER,Seasonally variable,Seasonally variable,FALSE
+02050206,GPP,Super-linear,Super-linear,FALSE
+02050301,ER,Super-linear,Seasonally variable,TRUE
+02050301,GPP,Super-linear,Super-linear,FALSE
+02050302,ER,Super-linear,Seasonally variable,TRUE
+02050302,GPP,Super-linear,Super-linear,FALSE
+02050303,ER,Super-linear,Seasonally variable,TRUE
+02050303,GPP,Super-linear,Super-linear,FALSE
+02050304,ER,Super-linear,Seasonally variable,TRUE
+02050304,GPP,Super-linear,Super-linear,FALSE
+02050305,ER,Super-linear,Seasonally variable,TRUE
+02050305,GPP,Super-linear,Super-linear,FALSE
+02050306,ER,Super-linear,Seasonally variable,TRUE
+02050306,GPP,Super-linear,Super-linear,FALSE
+02060003,ER,Seasonally variable,Super-linear,TRUE
+02060003,GPP,Seasonally variable,Seasonally variable,FALSE
+02060006,ER,Seasonally variable,Seasonally variable,FALSE
+02060006,GPP,Super-linear,Super-linear,FALSE
+02070001,ER,Seasonally variable,Seasonally variable,FALSE
+02070001,GPP,Super-linear,Super-linear,FALSE
+02070002,ER,Super-linear,Seasonally variable,TRUE
+02070002,GPP,Super-linear,Super-linear,FALSE
+02070003,ER,Super-linear,Seasonally variable,TRUE
+02070003,GPP,Super-linear,Super-linear,FALSE
+02070004,ER,Seasonally variable,Super-linear,TRUE
+02070004,GPP,Super-linear,Super-linear,FALSE
+02070005,ER,Seasonally variable,Seasonally variable,FALSE
+02070005,GPP,Super-linear,Super-linear,FALSE
+02070006,ER,Seasonally variable,Seasonally variable,FALSE
+02070006,GPP,Super-linear,Super-linear,FALSE
+02070007,ER,Insufficient data,Insufficient data,FALSE
+02070007,GPP,Insufficient data,Insufficient data,FALSE
+02070008,ER,Seasonally variable,Seasonally variable,FALSE
+02070008,GPP,Super-linear,Super-linear,FALSE
+02070009,ER,Super-linear,Super-linear,FALSE
+02070009,GPP,Super-linear,Super-linear,FALSE
+02070010,ER,Seasonally variable,Seasonally variable,FALSE
+02070010,GPP,Super-linear,Super-linear,FALSE
+02080103,ER,Super-linear,Seasonally variable,TRUE
+02080103,GPP,Super-linear,Super-linear,FALSE
+02080104,ER,Super-linear,Seasonally variable,TRUE
+02080104,GPP,Super-linear,Super-linear,FALSE
+02080105,ER,Super-linear,Super-linear,FALSE
+02080105,GPP,Super-linear,Super-linear,FALSE
+02080106,ER,Seasonally variable,Seasonally variable,FALSE
+02080106,GPP,Super-linear,Super-linear,FALSE
+02080109,ER,Super-linear,Super-linear,FALSE
+02080109,GPP,Super-linear,Super-linear,FALSE
+02080201,ER,Seasonally variable,Seasonally variable,FALSE
+02080201,GPP,Super-linear,Super-linear,FALSE
+02080202,ER,Seasonally variable,Seasonally variable,FALSE
+02080202,GPP,Super-linear,Seasonally variable,TRUE
+02080203,ER,Seasonally variable,Seasonally variable,FALSE
+02080203,GPP,Super-linear,Super-linear,FALSE
+02080204,ER,Seasonally variable,Seasonally variable,FALSE
+02080204,GPP,Super-linear,Super-linear,FALSE
+02080205,ER,Seasonally variable,Seasonally variable,FALSE
+02080205,GPP,Super-linear,Super-linear,FALSE
+02080207,ER,Super-linear,Seasonally variable,TRUE
+02080207,GPP,Super-linear,Super-linear,FALSE
+03010101,ER,Super-linear,Seasonally variable,TRUE
+03010101,GPP,Super-linear,Super-linear,FALSE
+03010102,ER,Super-linear,Seasonally variable,TRUE
+03010102,GPP,Super-linear,Super-linear,FALSE
+03010103,ER,Seasonally variable,Seasonally variable,FALSE
+03010103,GPP,Super-linear,Super-linear,FALSE
+03010104,ER,Super-linear,Seasonally variable,TRUE
+03010104,GPP,Super-linear,Super-linear,FALSE
+03010105,ER,Super-linear,Seasonally variable,TRUE
+03010105,GPP,Super-linear,Super-linear,FALSE
+03010106,ER,Super-linear,Seasonally variable,TRUE
+03010106,GPP,Super-linear,Super-linear,FALSE
+03010107,ER,Super-linear,Super-linear,FALSE
+03010107,GPP,Super-linear,Super-linear,FALSE
+03010201,ER,Super-linear,Seasonally variable,TRUE
+03010201,GPP,Super-linear,Super-linear,FALSE
+03010202,ER,Super-linear,Super-linear,FALSE
+03010202,GPP,Super-linear,Super-linear,FALSE
+03010203,ER,Super-linear,Super-linear,FALSE
+03010203,GPP,Super-linear,Super-linear,FALSE
+03010204,ER,Super-linear,Seasonally variable,TRUE
+03010204,GPP,Super-linear,Super-linear,FALSE
+03020101,ER,Seasonally variable,Seasonally variable,FALSE
+03020101,GPP,Super-linear,Super-linear,FALSE
+03020102,ER,Seasonally variable,Seasonally variable,FALSE
+03020102,GPP,Super-linear,Super-linear,FALSE
+03020103,ER,Seasonally variable,Seasonally variable,FALSE
+03020103,GPP,Super-linear,Super-linear,FALSE
+03020104,ER,Seasonally variable,Seasonally variable,FALSE
+03020104,GPP,Seasonally variable,Seasonally variable,FALSE
+03020201,ER,Super-linear,Super-linear,FALSE
+03020201,GPP,Super-linear,Super-linear,FALSE
+03020202,ER,Super-linear,Super-linear,FALSE
+03020202,GPP,Super-linear,Super-linear,FALSE
+03020203,ER,Super-linear,Super-linear,FALSE
+03020203,GPP,Super-linear,Super-linear,FALSE
+03030002,ER,Super-linear,Super-linear,FALSE
+03030002,GPP,Super-linear,Super-linear,FALSE
+03030003,ER,Super-linear,Super-linear,FALSE
+03030003,GPP,Super-linear,Super-linear,FALSE
+03030004,ER,Super-linear,Super-linear,FALSE
+03030004,GPP,Super-linear,Super-linear,FALSE
+03030005,ER,Super-linear,Super-linear,FALSE
+03030005,GPP,Super-linear,Super-linear,FALSE
+03030006,ER,Super-linear,Super-linear,FALSE
+03030006,GPP,Super-linear,Super-linear,FALSE
+03030007,ER,Super-linear,Super-linear,FALSE
+03030007,GPP,Super-linear,Super-linear,FALSE
+03040101,ER,Super-linear,Seasonally variable,TRUE
+03040101,GPP,Super-linear,Super-linear,FALSE
+03040102,ER,Super-linear,Super-linear,FALSE
+03040102,GPP,Seasonally variable,Super-linear,TRUE
+03040103,ER,Super-linear,Seasonally variable,TRUE
+03040103,GPP,Super-linear,Super-linear,FALSE
+03040104,ER,Super-linear,Seasonally variable,TRUE
+03040104,GPP,Super-linear,Super-linear,FALSE
+03040105,ER,Super-linear,Super-linear,FALSE
+03040105,GPP,Seasonally variable,Super-linear,TRUE
+03040201,ER,Super-linear,Super-linear,FALSE
+03040201,GPP,Super-linear,Super-linear,FALSE
+03040202,ER,Super-linear,Super-linear,FALSE
+03040202,GPP,Super-linear,Super-linear,FALSE
+03040203,ER,Super-linear,Super-linear,FALSE
+03040203,GPP,Super-linear,Super-linear,FALSE
+03040204,ER,Super-linear,Super-linear,FALSE
+03040204,GPP,Super-linear,Super-linear,FALSE
+03040205,ER,Super-linear,Super-linear,FALSE
+03040205,GPP,Super-linear,Super-linear,FALSE
+03040206,ER,Super-linear,Seasonally variable,TRUE
+03040206,GPP,Seasonally variable,Super-linear,TRUE
+03050101,ER,Seasonally variable,Seasonally variable,FALSE
+03050101,GPP,Super-linear,Super-linear,FALSE
+03050102,ER,Seasonally variable,Seasonally variable,FALSE
+03050102,GPP,Super-linear,Super-linear,FALSE
+03050103,ER,Seasonally variable,Seasonally variable,FALSE
+03050103,GPP,Super-linear,Super-linear,FALSE
+03050104,ER,Super-linear,Seasonally variable,TRUE
+03050104,GPP,Super-linear,Super-linear,FALSE
+03050105,ER,Seasonally variable,Super-linear,TRUE
+03050105,GPP,Super-linear,Super-linear,FALSE
+03050106,ER,Seasonally variable,Seasonally variable,FALSE
+03050106,GPP,Super-linear,Super-linear,FALSE
+03050107,ER,Seasonally variable,Super-linear,TRUE
+03050107,GPP,Super-linear,Super-linear,FALSE
+03050108,ER,Super-linear,Super-linear,FALSE
+03050108,GPP,Seasonally variable,Super-linear,TRUE
+03050109,ER,Seasonally variable,Seasonally variable,FALSE
+03050109,GPP,Super-linear,Super-linear,FALSE
+03050110,ER,Super-linear,Seasonally variable,TRUE
+03050110,GPP,Super-linear,Super-linear,FALSE
+03050111,ER,Seasonally variable,Seasonally variable,FALSE
+03050111,GPP,Super-linear,Super-linear,FALSE
+03050112,ER,Super-linear,Seasonally variable,TRUE
+03050112,GPP,Super-linear,Super-linear,FALSE
+03050201,ER,Super-linear,Super-linear,FALSE
+03050201,GPP,Super-linear,Super-linear,FALSE
+03050203,ER,Super-linear,Super-linear,FALSE
+03050203,GPP,Super-linear,Super-linear,FALSE
+03050204,ER,Super-linear,Super-linear,FALSE
+03050204,GPP,Super-linear,Super-linear,FALSE
+03050205,ER,Seasonally variable,Seasonally variable,FALSE
+03050205,GPP,Seasonally variable,Super-linear,TRUE
+03050206,ER,Super-linear,Super-linear,FALSE
+03050206,GPP,Super-linear,Super-linear,FALSE
+03050207,ER,Super-linear,Super-linear,FALSE
+03050207,GPP,Super-linear,Super-linear,FALSE
+03050208,ER,Super-linear,Super-linear,FALSE
+03050208,GPP,Seasonally variable,Super-linear,TRUE
+03060101,ER,Super-linear,Seasonally variable,TRUE
+03060101,GPP,Super-linear,Super-linear,FALSE
+03060102,ER,Seasonally variable,Seasonally variable,FALSE
+03060102,GPP,Super-linear,Super-linear,FALSE
+03060103,ER,Seasonally variable,Seasonally variable,FALSE
+03060103,GPP,Super-linear,Super-linear,FALSE
+03060104,ER,Super-linear,Super-linear,FALSE
+03060104,GPP,Seasonally variable,Super-linear,TRUE
+03060105,ER,Super-linear,Seasonally variable,TRUE
+03060105,GPP,Super-linear,Super-linear,FALSE
+03060106,ER,Super-linear,Super-linear,FALSE
+03060106,GPP,Super-linear,Super-linear,FALSE
+03060107,ER,Super-linear,Seasonally variable,TRUE
+03060107,GPP,Super-linear,Super-linear,FALSE
+03060108,ER,Super-linear,Super-linear,FALSE
+03060108,GPP,Super-linear,Super-linear,FALSE
+03060109,ER,Super-linear,Super-linear,FALSE
+03060109,GPP,Super-linear,Super-linear,FALSE
+03060201,ER,Super-linear,Seasonally variable,TRUE
+03060201,GPP,Super-linear,Super-linear,FALSE
+03060202,ER,Super-linear,Super-linear,FALSE
+03060202,GPP,Super-linear,Super-linear,FALSE
+03060203,ER,Super-linear,Seasonally variable,TRUE
+03060203,GPP,Super-linear,Super-linear,FALSE
+03070101,ER,Super-linear,Seasonally variable,TRUE
+03070101,GPP,Super-linear,Super-linear,FALSE
+03070102,ER,Super-linear,Seasonally variable,TRUE
+03070102,GPP,Super-linear,Super-linear,FALSE
+03070103,ER,Super-linear,Super-linear,FALSE
+03070103,GPP,Super-linear,Super-linear,FALSE
+03070104,ER,Super-linear,Super-linear,FALSE
+03070104,GPP,Super-linear,Super-linear,FALSE
+03070105,ER,Super-linear,Seasonally variable,TRUE
+03070105,GPP,Super-linear,Super-linear,FALSE
+03070106,ER,Super-linear,Super-linear,FALSE
+03070106,GPP,Super-linear,Super-linear,FALSE
+03070107,ER,Super-linear,Super-linear,FALSE
+03070107,GPP,Super-linear,Super-linear,FALSE
+03070201,ER,Super-linear,Super-linear,FALSE
+03070201,GPP,Super-linear,Super-linear,FALSE
+03070202,ER,Super-linear,Super-linear,FALSE
+03070202,GPP,Super-linear,Super-linear,FALSE
+03070204,ER,Super-linear,Super-linear,FALSE
+03070204,GPP,Super-linear,Super-linear,FALSE
+03080101,ER,Super-linear,Super-linear,FALSE
+03080101,GPP,Super-linear,Super-linear,FALSE
+03080102,ER,Super-linear,Super-linear,FALSE
+03080102,GPP,Super-linear,Super-linear,FALSE
+03080103,ER,Super-linear,Super-linear,FALSE
+03080103,GPP,Super-linear,Super-linear,FALSE
+03080203,ER,Insufficient data,Insufficient data,FALSE
+03080203,GPP,Insufficient data,Insufficient data,FALSE
+03090101,ER,Super-linear,Super-linear,FALSE
+03090101,GPP,Super-linear,Super-linear,FALSE
+03090102,ER,Insufficient data,Insufficient data,FALSE
+03090102,GPP,Insufficient data,Insufficient data,FALSE
+03090103,ER,Super-linear,Super-linear,FALSE
+03090103,GPP,Super-linear,Super-linear,FALSE
+03090201,ER,Super-linear,Super-linear,FALSE
+03090201,GPP,Super-linear,Super-linear,FALSE
+03090202,ER,Super-linear,Super-linear,FALSE
+03090202,GPP,Super-linear,Super-linear,FALSE
+03090204,ER,Super-linear,Super-linear,FALSE
+03090204,GPP,Super-linear,Super-linear,FALSE
+03090205,ER,Super-linear,Seasonally variable,TRUE
+03090205,GPP,Super-linear,Super-linear,FALSE
+03100101,ER,Super-linear,Super-linear,FALSE
+03100101,GPP,Super-linear,Super-linear,FALSE
+03100102,ER,Super-linear,Super-linear,FALSE
+03100102,GPP,Seasonally variable,Super-linear,TRUE
+03100202,ER,Insufficient data,Insufficient data,FALSE
+03100202,GPP,Insufficient data,Insufficient data,FALSE
+03100203,ER,Insufficient data,Insufficient data,FALSE
+03100203,GPP,Insufficient data,Insufficient data,FALSE
+03100204,ER,Super-linear,Super-linear,FALSE
+03100204,GPP,Super-linear,Super-linear,FALSE
+03100205,ER,Super-linear,Seasonally variable,TRUE
+03100205,GPP,Super-linear,Super-linear,FALSE
+03100208,ER,Super-linear,Super-linear,FALSE
+03100208,GPP,Super-linear,Super-linear,FALSE
+03110103,ER,Super-linear,Super-linear,FALSE
+03110103,GPP,Super-linear,Super-linear,FALSE
+03110201,ER,Super-linear,Super-linear,FALSE
+03110201,GPP,Super-linear,Super-linear,FALSE
+03110202,ER,Super-linear,Super-linear,FALSE
+03110202,GPP,Super-linear,Super-linear,FALSE
+03110203,ER,Super-linear,Seasonally variable,TRUE
+03110203,GPP,Super-linear,Super-linear,FALSE
+03110204,ER,Super-linear,Super-linear,FALSE
+03110204,GPP,Super-linear,Super-linear,FALSE
+03110205,ER,Super-linear,Super-linear,FALSE
+03110205,GPP,Super-linear,Super-linear,FALSE
+03110206,ER,Super-linear,Super-linear,FALSE
+03110206,GPP,Super-linear,Super-linear,FALSE
+03120001,ER,Super-linear,Super-linear,FALSE
+03120001,GPP,Super-linear,Super-linear,FALSE
+03120002,ER,Seasonally variable,Seasonally variable,FALSE
+03120002,GPP,Super-linear,Super-linear,FALSE
+03120003,ER,Super-linear,Super-linear,FALSE
+03120003,GPP,Super-linear,Super-linear,FALSE
+03130001,ER,Seasonally variable,Seasonally variable,FALSE
+03130001,GPP,Super-linear,Super-linear,FALSE
+03130002,ER,Super-linear,Seasonally variable,TRUE
+03130002,GPP,Super-linear,Super-linear,FALSE
+03130003,ER,Super-linear,Seasonally variable,TRUE
+03130003,GPP,Super-linear,Super-linear,FALSE
+03130004,ER,Super-linear,Seasonally variable,TRUE
+03130004,GPP,Super-linear,Super-linear,FALSE
+03130005,ER,Super-linear,Seasonally variable,TRUE
+03130005,GPP,Super-linear,Super-linear,FALSE
+03130006,ER,Super-linear,Seasonally variable,TRUE
+03130006,GPP,Super-linear,Super-linear,FALSE
+03130007,ER,Super-linear,Super-linear,FALSE
+03130007,GPP,Super-linear,Super-linear,FALSE
+03130008,ER,Super-linear,Super-linear,FALSE
+03130008,GPP,Super-linear,Super-linear,FALSE
+03130009,ER,Super-linear,Seasonally variable,TRUE
+03130009,GPP,Super-linear,Seasonally variable,TRUE
+03130010,ER,Super-linear,Super-linear,FALSE
+03130010,GPP,Seasonally variable,Super-linear,TRUE
+03130011,ER,Super-linear,Seasonally variable,TRUE
+03130011,GPP,Super-linear,Super-linear,FALSE
+03130012,ER,Super-linear,Super-linear,FALSE
+03130012,GPP,Super-linear,Super-linear,FALSE
+03140103,ER,Super-linear,Super-linear,FALSE
+03140103,GPP,Super-linear,Super-linear,FALSE
+03140104,ER,Super-linear,Super-linear,FALSE
+03140104,GPP,Super-linear,Super-linear,FALSE
+03140106,ER,Super-linear,Super-linear,FALSE
+03140106,GPP,Seasonally variable,Seasonally variable,FALSE
+03140201,ER,Super-linear,Super-linear,FALSE
+03140201,GPP,Super-linear,Super-linear,FALSE
+03140202,ER,Super-linear,Super-linear,FALSE
+03140202,GPP,Super-linear,Super-linear,FALSE
+03140203,ER,Super-linear,Super-linear,FALSE
+03140203,GPP,Super-linear,Super-linear,FALSE
+03140301,ER,Super-linear,Super-linear,FALSE
+03140301,GPP,Super-linear,Super-linear,FALSE
+03140302,ER,Super-linear,Seasonally variable,TRUE
+03140302,GPP,Super-linear,Super-linear,FALSE
+03140303,ER,Super-linear,Super-linear,FALSE
+03140303,GPP,Super-linear,Super-linear,FALSE
+03140304,ER,Super-linear,Super-linear,FALSE
+03140304,GPP,Super-linear,Super-linear,FALSE
+03140305,ER,Super-linear,Super-linear,FALSE
+03140305,GPP,Super-linear,Super-linear,FALSE
+03150101,ER,Seasonally variable,Seasonally variable,FALSE
+03150101,GPP,Seasonally variable,Super-linear,TRUE
+03150102,ER,Super-linear,Seasonally variable,TRUE
+03150102,GPP,Super-linear,Super-linear,FALSE
+03150103,ER,Seasonally variable,Seasonally variable,FALSE
+03150103,GPP,Super-linear,Super-linear,FALSE
+03150104,ER,Super-linear,Seasonally variable,TRUE
+03150104,GPP,Super-linear,Super-linear,FALSE
+03150105,ER,Seasonally variable,Seasonally variable,FALSE
+03150105,GPP,Super-linear,Super-linear,FALSE
+03150106,ER,Super-linear,Seasonally variable,TRUE
+03150106,GPP,Super-linear,Super-linear,FALSE
+03150107,ER,Seasonally variable,Seasonally variable,FALSE
+03150107,GPP,Super-linear,Super-linear,FALSE
+03150108,ER,Super-linear,Super-linear,FALSE
+03150108,GPP,Super-linear,Super-linear,FALSE
+03150109,ER,Super-linear,Seasonally variable,TRUE
+03150109,GPP,Super-linear,Super-linear,FALSE
+03150110,ER,Super-linear,Super-linear,FALSE
+03150110,GPP,Super-linear,Super-linear,FALSE
+03150201,ER,Super-linear,Seasonally variable,TRUE
+03150201,GPP,Super-linear,Super-linear,FALSE
+03150202,ER,Super-linear,Seasonally variable,TRUE
+03150202,GPP,Super-linear,Super-linear,FALSE
+03150203,ER,Super-linear,Seasonally variable,TRUE
+03150203,GPP,Super-linear,Super-linear,FALSE
+03150204,ER,Super-linear,Seasonally variable,TRUE
+03150204,GPP,Super-linear,Super-linear,FALSE
+03160101,ER,Super-linear,Super-linear,FALSE
+03160101,GPP,Super-linear,Super-linear,FALSE
+03160102,ER,Super-linear,Super-linear,FALSE
+03160102,GPP,Seasonally variable,Super-linear,TRUE
+03160103,ER,Super-linear,Seasonally variable,TRUE
+03160103,GPP,Super-linear,Super-linear,FALSE
+03160104,ER,Super-linear,Super-linear,FALSE
+03160104,GPP,Super-linear,Super-linear,FALSE
+03160105,ER,Super-linear,Seasonally variable,TRUE
+03160105,GPP,Super-linear,Super-linear,FALSE
+03160106,ER,Super-linear,Super-linear,FALSE
+03160106,GPP,Super-linear,Super-linear,FALSE
+03160107,ER,Super-linear,Seasonally variable,TRUE
+03160107,GPP,Super-linear,Super-linear,FALSE
+03160108,ER,Super-linear,Super-linear,FALSE
+03160108,GPP,Super-linear,Super-linear,FALSE
+03160109,ER,Seasonally variable,Seasonally variable,FALSE
+03160109,GPP,Super-linear,Super-linear,FALSE
+03160110,ER,Super-linear,Seasonally variable,TRUE
+03160110,GPP,Super-linear,Seasonally variable,TRUE
+03160111,ER,Super-linear,Super-linear,FALSE
+03160111,GPP,Super-linear,Super-linear,FALSE
+03160112,ER,Seasonally variable,Seasonally variable,FALSE
+03160112,GPP,Super-linear,Super-linear,FALSE
+03160113,ER,Super-linear,Seasonally variable,TRUE
+03160113,GPP,Super-linear,Super-linear,FALSE
+03160201,ER,Super-linear,Super-linear,FALSE
+03160201,GPP,Super-linear,Super-linear,FALSE
+03160202,ER,Super-linear,Super-linear,FALSE
+03160202,GPP,Super-linear,Super-linear,FALSE
+03160203,ER,Super-linear,Super-linear,FALSE
+03160203,GPP,Super-linear,Super-linear,FALSE
+03160204,ER,Super-linear,Seasonally variable,TRUE
+03160204,GPP,Super-linear,Super-linear,FALSE
+03170001,ER,Super-linear,Super-linear,FALSE
+03170001,GPP,Super-linear,Super-linear,FALSE
+03170002,ER,Super-linear,Super-linear,FALSE
+03170002,GPP,Super-linear,Super-linear,FALSE
+03170003,ER,Super-linear,Super-linear,FALSE
+03170003,GPP,Super-linear,Super-linear,FALSE
+03170004,ER,Super-linear,Super-linear,FALSE
+03170004,GPP,Super-linear,Super-linear,FALSE
+03170005,ER,Super-linear,Super-linear,FALSE
+03170005,GPP,Super-linear,Super-linear,FALSE
+03170006,ER,Super-linear,Super-linear,FALSE
+03170006,GPP,Super-linear,Super-linear,FALSE
+03170007,ER,Super-linear,Super-linear,FALSE
+03170007,GPP,Super-linear,Super-linear,FALSE
+03170008,ER,Super-linear,Super-linear,FALSE
+03170008,GPP,Super-linear,Super-linear,FALSE
+03180001,ER,Super-linear,Super-linear,FALSE
+03180001,GPP,Super-linear,Super-linear,FALSE
+03180002,ER,Super-linear,Super-linear,FALSE
+03180002,GPP,Super-linear,Super-linear,FALSE
+03180003,ER,Super-linear,Super-linear,FALSE
+03180003,GPP,Super-linear,Super-linear,FALSE
+03180004,ER,Super-linear,Super-linear,FALSE
+03180004,GPP,Super-linear,Super-linear,FALSE
+03180005,ER,Super-linear,Seasonally variable,TRUE
+03180005,GPP,Super-linear,Super-linear,FALSE
+04010201,ER,Super-linear,Super-linear,FALSE
+04010201,GPP,Super-linear,Super-linear,FALSE
+04010202,ER,Super-linear,Super-linear,FALSE
+04010202,GPP,Super-linear,Super-linear,FALSE
+04010301,ER,Super-linear,Seasonally variable,TRUE
+04010301,GPP,Super-linear,Seasonally variable,TRUE
+04010302,ER,Super-linear,Super-linear,FALSE
+04010302,GPP,Super-linear,Super-linear,FALSE
+04020101,ER,Seasonally variable,Uncertain,TRUE
+04020101,GPP,Seasonally variable,Seasonally variable,FALSE
+04020102,ER,Super-linear,Super-linear,FALSE
+04020102,GPP,Super-linear,Super-linear,FALSE
+04020104,ER,Super-linear,Seasonally variable,TRUE
+04020104,GPP,Super-linear,Super-linear,FALSE
+04020202,ER,Super-linear,Super-linear,FALSE
+04020202,GPP,Super-linear,Super-linear,FALSE
+04030101,ER,Super-linear,Super-linear,FALSE
+04030101,GPP,Super-linear,Super-linear,FALSE
+04030103,ER,Insufficient data,Insufficient data,FALSE
+04030103,GPP,Insufficient data,Insufficient data,FALSE
+04030104,ER,Super-linear,Seasonally variable,TRUE
+04030104,GPP,Super-linear,Super-linear,FALSE
+04030105,ER,Super-linear,Seasonally variable,TRUE
+04030105,GPP,Super-linear,Super-linear,FALSE
+04030106,ER,Super-linear,Super-linear,FALSE
+04030106,GPP,Super-linear,Super-linear,FALSE
+04030107,ER,Super-linear,Seasonally variable,TRUE
+04030107,GPP,Super-linear,Super-linear,FALSE
+04030108,ER,Super-linear,Seasonally variable,TRUE
+04030108,GPP,Super-linear,Super-linear,FALSE
+04030109,ER,Super-linear,Super-linear,FALSE
+04030109,GPP,Super-linear,Super-linear,FALSE
+04030110,ER,Super-linear,Super-linear,FALSE
+04030110,GPP,Super-linear,Super-linear,FALSE
+04030111,ER,Super-linear,Super-linear,FALSE
+04030111,GPP,Super-linear,Super-linear,FALSE
+04030113,ER,Super-linear,Seasonally variable,TRUE
+04030113,GPP,Super-linear,Super-linear,FALSE
+04030201,ER,Super-linear,Super-linear,FALSE
+04030201,GPP,Super-linear,Super-linear,FALSE
+04030202,ER,Super-linear,Super-linear,FALSE
+04030202,GPP,Super-linear,Super-linear,FALSE
+04030203,ER,Super-linear,Super-linear,FALSE
+04030203,GPP,Super-linear,Super-linear,FALSE
+04030204,ER,Super-linear,Super-linear,FALSE
+04030204,GPP,Super-linear,Super-linear,FALSE
+04040001,ER,Super-linear,Seasonally variable,TRUE
+04040001,GPP,Seasonally variable,Super-linear,TRUE
+04040003,ER,Super-linear,Super-linear,FALSE
+04040003,GPP,Super-linear,Super-linear,FALSE
+04050001,ER,Super-linear,Super-linear,FALSE
+04050001,GPP,Super-linear,Super-linear,FALSE
+04050002,ER,Super-linear,Super-linear,FALSE
+04050002,GPP,Seasonally variable,Super-linear,TRUE
+04050003,ER,Super-linear,Super-linear,FALSE
+04050003,GPP,Seasonally variable,Super-linear,TRUE
+04050004,ER,Super-linear,Super-linear,FALSE
+04050004,GPP,Super-linear,Super-linear,FALSE
+04050005,ER,Super-linear,Super-linear,FALSE
+04050005,GPP,Super-linear,Super-linear,FALSE
+04050006,ER,Super-linear,Super-linear,FALSE
+04050006,GPP,Super-linear,Super-linear,FALSE
+04050007,ER,Super-linear,Super-linear,FALSE
+04050007,GPP,Super-linear,Super-linear,FALSE
+04060101,ER,Super-linear,Super-linear,FALSE
+04060101,GPP,Seasonally variable,Seasonally variable,FALSE
+04060102,ER,Super-linear,Super-linear,FALSE
+04060102,GPP,Super-linear,Super-linear,FALSE
+04060103,ER,Super-linear,Super-linear,FALSE
+04060103,GPP,Super-linear,Super-linear,FALSE
+04060104,ER,Super-linear,Seasonally variable,TRUE
+04060104,GPP,Seasonally variable,Seasonally variable,FALSE
+04060105,ER,Super-linear,Super-linear,FALSE
+04060105,GPP,Super-linear,Super-linear,FALSE
+04070004,ER,Super-linear,Seasonally variable,TRUE
+04070004,GPP,Seasonally variable,Super-linear,TRUE
+04070005,ER,Super-linear,Seasonally variable,TRUE
+04070005,GPP,Super-linear,Super-linear,FALSE
+04070006,ER,Super-linear,Seasonally variable,TRUE
+04070006,GPP,Super-linear,Super-linear,FALSE
+04070007,ER,Super-linear,Super-linear,FALSE
+04070007,GPP,Super-linear,Super-linear,FALSE
+04080101,ER,Super-linear,Seasonally variable,TRUE
+04080101,GPP,Uncertain,Seasonally variable,TRUE
+04080102,ER,Seasonally variable,Uncertain,TRUE
+04080102,GPP,Seasonally variable,Seasonally variable,FALSE
+04080103,ER,Seasonally variable,Seasonally variable,FALSE
+04080103,GPP,Seasonally variable,Super-linear,TRUE
+04080201,ER,Super-linear,Super-linear,FALSE
+04080201,GPP,Super-linear,Super-linear,FALSE
+04080202,ER,Super-linear,Super-linear,FALSE
+04080202,GPP,Super-linear,Super-linear,FALSE
+04080203,ER,Super-linear,Super-linear,FALSE
+04080203,GPP,Super-linear,Super-linear,FALSE
+04080204,ER,Super-linear,Super-linear,FALSE
+04080204,GPP,Super-linear,Super-linear,FALSE
+04080205,ER,Super-linear,Super-linear,FALSE
+04080205,GPP,Super-linear,Super-linear,FALSE
+04080206,ER,Super-linear,Super-linear,FALSE
+04080206,GPP,Super-linear,Super-linear,FALSE
+04090001,ER,Super-linear,Super-linear,FALSE
+04090001,GPP,Super-linear,Super-linear,FALSE
+04090003,ER,Super-linear,Super-linear,FALSE
+04090003,GPP,Super-linear,Super-linear,FALSE
+04090005,ER,Super-linear,Super-linear,FALSE
+04090005,GPP,Super-linear,Super-linear,FALSE
+04100001,ER,Seasonally variable,Seasonally variable,FALSE
+04100001,GPP,Seasonally variable,Super-linear,TRUE
+04100002,ER,Super-linear,Super-linear,FALSE
+04100002,GPP,Super-linear,Super-linear,FALSE
+04100003,ER,Super-linear,Super-linear,FALSE
+04100003,GPP,Super-linear,Super-linear,FALSE
+04100004,ER,Super-linear,Seasonally variable,TRUE
+04100004,GPP,Super-linear,Super-linear,FALSE
+04100005,ER,Super-linear,Seasonally variable,TRUE
+04100005,GPP,Super-linear,Super-linear,FALSE
+04100006,ER,Super-linear,Super-linear,FALSE
+04100006,GPP,Super-linear,Super-linear,FALSE
+04100007,ER,Super-linear,Seasonally variable,TRUE
+04100007,GPP,Super-linear,Super-linear,FALSE
+04100008,ER,Super-linear,Seasonally variable,TRUE
+04100008,GPP,Super-linear,Super-linear,FALSE
+04100009,ER,Super-linear,Seasonally variable,TRUE
+04100009,GPP,Super-linear,Super-linear,FALSE
+04100010,ER,Seasonally variable,Seasonally variable,FALSE
+04100010,GPP,Super-linear,Super-linear,FALSE
+04100011,ER,Super-linear,Super-linear,FALSE
+04100011,GPP,Super-linear,Super-linear,FALSE
+04100012,ER,Super-linear,Seasonally variable,TRUE
+04100012,GPP,Super-linear,Super-linear,FALSE
+04110001,ER,Super-linear,Seasonally variable,TRUE
+04110001,GPP,Super-linear,Super-linear,FALSE
+04110002,ER,Super-linear,Super-linear,FALSE
+04110002,GPP,Super-linear,Super-linear,FALSE
+04110004,ER,Super-linear,Super-linear,FALSE
+04110004,GPP,Seasonally variable,Super-linear,TRUE
+04120102,ER,Seasonally variable,Super-linear,TRUE
+04120102,GPP,Super-linear,Super-linear,FALSE
+04120103,ER,Seasonally variable,Seasonally variable,FALSE
+04120103,GPP,Uncertain,Seasonally variable,TRUE
+04130002,ER,Super-linear,Super-linear,FALSE
+04130002,GPP,Super-linear,Super-linear,FALSE
+04130003,ER,Super-linear,Super-linear,FALSE
+04130003,GPP,Super-linear,Super-linear,FALSE
+04140102,ER,Seasonally variable,Uncertain,TRUE
+04140102,GPP,Uncertain,Uncertain,FALSE
+04140201,ER,Seasonally variable,Seasonally variable,FALSE
+04140201,GPP,Super-linear,Super-linear,FALSE
+04140202,ER,Super-linear,Super-linear,FALSE
+04140202,GPP,Super-linear,Super-linear,FALSE
+04150101,ER,Super-linear,Super-linear,FALSE
+04150101,GPP,Super-linear,Super-linear,FALSE
+04150102,ER,Insufficient data,Insufficient data,FALSE
+04150102,GPP,Insufficient data,Insufficient data,FALSE
+04150302,ER,Super-linear,Super-linear,FALSE
+04150302,GPP,Super-linear,Super-linear,FALSE
+04150303,ER,Super-linear,Super-linear,FALSE
+04150303,GPP,Super-linear,Super-linear,FALSE
+04150304,ER,Super-linear,Seasonally variable,TRUE
+04150304,GPP,Super-linear,Seasonally variable,TRUE
+04150305,ER,Super-linear,Super-linear,FALSE
+04150305,GPP,Super-linear,Super-linear,FALSE
+04150306,ER,Super-linear,Seasonally variable,TRUE
+04150306,GPP,Super-linear,Super-linear,FALSE
+04150307,ER,Super-linear,Super-linear,FALSE
+04150307,GPP,Super-linear,Super-linear,FALSE
+04150401,ER,Seasonally variable,Seasonally variable,FALSE
+04150401,GPP,Super-linear,Super-linear,FALSE
+04150402,ER,Seasonally variable,Seasonally variable,FALSE
+04150402,GPP,Super-linear,Super-linear,FALSE
+04150403,ER,Seasonally variable,Seasonally variable,FALSE
+04150403,GPP,Super-linear,Super-linear,FALSE
+04150404,ER,Seasonally variable,Seasonally variable,FALSE
+04150404,GPP,Super-linear,Seasonally variable,TRUE
+04150405,ER,Seasonally variable,Seasonally variable,FALSE
+04150405,GPP,Super-linear,Super-linear,FALSE
+04150406,ER,Super-linear,Seasonally variable,TRUE
+04150406,GPP,Super-linear,Super-linear,FALSE
+04150408,ER,Super-linear,Super-linear,FALSE
+04150408,GPP,Super-linear,Super-linear,FALSE
+04200001,ER,Insufficient data,Insufficient data,FALSE
+04200001,GPP,Insufficient data,Insufficient data,FALSE
+05010001,ER,Seasonally variable,Seasonally variable,FALSE
+05010001,GPP,Super-linear,Super-linear,FALSE
+05010002,ER,Super-linear,Seasonally variable,TRUE
+05010002,GPP,Super-linear,Super-linear,FALSE
+05010003,ER,Super-linear,Seasonally variable,TRUE
+05010003,GPP,Super-linear,Super-linear,FALSE
+05010004,ER,Super-linear,Super-linear,FALSE
+05010004,GPP,Super-linear,Super-linear,FALSE
+05010005,ER,Seasonally variable,Seasonally variable,FALSE
+05010005,GPP,Super-linear,Super-linear,FALSE
+05010006,ER,Super-linear,Seasonally variable,TRUE
+05010006,GPP,Super-linear,Super-linear,FALSE
+05010007,ER,Seasonally variable,Super-linear,TRUE
+05010007,GPP,Seasonally variable,Super-linear,TRUE
+05010008,ER,Seasonally variable,Seasonally variable,FALSE
+05010008,GPP,Super-linear,Super-linear,FALSE
+05010009,ER,Super-linear,Seasonally variable,TRUE
+05010009,GPP,Super-linear,Super-linear,FALSE
+05020001,ER,Seasonally variable,Seasonally variable,FALSE
+05020001,GPP,Super-linear,Super-linear,FALSE
+05020002,ER,Seasonally variable,Seasonally variable,FALSE
+05020002,GPP,Super-linear,Super-linear,FALSE
+05020003,ER,Seasonally variable,Seasonally variable,FALSE
+05020003,GPP,Super-linear,Super-linear,FALSE
+05020004,ER,Seasonally variable,Seasonally variable,FALSE
+05020004,GPP,Super-linear,Super-linear,FALSE
+05020005,ER,Seasonally variable,Seasonally variable,FALSE
+05020005,GPP,Super-linear,Super-linear,FALSE
+05020006,ER,Super-linear,Seasonally variable,TRUE
+05020006,GPP,Super-linear,Super-linear,FALSE
+05030101,ER,Super-linear,Seasonally variable,TRUE
+05030101,GPP,Super-linear,Super-linear,FALSE
+05030102,ER,Super-linear,Super-linear,FALSE
+05030102,GPP,Super-linear,Super-linear,FALSE
+05030103,ER,Super-linear,Super-linear,FALSE
+05030103,GPP,Super-linear,Super-linear,FALSE
+05030105,ER,Seasonally variable,Super-linear,TRUE
+05030105,GPP,Super-linear,Super-linear,FALSE
+05030106,ER,Super-linear,Seasonally variable,TRUE
+05030106,GPP,Super-linear,Super-linear,FALSE
+05030201,ER,Seasonally variable,Seasonally variable,FALSE
+05030201,GPP,Super-linear,Super-linear,FALSE
+05030202,ER,Super-linear,Seasonally variable,TRUE
+05030202,GPP,Super-linear,Super-linear,FALSE
+05030203,ER,Seasonally variable,Seasonally variable,FALSE
+05030203,GPP,Super-linear,Super-linear,FALSE
+05030204,ER,Seasonally variable,Seasonally variable,FALSE
+05030204,GPP,Super-linear,Super-linear,FALSE
+05040001,ER,Super-linear,Seasonally variable,TRUE
+05040001,GPP,Super-linear,Super-linear,FALSE
+05040002,ER,Super-linear,Super-linear,FALSE
+05040002,GPP,Super-linear,Super-linear,FALSE
+05040003,ER,Super-linear,Seasonally variable,TRUE
+05040003,GPP,Super-linear,Super-linear,FALSE
+05040004,ER,Super-linear,Seasonally variable,TRUE
+05040004,GPP,Super-linear,Super-linear,FALSE
+05040005,ER,Super-linear,Seasonally variable,TRUE
+05040005,GPP,Super-linear,Super-linear,FALSE
+05040006,ER,Super-linear,Super-linear,FALSE
+05040006,GPP,Super-linear,Super-linear,FALSE
+05050001,ER,Super-linear,Seasonally variable,TRUE
+05050001,GPP,Super-linear,Super-linear,FALSE
+05050002,ER,Seasonally variable,Seasonally variable,FALSE
+05050002,GPP,Super-linear,Super-linear,FALSE
+05050003,ER,Seasonally variable,Seasonally variable,FALSE
+05050003,GPP,Super-linear,Super-linear,FALSE
+05050004,ER,Seasonally variable,Seasonally variable,FALSE
+05050004,GPP,Super-linear,Super-linear,FALSE
+05050005,ER,Seasonally variable,Seasonally variable,FALSE
+05050005,GPP,Super-linear,Super-linear,FALSE
+05050006,ER,Seasonally variable,Seasonally variable,FALSE
+05050006,GPP,Super-linear,Super-linear,FALSE
+05050007,ER,Seasonally variable,Seasonally variable,FALSE
+05050007,GPP,Super-linear,Super-linear,FALSE
+05050008,ER,Seasonally variable,Seasonally variable,FALSE
+05050008,GPP,Super-linear,Super-linear,FALSE
+05050009,ER,Seasonally variable,Seasonally variable,FALSE
+05050009,GPP,Super-linear,Super-linear,FALSE
+05060001,ER,Seasonally variable,Super-linear,TRUE
+05060001,GPP,Super-linear,Super-linear,FALSE
+05060002,ER,Super-linear,Seasonally variable,TRUE
+05060002,GPP,Super-linear,Super-linear,FALSE
+05060003,ER,Seasonally variable,Super-linear,TRUE
+05060003,GPP,Super-linear,Super-linear,FALSE
+05070101,ER,Seasonally variable,Seasonally variable,FALSE
+05070101,GPP,Super-linear,Super-linear,FALSE
+05070102,ER,Seasonally variable,Seasonally variable,FALSE
+05070102,GPP,Super-linear,Super-linear,FALSE
+05070201,ER,Seasonally variable,Seasonally variable,FALSE
+05070201,GPP,Super-linear,Super-linear,FALSE
+05070202,ER,Seasonally variable,Seasonally variable,FALSE
+05070202,GPP,Super-linear,Super-linear,FALSE
+05070203,ER,Seasonally variable,Seasonally variable,FALSE
+05070203,GPP,Super-linear,Super-linear,FALSE
+05070204,ER,Seasonally variable,Seasonally variable,FALSE
+05070204,GPP,Super-linear,Super-linear,FALSE
+05080001,ER,Seasonally variable,Super-linear,TRUE
+05080001,GPP,Super-linear,Super-linear,FALSE
+05080002,ER,Super-linear,Seasonally variable,TRUE
+05080002,GPP,Super-linear,Super-linear,FALSE
+05080003,ER,Super-linear,Super-linear,FALSE
+05080003,GPP,Super-linear,Super-linear,FALSE
+05090101,ER,Super-linear,Super-linear,FALSE
+05090101,GPP,Super-linear,Super-linear,FALSE
+05090102,ER,Insufficient data,Insufficient data,FALSE
+05090102,GPP,Insufficient data,Insufficient data,FALSE
+05090103,ER,Super-linear,Seasonally variable,TRUE
+05090103,GPP,Super-linear,Super-linear,FALSE
+05090104,ER,Seasonally variable,Seasonally variable,FALSE
+05090104,GPP,Super-linear,Super-linear,FALSE
+05090201,ER,Seasonally variable,Seasonally variable,FALSE
+05090201,GPP,Super-linear,Super-linear,FALSE
+05090202,ER,Super-linear,Seasonally variable,TRUE
+05090202,GPP,Super-linear,Super-linear,FALSE
+05090203,ER,Seasonally variable,Seasonally variable,FALSE
+05090203,GPP,Super-linear,Super-linear,FALSE
+05100101,ER,Super-linear,Seasonally variable,TRUE
+05100101,GPP,Super-linear,Super-linear,FALSE
+05100102,ER,Seasonally variable,Super-linear,TRUE
+05100102,GPP,Super-linear,Super-linear,FALSE
+05100201,ER,Seasonally variable,Seasonally variable,FALSE
+05100201,GPP,Super-linear,Super-linear,FALSE
+05100202,ER,Seasonally variable,Seasonally variable,FALSE
+05100202,GPP,Super-linear,Super-linear,FALSE
+05100203,ER,Seasonally variable,Seasonally variable,FALSE
+05100203,GPP,Super-linear,Super-linear,FALSE
+05100204,ER,Seasonally variable,Seasonally variable,FALSE
+05100204,GPP,Super-linear,Super-linear,FALSE
+05100205,ER,Seasonally variable,Seasonally variable,FALSE
+05100205,GPP,Super-linear,Super-linear,FALSE
+05110001,ER,Seasonally variable,Super-linear,TRUE
+05110001,GPP,Super-linear,Super-linear,FALSE
+05110002,ER,Super-linear,Super-linear,FALSE
+05110002,GPP,Super-linear,Super-linear,FALSE
+05110003,ER,Super-linear,Super-linear,FALSE
+05110003,GPP,Super-linear,Super-linear,FALSE
+05110004,ER,Seasonally variable,Seasonally variable,FALSE
+05110004,GPP,Super-linear,Super-linear,FALSE
+05110005,ER,Super-linear,Seasonally variable,TRUE
+05110005,GPP,Super-linear,Super-linear,FALSE
+05110006,ER,Super-linear,Seasonally variable,TRUE
+05110006,GPP,Seasonally variable,Super-linear,TRUE
+05120101,ER,Super-linear,Super-linear,FALSE
+05120101,GPP,Super-linear,Super-linear,FALSE
+05120102,ER,Super-linear,Super-linear,FALSE
+05120102,GPP,Super-linear,Super-linear,FALSE
+05120103,ER,Super-linear,Super-linear,FALSE
+05120103,GPP,Super-linear,Super-linear,FALSE
+05120104,ER,Seasonally variable,Super-linear,TRUE
+05120104,GPP,Super-linear,Super-linear,FALSE
+05120105,ER,Super-linear,Super-linear,FALSE
+05120105,GPP,Super-linear,Super-linear,FALSE
+05120106,ER,Super-linear,Super-linear,FALSE
+05120106,GPP,Super-linear,Super-linear,FALSE
+05120107,ER,Super-linear,Super-linear,FALSE
+05120107,GPP,Super-linear,Super-linear,FALSE
+05120108,ER,Super-linear,Super-linear,FALSE
+05120108,GPP,Super-linear,Super-linear,FALSE
+05120109,ER,Super-linear,Super-linear,FALSE
+05120109,GPP,Super-linear,Super-linear,FALSE
+05120110,ER,Super-linear,Super-linear,FALSE
+05120110,GPP,Super-linear,Super-linear,FALSE
+05120111,ER,Super-linear,Super-linear,FALSE
+05120111,GPP,Super-linear,Super-linear,FALSE
+05120112,ER,Super-linear,Seasonally variable,TRUE
+05120112,GPP,Super-linear,Super-linear,FALSE
+05120113,ER,Super-linear,Super-linear,FALSE
+05120113,GPP,Super-linear,Super-linear,FALSE
+05120114,ER,Super-linear,Seasonally variable,TRUE
+05120114,GPP,Super-linear,Super-linear,FALSE
+05120115,ER,Super-linear,Seasonally variable,TRUE
+05120115,GPP,Super-linear,Super-linear,FALSE
+05120201,ER,Super-linear,Super-linear,FALSE
+05120201,GPP,Super-linear,Super-linear,FALSE
+05120202,ER,Super-linear,Seasonally variable,TRUE
+05120202,GPP,Super-linear,Super-linear,FALSE
+05120203,ER,Super-linear,Seasonally variable,TRUE
+05120203,GPP,Super-linear,Super-linear,FALSE
+05120204,ER,Seasonally variable,Seasonally variable,FALSE
+05120204,GPP,Super-linear,Super-linear,FALSE
+05120205,ER,Super-linear,Super-linear,FALSE
+05120205,GPP,Super-linear,Super-linear,FALSE
+05120206,ER,Super-linear,Super-linear,FALSE
+05120206,GPP,Super-linear,Super-linear,FALSE
+05120207,ER,Seasonally variable,Super-linear,TRUE
+05120207,GPP,Super-linear,Super-linear,FALSE
+05120208,ER,Super-linear,Super-linear,FALSE
+05120208,GPP,Super-linear,Super-linear,FALSE
+05120209,ER,Super-linear,Seasonally variable,TRUE
+05120209,GPP,Super-linear,Super-linear,FALSE
+05130101,ER,Seasonally variable,Seasonally variable,FALSE
+05130101,GPP,Super-linear,Super-linear,FALSE
+05130102,ER,Seasonally variable,Seasonally variable,FALSE
+05130102,GPP,Super-linear,Super-linear,FALSE
+05130103,ER,Seasonally variable,Seasonally variable,FALSE
+05130103,GPP,Super-linear,Super-linear,FALSE
+05130104,ER,Seasonally variable,Seasonally variable,FALSE
+05130104,GPP,Super-linear,Super-linear,FALSE
+05130105,ER,Seasonally variable,Seasonally variable,FALSE
+05130105,GPP,Super-linear,Super-linear,FALSE
+05130106,ER,Super-linear,Seasonally variable,TRUE
+05130106,GPP,Super-linear,Super-linear,FALSE
+05130107,ER,Super-linear,Seasonally variable,TRUE
+05130107,GPP,Super-linear,Super-linear,FALSE
+05130108,ER,Super-linear,Super-linear,FALSE
+05130108,GPP,Super-linear,Super-linear,FALSE
+05130201,ER,Seasonally variable,Seasonally variable,FALSE
+05130201,GPP,Super-linear,Super-linear,FALSE
+05130202,ER,Seasonally variable,Seasonally variable,FALSE
+05130202,GPP,Super-linear,Super-linear,FALSE
+05130203,ER,Super-linear,Super-linear,FALSE
+05130203,GPP,Seasonally variable,Super-linear,TRUE
+05130204,ER,Super-linear,Super-linear,FALSE
+05130204,GPP,Seasonally variable,Super-linear,TRUE
+05130205,ER,Seasonally variable,Seasonally variable,FALSE
+05130205,GPP,Super-linear,Super-linear,FALSE
+05130206,ER,Super-linear,Super-linear,FALSE
+05130206,GPP,Super-linear,Super-linear,FALSE
+05140101,ER,Seasonally variable,Seasonally variable,FALSE
+05140101,GPP,Super-linear,Super-linear,FALSE
+05140102,ER,Seasonally variable,Seasonally variable,FALSE
+05140102,GPP,Super-linear,Super-linear,FALSE
+05140103,ER,Super-linear,Seasonally variable,TRUE
+05140103,GPP,Super-linear,Super-linear,FALSE
+05140104,ER,Super-linear,Seasonally variable,TRUE
+05140104,GPP,Super-linear,Super-linear,FALSE
+05140201,ER,Seasonally variable,Seasonally variable,FALSE
+05140201,GPP,Super-linear,Super-linear,FALSE
+05140202,ER,Seasonally variable,Seasonally variable,FALSE
+05140202,GPP,Super-linear,Super-linear,FALSE
+05140203,ER,Seasonally variable,Seasonally variable,FALSE
+05140203,GPP,Super-linear,Super-linear,FALSE
+05140204,ER,Super-linear,Seasonally variable,TRUE
+05140204,GPP,Super-linear,Super-linear,FALSE
+05140205,ER,Super-linear,Super-linear,FALSE
+05140205,GPP,Seasonally variable,Super-linear,TRUE
+05140206,ER,Seasonally variable,Seasonally variable,FALSE
+05140206,GPP,Super-linear,Super-linear,FALSE
+06010101,ER,Seasonally variable,Seasonally variable,FALSE
+06010101,GPP,Super-linear,Super-linear,FALSE
+06010102,ER,Seasonally variable,Seasonally variable,FALSE
+06010102,GPP,Super-linear,Super-linear,FALSE
+06010103,ER,Seasonally variable,Seasonally variable,FALSE
+06010103,GPP,Super-linear,Super-linear,FALSE
+06010104,ER,Seasonally variable,Seasonally variable,FALSE
+06010104,GPP,Super-linear,Super-linear,FALSE
+06010105,ER,Seasonally variable,Seasonally variable,FALSE
+06010105,GPP,Super-linear,Super-linear,FALSE
+06010106,ER,Seasonally variable,Seasonally variable,FALSE
+06010106,GPP,Super-linear,Super-linear,FALSE
+06010107,ER,Seasonally variable,Seasonally variable,FALSE
+06010107,GPP,Super-linear,Super-linear,FALSE
+06010108,ER,Seasonally variable,Seasonally variable,FALSE
+06010108,GPP,Super-linear,Super-linear,FALSE
+06010201,ER,Seasonally variable,Seasonally variable,FALSE
+06010201,GPP,Super-linear,Super-linear,FALSE
+06010202,ER,Seasonally variable,Seasonally variable,FALSE
+06010202,GPP,Super-linear,Super-linear,FALSE
+06010203,ER,Seasonally variable,Seasonally variable,FALSE
+06010203,GPP,Super-linear,Super-linear,FALSE
+06010204,ER,Seasonally variable,Seasonally variable,FALSE
+06010204,GPP,Super-linear,Super-linear,FALSE
+06010205,ER,Seasonally variable,Seasonally variable,FALSE
+06010205,GPP,Super-linear,Super-linear,FALSE
+06010206,ER,Seasonally variable,Seasonally variable,FALSE
+06010206,GPP,Super-linear,Super-linear,FALSE
+06010207,ER,Seasonally variable,Seasonally variable,FALSE
+06010207,GPP,Super-linear,Super-linear,FALSE
+06010208,ER,Seasonally variable,Seasonally variable,FALSE
+06010208,GPP,Super-linear,Super-linear,FALSE
+06020001,ER,Super-linear,Seasonally variable,TRUE
+06020001,GPP,Super-linear,Super-linear,FALSE
+06020002,ER,Seasonally variable,Seasonally variable,FALSE
+06020002,GPP,Super-linear,Super-linear,FALSE
+06020003,ER,Seasonally variable,Seasonally variable,FALSE
+06020003,GPP,Super-linear,Super-linear,FALSE
+06020004,ER,Seasonally variable,Seasonally variable,FALSE
+06020004,GPP,Super-linear,Super-linear,FALSE
+06030001,ER,Seasonally variable,Seasonally variable,FALSE
+06030001,GPP,Super-linear,Super-linear,FALSE
+06030002,ER,Super-linear,Seasonally variable,TRUE
+06030002,GPP,Super-linear,Super-linear,FALSE
+06030003,ER,Super-linear,Seasonally variable,TRUE
+06030003,GPP,Super-linear,Super-linear,FALSE
+06030004,ER,Super-linear,Super-linear,FALSE
+06030004,GPP,Super-linear,Super-linear,FALSE
+06030005,ER,Seasonally variable,Seasonally variable,FALSE
+06030005,GPP,Super-linear,Super-linear,FALSE
+06030006,ER,Super-linear,Seasonally variable,TRUE
+06030006,GPP,Super-linear,Super-linear,FALSE
+06040001,ER,Seasonally variable,Seasonally variable,FALSE
+06040001,GPP,Super-linear,Super-linear,FALSE
+06040002,ER,Super-linear,Super-linear,FALSE
+06040002,GPP,Super-linear,Super-linear,FALSE
+06040003,ER,Super-linear,Super-linear,FALSE
+06040003,GPP,Super-linear,Super-linear,FALSE
+06040004,ER,Super-linear,Seasonally variable,TRUE
+06040004,GPP,Super-linear,Super-linear,FALSE
+06040005,ER,Super-linear,Super-linear,FALSE
+06040005,GPP,Super-linear,Super-linear,FALSE
+06040006,ER,Super-linear,Super-linear,FALSE
+06040006,GPP,Super-linear,Super-linear,FALSE
+07010101,ER,Super-linear,Super-linear,FALSE
+07010101,GPP,Super-linear,Super-linear,FALSE
+07010102,ER,Super-linear,Super-linear,FALSE
+07010102,GPP,Super-linear,Super-linear,FALSE
+07010103,ER,Super-linear,Super-linear,FALSE
+07010103,GPP,Super-linear,Super-linear,FALSE
+07010104,ER,Super-linear,Super-linear,FALSE
+07010104,GPP,Super-linear,Super-linear,FALSE
+07010105,ER,Super-linear,Super-linear,FALSE
+07010105,GPP,Super-linear,Super-linear,FALSE
+07010106,ER,Super-linear,Super-linear,FALSE
+07010106,GPP,Super-linear,Super-linear,FALSE
+07010107,ER,Super-linear,Super-linear,FALSE
+07010107,GPP,Super-linear,Super-linear,FALSE
+07010108,ER,Super-linear,Super-linear,FALSE
+07010108,GPP,Super-linear,Super-linear,FALSE
+07010201,ER,Super-linear,Super-linear,FALSE
+07010201,GPP,Super-linear,Super-linear,FALSE
+07010202,ER,Super-linear,Super-linear,FALSE
+07010202,GPP,Super-linear,Super-linear,FALSE
+07010203,ER,Super-linear,Super-linear,FALSE
+07010203,GPP,Super-linear,Super-linear,FALSE
+07010204,ER,Super-linear,Super-linear,FALSE
+07010204,GPP,Super-linear,Super-linear,FALSE
+07010205,ER,Super-linear,Uncertain,TRUE
+07010205,GPP,Super-linear,Super-linear,FALSE
+07010206,ER,Super-linear,Super-linear,FALSE
+07010206,GPP,Super-linear,Super-linear,FALSE
+07010207,ER,Super-linear,Super-linear,FALSE
+07010207,GPP,Super-linear,Super-linear,FALSE
+07020001,ER,Super-linear,Super-linear,FALSE
+07020001,GPP,Super-linear,Super-linear,FALSE
+07020002,ER,Super-linear,Seasonally variable,TRUE
+07020002,GPP,Super-linear,Super-linear,FALSE
+07020003,ER,Super-linear,Seasonally variable,TRUE
+07020003,GPP,Super-linear,Super-linear,FALSE
+07020004,ER,Super-linear,Super-linear,FALSE
+07020004,GPP,Super-linear,Super-linear,FALSE
+07020005,ER,Super-linear,Super-linear,FALSE
+07020005,GPP,Super-linear,Super-linear,FALSE
+07020006,ER,Super-linear,Super-linear,FALSE
+07020006,GPP,Super-linear,Seasonally variable,TRUE
+07020007,ER,Super-linear,Seasonally variable,TRUE
+07020007,GPP,Super-linear,Super-linear,FALSE
+07020008,ER,Super-linear,Seasonally variable,TRUE
+07020008,GPP,Super-linear,Super-linear,FALSE
+07020009,ER,Super-linear,Seasonally variable,TRUE
+07020009,GPP,Super-linear,Super-linear,FALSE
+07020010,ER,Super-linear,Seasonally variable,TRUE
+07020010,GPP,Super-linear,Super-linear,FALSE
+07020011,ER,Super-linear,Super-linear,FALSE
+07020011,GPP,Super-linear,Super-linear,FALSE
+07020012,ER,Super-linear,Super-linear,FALSE
+07020012,GPP,Super-linear,Super-linear,FALSE
+07030001,ER,Super-linear,Super-linear,FALSE
+07030001,GPP,Super-linear,Super-linear,FALSE
+07030002,ER,Super-linear,Super-linear,FALSE
+07030002,GPP,Super-linear,Super-linear,FALSE
+07030003,ER,Super-linear,Super-linear,FALSE
+07030003,GPP,Super-linear,Super-linear,FALSE
+07030004,ER,Super-linear,Super-linear,FALSE
+07030004,GPP,Super-linear,Super-linear,FALSE
+07030005,ER,Super-linear,Super-linear,FALSE
+07030005,GPP,Super-linear,Super-linear,FALSE
+07040001,ER,Super-linear,Super-linear,FALSE
+07040001,GPP,Super-linear,Super-linear,FALSE
+07040002,ER,Super-linear,Super-linear,FALSE
+07040002,GPP,Super-linear,Super-linear,FALSE
+07040003,ER,Super-linear,Super-linear,FALSE
+07040003,GPP,Super-linear,Super-linear,FALSE
+07040004,ER,Seasonally variable,Super-linear,TRUE
+07040004,GPP,Super-linear,Super-linear,FALSE
+07040005,ER,Super-linear,Super-linear,FALSE
+07040005,GPP,Super-linear,Super-linear,FALSE
+07040006,ER,Super-linear,Super-linear,FALSE
+07040006,GPP,Super-linear,Super-linear,FALSE
+07040007,ER,Super-linear,Super-linear,FALSE
+07040007,GPP,Super-linear,Super-linear,FALSE
+07040008,ER,Super-linear,Super-linear,FALSE
+07040008,GPP,Super-linear,Super-linear,FALSE
+07050001,ER,Super-linear,Super-linear,FALSE
+07050001,GPP,Super-linear,Super-linear,FALSE
+07050002,ER,Super-linear,Super-linear,FALSE
+07050002,GPP,Super-linear,Super-linear,FALSE
+07050003,ER,Super-linear,Super-linear,FALSE
+07050003,GPP,Super-linear,Super-linear,FALSE
+07050004,ER,Super-linear,Seasonally variable,TRUE
+07050004,GPP,Super-linear,Super-linear,FALSE
+07050005,ER,Super-linear,Super-linear,FALSE
+07050005,GPP,Super-linear,Super-linear,FALSE
+07050006,ER,Super-linear,Super-linear,FALSE
+07050006,GPP,Super-linear,Super-linear,FALSE
+07050007,ER,Super-linear,Super-linear,FALSE
+07050007,GPP,Super-linear,Super-linear,FALSE
+07060001,ER,Super-linear,Super-linear,FALSE
+07060001,GPP,Super-linear,Super-linear,FALSE
+07060002,ER,Super-linear,Super-linear,FALSE
+07060002,GPP,Super-linear,Super-linear,FALSE
+07060003,ER,Super-linear,Super-linear,FALSE
+07060003,GPP,Super-linear,Super-linear,FALSE
+07060004,ER,Seasonally variable,Super-linear,TRUE
+07060004,GPP,Super-linear,Super-linear,FALSE
+07060005,ER,Super-linear,Super-linear,FALSE
+07060005,GPP,Super-linear,Super-linear,FALSE
+07060006,ER,Super-linear,Seasonally variable,TRUE
+07060006,GPP,Super-linear,Super-linear,FALSE
+07070001,ER,Super-linear,Super-linear,FALSE
+07070001,GPP,Super-linear,Super-linear,FALSE
+07070002,ER,Super-linear,Super-linear,FALSE
+07070002,GPP,Super-linear,Super-linear,FALSE
+07070003,ER,Super-linear,Super-linear,FALSE
+07070003,GPP,Super-linear,Super-linear,FALSE
+07070004,ER,Seasonally variable,Super-linear,TRUE
+07070004,GPP,Super-linear,Super-linear,FALSE
+07070005,ER,Super-linear,Super-linear,FALSE
+07070005,GPP,Super-linear,Super-linear,FALSE
+07070006,ER,Super-linear,Super-linear,FALSE
+07070006,GPP,Super-linear,Super-linear,FALSE
+07080101,ER,Super-linear,Super-linear,FALSE
+07080101,GPP,Super-linear,Super-linear,FALSE
+07080102,ER,Seasonally variable,Super-linear,TRUE
+07080102,GPP,Super-linear,Super-linear,FALSE
+07080103,ER,Seasonally variable,Seasonally variable,FALSE
+07080103,GPP,Super-linear,Super-linear,FALSE
+07080104,ER,Super-linear,Super-linear,FALSE
+07080104,GPP,Super-linear,Super-linear,FALSE
+07080105,ER,Super-linear,Seasonally variable,TRUE
+07080105,GPP,Super-linear,Super-linear,FALSE
+07080106,ER,Super-linear,Seasonally variable,TRUE
+07080106,GPP,Super-linear,Super-linear,FALSE
+07080107,ER,Super-linear,Super-linear,FALSE
+07080107,GPP,Super-linear,Super-linear,FALSE
+07080201,ER,Super-linear,Seasonally variable,TRUE
+07080201,GPP,Super-linear,Super-linear,FALSE
+07080202,ER,Seasonally variable,Super-linear,TRUE
+07080202,GPP,Super-linear,Super-linear,FALSE
+07080203,ER,Seasonally variable,Seasonally variable,FALSE
+07080203,GPP,Super-linear,Super-linear,FALSE
+07080204,ER,Super-linear,Seasonally variable,TRUE
+07080204,GPP,Super-linear,Super-linear,FALSE
+07080205,ER,Super-linear,Seasonally variable,TRUE
+07080205,GPP,Super-linear,Super-linear,FALSE
+07080206,ER,Super-linear,Seasonally variable,TRUE
+07080206,GPP,Super-linear,Super-linear,FALSE
+07080207,ER,Seasonally variable,Seasonally variable,FALSE
+07080207,GPP,Super-linear,Super-linear,FALSE
+07080208,ER,Super-linear,Seasonally variable,TRUE
+07080208,GPP,Super-linear,Super-linear,FALSE
+07080209,ER,Super-linear,Seasonally variable,TRUE
+07080209,GPP,Super-linear,Super-linear,FALSE
+07090001,ER,Super-linear,Super-linear,FALSE
+07090001,GPP,Super-linear,Super-linear,FALSE
+07090002,ER,Super-linear,Super-linear,FALSE
+07090002,GPP,Super-linear,Super-linear,FALSE
+07090003,ER,Super-linear,Seasonally variable,TRUE
+07090003,GPP,Super-linear,Super-linear,FALSE
+07090004,ER,Super-linear,Super-linear,FALSE
+07090004,GPP,Super-linear,Super-linear,FALSE
+07090005,ER,Super-linear,Super-linear,FALSE
+07090005,GPP,Super-linear,Super-linear,FALSE
+07090006,ER,Super-linear,Seasonally variable,TRUE
+07090006,GPP,Super-linear,Super-linear,FALSE
+07090007,ER,Seasonally variable,Seasonally variable,FALSE
+07090007,GPP,Super-linear,Super-linear,FALSE
+07100001,ER,Super-linear,Seasonally variable,TRUE
+07100001,GPP,Super-linear,Super-linear,FALSE
+07100002,ER,Super-linear,Seasonally variable,TRUE
+07100002,GPP,Super-linear,Super-linear,FALSE
+07100003,ER,Super-linear,Seasonally variable,TRUE
+07100003,GPP,Super-linear,Super-linear,FALSE
+07100004,ER,Super-linear,Seasonally variable,TRUE
+07100004,GPP,Super-linear,Super-linear,FALSE
+07100005,ER,Super-linear,Seasonally variable,TRUE
+07100005,GPP,Super-linear,Super-linear,FALSE
+07100006,ER,Super-linear,Seasonally variable,TRUE
+07100006,GPP,Super-linear,Super-linear,FALSE
+07100007,ER,Seasonally variable,Seasonally variable,FALSE
+07100007,GPP,Super-linear,Super-linear,FALSE
+07100008,ER,Super-linear,Super-linear,FALSE
+07100008,GPP,Super-linear,Super-linear,FALSE
+07100009,ER,Super-linear,Super-linear,FALSE
+07100009,GPP,Super-linear,Super-linear,FALSE
+07110001,ER,Super-linear,Super-linear,FALSE
+07110001,GPP,Super-linear,Super-linear,FALSE
+07110002,ER,Super-linear,Seasonally variable,TRUE
+07110002,GPP,Super-linear,Super-linear,FALSE
+07110003,ER,Seasonally variable,Super-linear,TRUE
+07110003,GPP,Super-linear,Super-linear,FALSE
+07110004,ER,Super-linear,Super-linear,FALSE
+07110004,GPP,Super-linear,Super-linear,FALSE
+07110005,ER,Super-linear,Super-linear,FALSE
+07110005,GPP,Super-linear,Super-linear,FALSE
+07110006,ER,Super-linear,Super-linear,FALSE
+07110006,GPP,Super-linear,Super-linear,FALSE
+07110007,ER,Super-linear,Super-linear,FALSE
+07110007,GPP,Super-linear,Super-linear,FALSE
+07110008,ER,Super-linear,Super-linear,FALSE
+07110008,GPP,Super-linear,Super-linear,FALSE
+07110009,ER,Super-linear,Super-linear,FALSE
+07110009,GPP,Super-linear,Super-linear,FALSE
+07120001,ER,Super-linear,Super-linear,FALSE
+07120001,GPP,Super-linear,Super-linear,FALSE
+07120002,ER,Super-linear,Seasonally variable,TRUE
+07120002,GPP,Super-linear,Super-linear,FALSE
+07120003,ER,Seasonally variable,Seasonally variable,FALSE
+07120003,GPP,Super-linear,Super-linear,FALSE
+07120004,ER,Super-linear,Super-linear,FALSE
+07120004,GPP,Super-linear,Super-linear,FALSE
+07120005,ER,Super-linear,Seasonally variable,TRUE
+07120005,GPP,Super-linear,Super-linear,FALSE
+07120006,ER,Super-linear,Super-linear,FALSE
+07120006,GPP,Super-linear,Super-linear,FALSE
+07120007,ER,Super-linear,Super-linear,FALSE
+07120007,GPP,Super-linear,Super-linear,FALSE
+07130001,ER,Super-linear,Super-linear,FALSE
+07130001,GPP,Super-linear,Super-linear,FALSE
+07130002,ER,Super-linear,Seasonally variable,TRUE
+07130002,GPP,Super-linear,Super-linear,FALSE
+07130003,ER,Super-linear,Super-linear,FALSE
+07130003,GPP,Super-linear,Super-linear,FALSE
+07130004,ER,Super-linear,Seasonally variable,TRUE
+07130004,GPP,Super-linear,Super-linear,FALSE
+07130005,ER,Seasonally variable,Uncertain,TRUE
+07130005,GPP,Super-linear,Super-linear,FALSE
+07130006,ER,Super-linear,Super-linear,FALSE
+07130006,GPP,Super-linear,Super-linear,FALSE
+07130007,ER,Super-linear,Seasonally variable,TRUE
+07130007,GPP,Super-linear,Super-linear,FALSE
+07130008,ER,Super-linear,Seasonally variable,TRUE
+07130008,GPP,Super-linear,Super-linear,FALSE
+07130009,ER,Seasonally variable,Seasonally variable,FALSE
+07130009,GPP,Super-linear,Super-linear,FALSE
+07130010,ER,Super-linear,Seasonally variable,TRUE
+07130010,GPP,Super-linear,Super-linear,FALSE
+07130011,ER,Super-linear,Seasonally variable,TRUE
+07130011,GPP,Super-linear,Super-linear,FALSE
+07130012,ER,Super-linear,Seasonally variable,TRUE
+07130012,GPP,Super-linear,Super-linear,FALSE
+07140101,ER,Super-linear,Super-linear,FALSE
+07140101,GPP,Super-linear,Super-linear,FALSE
+07140102,ER,Super-linear,Seasonally variable,TRUE
+07140102,GPP,Super-linear,Super-linear,FALSE
+07140103,ER,Super-linear,Super-linear,FALSE
+07140103,GPP,Super-linear,Super-linear,FALSE
+07140104,ER,Seasonally variable,Seasonally variable,FALSE
+07140104,GPP,Super-linear,Super-linear,FALSE
+07140105,ER,Super-linear,Super-linear,FALSE
+07140105,GPP,Super-linear,Super-linear,FALSE
+07140106,ER,Super-linear,Super-linear,FALSE
+07140106,GPP,Super-linear,Super-linear,FALSE
+07140107,ER,Seasonally variable,Seasonally variable,FALSE
+07140107,GPP,Super-linear,Super-linear,FALSE
+07140108,ER,Super-linear,Super-linear,FALSE
+07140108,GPP,Seasonally variable,Super-linear,TRUE
+07140201,ER,Seasonally variable,Seasonally variable,FALSE
+07140201,GPP,Super-linear,Super-linear,FALSE
+07140202,ER,Seasonally variable,Seasonally variable,FALSE
+07140202,GPP,Super-linear,Super-linear,FALSE
+07140203,ER,Seasonally variable,Seasonally variable,FALSE
+07140203,GPP,Super-linear,Super-linear,FALSE
+07140204,ER,Super-linear,Seasonally variable,TRUE
+07140204,GPP,Super-linear,Super-linear,FALSE
+08010100,ER,Super-linear,Seasonally variable,TRUE
+08010100,GPP,Super-linear,Super-linear,FALSE
+08010201,ER,Super-linear,Seasonally variable,TRUE
+08010201,GPP,Super-linear,Super-linear,FALSE
+08010202,ER,Super-linear,Super-linear,FALSE
+08010202,GPP,Super-linear,Super-linear,FALSE
+08010203,ER,Super-linear,Super-linear,FALSE
+08010203,GPP,Seasonally variable,Seasonally variable,FALSE
+08010204,ER,Super-linear,Super-linear,FALSE
+08010204,GPP,Super-linear,Super-linear,FALSE
+08010205,ER,Super-linear,Super-linear,FALSE
+08010205,GPP,Seasonally variable,Super-linear,TRUE
+08010207,ER,Super-linear,Seasonally variable,TRUE
+08010207,GPP,Super-linear,Super-linear,FALSE
+08010208,ER,Super-linear,Seasonally variable,TRUE
+08010208,GPP,Super-linear,Super-linear,FALSE
+08010209,ER,Seasonally variable,Seasonally variable,FALSE
+08010209,GPP,Seasonally variable,Seasonally variable,FALSE
+08010210,ER,Super-linear,Seasonally variable,TRUE
+08010210,GPP,Super-linear,Super-linear,FALSE
+08010211,ER,Insufficient data,Insufficient data,FALSE
+08010211,GPP,Insufficient data,Insufficient data,FALSE
+08010300,ER,Super-linear,Seasonally variable,TRUE
+08010300,GPP,Super-linear,Super-linear,FALSE
+08020100,ER,Super-linear,Seasonally variable,TRUE
+08020100,GPP,Super-linear,Super-linear,FALSE
+08020202,ER,Seasonally variable,Super-linear,TRUE
+08020202,GPP,Super-linear,Super-linear,FALSE
+08020203,ER,Super-linear,Super-linear,FALSE
+08020203,GPP,Super-linear,Super-linear,FALSE
+08020204,ER,Super-linear,Seasonally variable,TRUE
+08020204,GPP,Super-linear,Super-linear,FALSE
+08020205,ER,Super-linear,Super-linear,FALSE
+08020205,GPP,Super-linear,Super-linear,FALSE
+08020301,ER,Super-linear,Super-linear,FALSE
+08020301,GPP,Super-linear,Super-linear,FALSE
+08020302,ER,Super-linear,Super-linear,FALSE
+08020302,GPP,Super-linear,Super-linear,FALSE
+08020303,ER,Super-linear,Seasonally variable,TRUE
+08020303,GPP,Super-linear,Super-linear,FALSE
+08020304,ER,Super-linear,Super-linear,FALSE
+08020304,GPP,Super-linear,Super-linear,FALSE
+08020401,ER,Super-linear,Super-linear,FALSE
+08020401,GPP,Super-linear,Super-linear,FALSE
+08020402,ER,Super-linear,Super-linear,FALSE
+08020402,GPP,Super-linear,Super-linear,FALSE
+08030100,ER,Super-linear,Seasonally variable,TRUE
+08030100,GPP,Super-linear,Super-linear,FALSE
+08030201,ER,Super-linear,Seasonally variable,TRUE
+08030201,GPP,Super-linear,Super-linear,FALSE
+08030202,ER,Super-linear,Super-linear,FALSE
+08030202,GPP,Super-linear,Super-linear,FALSE
+08030203,ER,Super-linear,Super-linear,FALSE
+08030203,GPP,Super-linear,Super-linear,FALSE
+08030204,ER,Super-linear,Super-linear,FALSE
+08030204,GPP,Seasonally variable,Seasonally variable,FALSE
+08030205,ER,Super-linear,Seasonally variable,TRUE
+08030205,GPP,Super-linear,Super-linear,FALSE
+08030206,ER,Super-linear,Seasonally variable,TRUE
+08030206,GPP,Super-linear,Super-linear,FALSE
+08030207,ER,Super-linear,Super-linear,FALSE
+08030207,GPP,Super-linear,Super-linear,FALSE
+08030208,ER,Insufficient data,Insufficient data,FALSE
+08030208,GPP,Insufficient data,Insufficient data,FALSE
+08030209,ER,Super-linear,Super-linear,FALSE
+08030209,GPP,Seasonally variable,Seasonally variable,FALSE
+08040101,ER,Seasonally variable,Seasonally variable,FALSE
+08040101,GPP,Super-linear,Super-linear,FALSE
+08040102,ER,Super-linear,Seasonally variable,TRUE
+08040102,GPP,Super-linear,Super-linear,FALSE
+08040103,ER,Super-linear,Seasonally variable,TRUE
+08040103,GPP,Super-linear,Super-linear,FALSE
+08040201,ER,Super-linear,Super-linear,FALSE
+08040201,GPP,Super-linear,Super-linear,FALSE
+08040202,ER,Super-linear,Super-linear,FALSE
+08040202,GPP,Super-linear,Super-linear,FALSE
+08040203,ER,Super-linear,Seasonally variable,TRUE
+08040203,GPP,Super-linear,Super-linear,FALSE
+08040204,ER,Super-linear,Super-linear,FALSE
+08040204,GPP,Super-linear,Super-linear,FALSE
+08040205,ER,Super-linear,Super-linear,FALSE
+08040205,GPP,Super-linear,Super-linear,FALSE
+08040206,ER,Super-linear,Super-linear,FALSE
+08040206,GPP,Super-linear,Super-linear,FALSE
+08040207,ER,Super-linear,Super-linear,FALSE
+08040207,GPP,Super-linear,Super-linear,FALSE
+08040301,ER,Super-linear,Super-linear,FALSE
+08040301,GPP,Super-linear,Super-linear,FALSE
+08040302,ER,Super-linear,Super-linear,FALSE
+08040302,GPP,Super-linear,Super-linear,FALSE
+08040303,ER,Super-linear,Super-linear,FALSE
+08040303,GPP,Super-linear,Super-linear,FALSE
+08040304,ER,Super-linear,Super-linear,FALSE
+08040304,GPP,Super-linear,Super-linear,FALSE
+08040306,ER,Seasonally variable,Seasonally variable,FALSE
+08040306,GPP,Uncertain,Uncertain,FALSE
+08050001,ER,Super-linear,Super-linear,FALSE
+08050001,GPP,Super-linear,Super-linear,FALSE
+08050002,ER,Super-linear,Super-linear,FALSE
+08050002,GPP,Super-linear,Super-linear,FALSE
+08050003,ER,Super-linear,Super-linear,FALSE
+08050003,GPP,Super-linear,Seasonally variable,TRUE
+08060100,ER,Super-linear,Seasonally variable,TRUE
+08060100,GPP,Super-linear,Super-linear,FALSE
+08060201,ER,Super-linear,Seasonally variable,TRUE
+08060201,GPP,Super-linear,Super-linear,FALSE
+08060202,ER,Super-linear,Super-linear,FALSE
+08060202,GPP,Super-linear,Super-linear,FALSE
+08060203,ER,Super-linear,Seasonally variable,TRUE
+08060203,GPP,Super-linear,Super-linear,FALSE
+08060204,ER,Insufficient data,Insufficient data,FALSE
+08060204,GPP,Insufficient data,Insufficient data,FALSE
+08060205,ER,Super-linear,Seasonally variable,TRUE
+08060205,GPP,Super-linear,Super-linear,FALSE
+08060206,ER,Seasonally variable,Seasonally variable,FALSE
+08060206,GPP,Super-linear,Super-linear,FALSE
+08070100,ER,Insufficient data,Insufficient data,FALSE
+08070100,GPP,Insufficient data,Insufficient data,FALSE
+08070201,ER,Super-linear,Seasonally variable,TRUE
+08070201,GPP,Super-linear,Super-linear,FALSE
+08070202,ER,Super-linear,Super-linear,FALSE
+08070202,GPP,Super-linear,Super-linear,FALSE
+08070203,ER,Super-linear,Super-linear,FALSE
+08070203,GPP,Super-linear,Super-linear,FALSE
+08070204,ER,Super-linear,Super-linear,FALSE
+08070204,GPP,Super-linear,Super-linear,FALSE
+08070205,ER,Super-linear,Super-linear,FALSE
+08070205,GPP,Super-linear,Super-linear,FALSE
+08070300,ER,Super-linear,Super-linear,FALSE
+08070300,GPP,Super-linear,Seasonally variable,TRUE
+08080101,ER,Super-linear,Super-linear,FALSE
+08080101,GPP,Seasonally variable,Super-linear,TRUE
+08080102,ER,Super-linear,Super-linear,FALSE
+08080102,GPP,Super-linear,Super-linear,FALSE
+08080201,ER,Super-linear,Super-linear,FALSE
+08080201,GPP,Seasonally variable,Super-linear,TRUE
+08080202,ER,Super-linear,Super-linear,FALSE
+08080202,GPP,Super-linear,Super-linear,FALSE
+08080203,ER,Super-linear,Super-linear,FALSE
+08080203,GPP,Super-linear,Super-linear,FALSE
+08080204,ER,Super-linear,Super-linear,FALSE
+08080204,GPP,Super-linear,Super-linear,FALSE
+08080205,ER,Super-linear,Super-linear,FALSE
+08080205,GPP,Super-linear,Super-linear,FALSE
+08080206,ER,Super-linear,Super-linear,FALSE
+08080206,GPP,Super-linear,Super-linear,FALSE
+08090201,ER,Super-linear,Seasonally variable,TRUE
+08090201,GPP,Seasonally variable,Seasonally variable,FALSE
+09010002,ER,Super-linear,Super-linear,FALSE
+09010002,GPP,Super-linear,Seasonally variable,TRUE
+09010004,ER,Super-linear,Super-linear,FALSE
+09010004,GPP,Seasonally variable,Seasonally variable,FALSE
+09010005,ER,Super-linear,Super-linear,FALSE
+09010005,GPP,Super-linear,Super-linear,FALSE
+09020101,ER,Super-linear,Super-linear,FALSE
+09020101,GPP,Super-linear,Super-linear,FALSE
+09020102,ER,Super-linear,Super-linear,FALSE
+09020102,GPP,Super-linear,Super-linear,FALSE
+09020103,ER,Super-linear,Super-linear,FALSE
+09020103,GPP,Super-linear,Super-linear,FALSE
+09020104,ER,Super-linear,Super-linear,FALSE
+09020104,GPP,Super-linear,Super-linear,FALSE
+09020105,ER,Super-linear,Super-linear,FALSE
+09020105,GPP,Super-linear,Super-linear,FALSE
+09020106,ER,Super-linear,Super-linear,FALSE
+09020106,GPP,Super-linear,Super-linear,FALSE
+09020107,ER,Super-linear,Super-linear,FALSE
+09020107,GPP,Super-linear,Super-linear,FALSE
+09020108,ER,Super-linear,Super-linear,FALSE
+09020108,GPP,Super-linear,Super-linear,FALSE
+09020109,ER,Super-linear,Super-linear,FALSE
+09020109,GPP,Super-linear,Super-linear,FALSE
+09020201,ER,Super-linear,Super-linear,FALSE
+09020201,GPP,Super-linear,Seasonally variable,TRUE
+09020202,ER,Super-linear,Super-linear,FALSE
+09020202,GPP,Super-linear,Seasonally variable,TRUE
+09020203,ER,Super-linear,Super-linear,FALSE
+09020203,GPP,Super-linear,Super-linear,FALSE
+09020204,ER,Super-linear,Super-linear,FALSE
+09020204,GPP,Super-linear,Super-linear,FALSE
+09020205,ER,Super-linear,Super-linear,FALSE
+09020205,GPP,Super-linear,Super-linear,FALSE
+09020301,ER,Super-linear,Super-linear,FALSE
+09020301,GPP,Super-linear,Super-linear,FALSE
+09020302,ER,Super-linear,Super-linear,FALSE
+09020302,GPP,Super-linear,Super-linear,FALSE
+09020303,ER,Super-linear,Super-linear,FALSE
+09020303,GPP,Super-linear,Super-linear,FALSE
+09020304,ER,Super-linear,Seasonally variable,TRUE
+09020304,GPP,Super-linear,Super-linear,FALSE
+09020305,ER,Super-linear,Super-linear,FALSE
+09020305,GPP,Super-linear,Super-linear,FALSE
+09020306,ER,Super-linear,Super-linear,FALSE
+09020306,GPP,Super-linear,Super-linear,FALSE
+09020307,ER,Super-linear,Seasonally variable,TRUE
+09020307,GPP,Super-linear,Super-linear,FALSE
+09020308,ER,Super-linear,Super-linear,FALSE
+09020308,GPP,Super-linear,Seasonally variable,TRUE
+09020309,ER,Super-linear,Super-linear,FALSE
+09020309,GPP,Super-linear,Super-linear,FALSE
+09020310,ER,Super-linear,Super-linear,FALSE
+09020310,GPP,Super-linear,Super-linear,FALSE
+09020312,ER,Super-linear,Super-linear,FALSE
+09020312,GPP,Super-linear,Seasonally variable,TRUE
+09030002,ER,Super-linear,Super-linear,FALSE
+09030002,GPP,Super-linear,Super-linear,FALSE
+09030005,ER,Super-linear,Super-linear,FALSE
+09030005,GPP,Super-linear,Super-linear,FALSE
+09030006,ER,Super-linear,Super-linear,FALSE
+09030006,GPP,Super-linear,Super-linear,FALSE
+09030007,ER,Super-linear,Super-linear,FALSE
+09030007,GPP,Super-linear,Seasonally variable,TRUE
+10020001,ER,Super-linear,Super-linear,FALSE
+10020001,GPP,Super-linear,Super-linear,FALSE
+10020002,ER,Super-linear,Seasonally variable,TRUE
+10020002,GPP,Super-linear,Super-linear,FALSE
+10020003,ER,Super-linear,Seasonally variable,TRUE
+10020003,GPP,Super-linear,Super-linear,FALSE
+10020004,ER,Super-linear,Super-linear,FALSE
+10020004,GPP,Super-linear,Super-linear,FALSE
+10020005,ER,Super-linear,Seasonally variable,TRUE
+10020005,GPP,Super-linear,Super-linear,FALSE
+10020006,ER,Super-linear,Super-linear,FALSE
+10020006,GPP,Super-linear,Super-linear,FALSE
+10020007,ER,Super-linear,Super-linear,FALSE
+10020007,GPP,Super-linear,Super-linear,FALSE
+10020008,ER,Super-linear,Seasonally variable,TRUE
+10020008,GPP,Super-linear,Super-linear,FALSE
+10030101,ER,Super-linear,Super-linear,FALSE
+10030101,GPP,Super-linear,Super-linear,FALSE
+10030102,ER,Super-linear,Seasonally variable,TRUE
+10030102,GPP,Super-linear,Super-linear,FALSE
+10030103,ER,Super-linear,Super-linear,FALSE
+10030103,GPP,Super-linear,Super-linear,FALSE
+10030104,ER,Super-linear,Super-linear,FALSE
+10030104,GPP,Seasonally variable,Seasonally variable,FALSE
+10030105,ER,Super-linear,Super-linear,FALSE
+10030105,GPP,Super-linear,Super-linear,FALSE
+10030201,ER,Seasonally variable,Super-linear,TRUE
+10030201,GPP,Super-linear,Super-linear,FALSE
+10030202,ER,Seasonally variable,Seasonally variable,FALSE
+10030202,GPP,Super-linear,Super-linear,FALSE
+10030203,ER,Super-linear,Super-linear,FALSE
+10030203,GPP,Super-linear,Super-linear,FALSE
+10030204,ER,Super-linear,Seasonally variable,TRUE
+10030204,GPP,Super-linear,Super-linear,FALSE
+10030205,ER,Super-linear,Super-linear,FALSE
+10030205,GPP,Super-linear,Super-linear,FALSE
+10040101,ER,Super-linear,Seasonally variable,TRUE
+10040101,GPP,Super-linear,Super-linear,FALSE
+10040102,ER,Super-linear,Seasonally variable,TRUE
+10040102,GPP,Super-linear,Super-linear,FALSE
+10040103,ER,Super-linear,Super-linear,FALSE
+10040103,GPP,Super-linear,Super-linear,FALSE
+10040104,ER,Super-linear,Super-linear,FALSE
+10040104,GPP,Super-linear,Super-linear,FALSE
+10040105,ER,Super-linear,Super-linear,FALSE
+10040105,GPP,Super-linear,Super-linear,FALSE
+10040106,ER,Super-linear,Super-linear,FALSE
+10040106,GPP,Super-linear,Super-linear,FALSE
+10040201,ER,Super-linear,Seasonally variable,TRUE
+10040201,GPP,Super-linear,Super-linear,FALSE
+10040202,ER,Super-linear,Seasonally variable,TRUE
+10040202,GPP,Super-linear,Super-linear,FALSE
+10040203,ER,Seasonally variable,Seasonally variable,FALSE
+10040203,GPP,Super-linear,Super-linear,FALSE
+10040204,ER,Super-linear,Super-linear,FALSE
+10040204,GPP,Super-linear,Super-linear,FALSE
+10040205,ER,Super-linear,Seasonally variable,TRUE
+10040205,GPP,Super-linear,Super-linear,FALSE
+10050004,ER,Super-linear,Seasonally variable,TRUE
+10050004,GPP,Super-linear,Seasonally variable,TRUE
+10050005,ER,Super-linear,Super-linear,FALSE
+10050005,GPP,Super-linear,Super-linear,FALSE
+10050006,ER,Super-linear,Super-linear,FALSE
+10050006,GPP,Super-linear,Super-linear,FALSE
+10050009,ER,Super-linear,Seasonally variable,TRUE
+10050009,GPP,Super-linear,Super-linear,FALSE
+10050010,ER,Super-linear,Super-linear,FALSE
+10050010,GPP,Super-linear,Super-linear,FALSE
+10050012,ER,Uncertain,Uncertain,FALSE
+10050012,GPP,Super-linear,Super-linear,FALSE
+10050014,ER,Super-linear,Super-linear,FALSE
+10050014,GPP,Super-linear,Super-linear,FALSE
+10050016,ER,Super-linear,Super-linear,FALSE
+10050016,GPP,Super-linear,Super-linear,FALSE
+10060001,ER,Seasonally variable,Seasonally variable,FALSE
+10060001,GPP,Super-linear,Seasonally variable,TRUE
+10060002,ER,Super-linear,Super-linear,FALSE
+10060002,GPP,Super-linear,Super-linear,FALSE
+10060004,ER,Seasonally variable,Uncertain,TRUE
+10060004,GPP,Super-linear,Super-linear,FALSE
+10060005,ER,Super-linear,Seasonally variable,TRUE
+10060005,GPP,Seasonally variable,Uncertain,TRUE
+10070001,ER,Seasonally variable,Super-linear,TRUE
+10070001,GPP,Super-linear,Super-linear,FALSE
+10070002,ER,Super-linear,Super-linear,FALSE
+10070002,GPP,Super-linear,Super-linear,FALSE
+10070003,ER,Super-linear,Super-linear,FALSE
+10070003,GPP,Super-linear,Super-linear,FALSE
+10070004,ER,Super-linear,Seasonally variable,TRUE
+10070004,GPP,Super-linear,Super-linear,FALSE
+10070005,ER,Seasonally variable,Seasonally variable,FALSE
+10070005,GPP,Super-linear,Super-linear,FALSE
+10070006,ER,Super-linear,Super-linear,FALSE
+10070006,GPP,Super-linear,Super-linear,FALSE
+10070007,ER,Super-linear,Seasonally variable,TRUE
+10070007,GPP,Super-linear,Super-linear,FALSE
+10070008,ER,Super-linear,Seasonally variable,TRUE
+10070008,GPP,Super-linear,Seasonally variable,TRUE
+10080001,ER,Super-linear,Seasonally variable,TRUE
+10080001,GPP,Super-linear,Super-linear,FALSE
+10080002,ER,Super-linear,Super-linear,FALSE
+10080002,GPP,Super-linear,Super-linear,FALSE
+10080003,ER,Seasonally variable,Seasonally variable,FALSE
+10080003,GPP,Seasonally variable,Super-linear,TRUE
+10080004,ER,Super-linear,Seasonally variable,TRUE
+10080004,GPP,Super-linear,Super-linear,FALSE
+10080005,ER,Super-linear,Seasonally variable,TRUE
+10080005,GPP,Super-linear,Super-linear,FALSE
+10080006,ER,Super-linear,Seasonally variable,TRUE
+10080006,GPP,Super-linear,Super-linear,FALSE
+10080007,ER,Super-linear,Super-linear,FALSE
+10080007,GPP,Super-linear,Super-linear,FALSE
+10080008,ER,Super-linear,Seasonally variable,TRUE
+10080008,GPP,Super-linear,Super-linear,FALSE
+10080009,ER,Seasonally variable,Seasonally variable,FALSE
+10080009,GPP,Super-linear,Super-linear,FALSE
+10080010,ER,Super-linear,Seasonally variable,TRUE
+10080010,GPP,Super-linear,Super-linear,FALSE
+10080011,ER,Super-linear,Insufficient data,TRUE
+10080011,GPP,Super-linear,Super-linear,FALSE
+10080012,ER,Super-linear,Seasonally variable,TRUE
+10080012,GPP,Super-linear,Super-linear,FALSE
+10080013,ER,Super-linear,Seasonally variable,TRUE
+10080013,GPP,Super-linear,Super-linear,FALSE
+10080014,ER,Super-linear,Seasonally variable,TRUE
+10080014,GPP,Super-linear,Super-linear,FALSE
+10080015,ER,Super-linear,Seasonally variable,TRUE
+10080015,GPP,Super-linear,Super-linear,FALSE
+10080016,ER,Seasonally variable,Seasonally variable,FALSE
+10080016,GPP,Super-linear,Super-linear,FALSE
+10090101,ER,Super-linear,Super-linear,FALSE
+10090101,GPP,Super-linear,Super-linear,FALSE
+10090102,ER,Super-linear,Super-linear,FALSE
+10090102,GPP,Super-linear,Super-linear,FALSE
+10090201,ER,Seasonally variable,Seasonally variable,FALSE
+10090201,GPP,Super-linear,Seasonally variable,TRUE
+10090202,ER,Super-linear,Super-linear,FALSE
+10090202,GPP,Super-linear,Super-linear,FALSE
+10090203,ER,Super-linear,Seasonally variable,TRUE
+10090203,GPP,Super-linear,Super-linear,FALSE
+10090204,ER,Seasonally variable,Uncertain,TRUE
+10090204,GPP,Super-linear,Super-linear,FALSE
+10090205,ER,Super-linear,Super-linear,FALSE
+10090205,GPP,Super-linear,Super-linear,FALSE
+10090206,ER,Super-linear,Super-linear,FALSE
+10090206,GPP,Super-linear,Super-linear,FALSE
+10090207,ER,Super-linear,Super-linear,FALSE
+10090207,GPP,Super-linear,Super-linear,FALSE
+10090208,ER,Super-linear,Uncertain,TRUE
+10090208,GPP,Super-linear,Super-linear,FALSE
+10090209,ER,Super-linear,Super-linear,FALSE
+10090209,GPP,Super-linear,Super-linear,FALSE
+10090210,ER,Super-linear,Seasonally variable,TRUE
+10090210,GPP,Super-linear,Super-linear,FALSE
+10100001,ER,Super-linear,Seasonally variable,TRUE
+10100001,GPP,Super-linear,Super-linear,FALSE
+10100002,ER,Super-linear,Seasonally variable,TRUE
+10100002,GPP,Super-linear,Super-linear,FALSE
+10100003,ER,Super-linear,Super-linear,FALSE
+10100003,GPP,Super-linear,Super-linear,FALSE
+10100004,ER,Super-linear,Seasonally variable,TRUE
+10100004,GPP,Super-linear,Super-linear,FALSE
+10100005,ER,Super-linear,Seasonally variable,TRUE
+10100005,GPP,Super-linear,Super-linear,FALSE
+10110101,ER,Super-linear,Seasonally variable,TRUE
+10110101,GPP,Seasonally variable,Seasonally variable,FALSE
+10110102,ER,Super-linear,Super-linear,FALSE
+10110102,GPP,Super-linear,Super-linear,FALSE
+10110201,ER,Super-linear,Super-linear,FALSE
+10110201,GPP,Super-linear,Super-linear,FALSE
+10110202,ER,Super-linear,Super-linear,FALSE
+10110202,GPP,Super-linear,Super-linear,FALSE
+10110203,ER,Super-linear,Super-linear,FALSE
+10110203,GPP,Super-linear,Super-linear,FALSE
+10110204,ER,Super-linear,Seasonally variable,TRUE
+10110204,GPP,Super-linear,Super-linear,FALSE
+10110205,ER,Super-linear,Seasonally variable,TRUE
+10110205,GPP,Super-linear,Super-linear,FALSE
+10120101,ER,Super-linear,Super-linear,FALSE
+10120101,GPP,Super-linear,Super-linear,FALSE
+10120102,ER,Super-linear,Seasonally variable,TRUE
+10120102,GPP,Super-linear,Super-linear,FALSE
+10120103,ER,Super-linear,Super-linear,FALSE
+10120103,GPP,Super-linear,Super-linear,FALSE
+10120104,ER,Super-linear,Super-linear,FALSE
+10120104,GPP,Super-linear,Super-linear,FALSE
+10120105,ER,Super-linear,Seasonally variable,TRUE
+10120105,GPP,Super-linear,Super-linear,FALSE
+10120106,ER,Super-linear,Super-linear,FALSE
+10120106,GPP,Super-linear,Super-linear,FALSE
+10120107,ER,Super-linear,Seasonally variable,TRUE
+10120107,GPP,Super-linear,Super-linear,FALSE
+10120108,ER,Super-linear,Seasonally variable,TRUE
+10120108,GPP,Super-linear,Super-linear,FALSE
+10120109,ER,Super-linear,Super-linear,FALSE
+10120109,GPP,Super-linear,Super-linear,FALSE
+10120110,ER,Super-linear,Super-linear,FALSE
+10120110,GPP,Super-linear,Super-linear,FALSE
+10120111,ER,Super-linear,Super-linear,FALSE
+10120111,GPP,Super-linear,Super-linear,FALSE
+10120112,ER,Super-linear,Super-linear,FALSE
+10120112,GPP,Super-linear,Super-linear,FALSE
+10120113,ER,Super-linear,Seasonally variable,TRUE
+10120113,GPP,Super-linear,Super-linear,FALSE
+10120201,ER,Super-linear,Super-linear,FALSE
+10120201,GPP,Super-linear,Super-linear,FALSE
+10120202,ER,Super-linear,Super-linear,FALSE
+10120202,GPP,Super-linear,Super-linear,FALSE
+10120203,ER,Seasonally variable,Super-linear,TRUE
+10120203,GPP,Super-linear,Super-linear,FALSE
+10130101,ER,Super-linear,Super-linear,FALSE
+10130101,GPP,Super-linear,Seasonally variable,TRUE
+10130102,ER,Super-linear,Super-linear,FALSE
+10130102,GPP,Super-linear,Super-linear,FALSE
+10130103,ER,Super-linear,Super-linear,FALSE
+10130103,GPP,Super-linear,Super-linear,FALSE
+10130104,ER,Super-linear,Super-linear,FALSE
+10130104,GPP,Super-linear,Super-linear,FALSE
+10130105,ER,Super-linear,Seasonally variable,TRUE
+10130105,GPP,Super-linear,Super-linear,FALSE
+10130106,ER,Super-linear,Super-linear,FALSE
+10130106,GPP,Super-linear,Super-linear,FALSE
+10130201,ER,Super-linear,Seasonally variable,TRUE
+10130201,GPP,Super-linear,Super-linear,FALSE
+10130202,ER,Seasonally variable,Uncertain,TRUE
+10130202,GPP,Super-linear,Super-linear,FALSE
+10130203,ER,Super-linear,Seasonally variable,TRUE
+10130203,GPP,Super-linear,Super-linear,FALSE
+10130204,ER,Super-linear,Seasonally variable,TRUE
+10130204,GPP,Super-linear,Super-linear,FALSE
+10130205,ER,Super-linear,Super-linear,FALSE
+10130205,GPP,Super-linear,Super-linear,FALSE
+10130206,ER,Super-linear,Super-linear,FALSE
+10130206,GPP,Super-linear,Super-linear,FALSE
+10130301,ER,Super-linear,Super-linear,FALSE
+10130301,GPP,Super-linear,Super-linear,FALSE
+10130302,ER,Super-linear,Seasonally variable,TRUE
+10130302,GPP,Super-linear,Super-linear,FALSE
+10130303,ER,Super-linear,Seasonally variable,TRUE
+10130303,GPP,Super-linear,Super-linear,FALSE
+10130304,ER,Super-linear,Super-linear,FALSE
+10130304,GPP,Super-linear,Super-linear,FALSE
+10130305,ER,Super-linear,Super-linear,FALSE
+10130305,GPP,Super-linear,Super-linear,FALSE
+10130306,ER,Super-linear,Super-linear,FALSE
+10130306,GPP,Super-linear,Super-linear,FALSE
+10140101,ER,Super-linear,Seasonally variable,TRUE
+10140101,GPP,Super-linear,Super-linear,FALSE
+10140102,ER,Super-linear,Super-linear,FALSE
+10140102,GPP,Super-linear,Super-linear,FALSE
+10140103,ER,Super-linear,Super-linear,FALSE
+10140103,GPP,Super-linear,Super-linear,FALSE
+10140104,ER,Super-linear,Super-linear,FALSE
+10140104,GPP,Super-linear,Super-linear,FALSE
+10140105,ER,Super-linear,Seasonally variable,TRUE
+10140105,GPP,Seasonally variable,Seasonally variable,FALSE
+10140201,ER,Super-linear,Seasonally variable,TRUE
+10140201,GPP,Super-linear,Super-linear,FALSE
+10140202,ER,Super-linear,Seasonally variable,TRUE
+10140202,GPP,Super-linear,Super-linear,FALSE
+10140203,ER,Super-linear,Super-linear,FALSE
+10140203,GPP,Super-linear,Super-linear,FALSE
+10140204,ER,Super-linear,Seasonally variable,TRUE
+10140204,GPP,Super-linear,Super-linear,FALSE
+10150001,ER,Super-linear,Seasonally variable,TRUE
+10150001,GPP,Super-linear,Seasonally variable,TRUE
+10150002,ER,Super-linear,Super-linear,FALSE
+10150002,GPP,Super-linear,Super-linear,FALSE
+10150003,ER,Super-linear,Super-linear,FALSE
+10150003,GPP,Super-linear,Super-linear,FALSE
+10150004,ER,Super-linear,Super-linear,FALSE
+10150004,GPP,Super-linear,Super-linear,FALSE
+10150005,ER,Super-linear,Super-linear,FALSE
+10150005,GPP,Super-linear,Super-linear,FALSE
+10150006,ER,Super-linear,Super-linear,FALSE
+10150006,GPP,Super-linear,Super-linear,FALSE
+10150007,ER,Super-linear,Super-linear,FALSE
+10150007,GPP,Super-linear,Super-linear,FALSE
+10160001,ER,Super-linear,Super-linear,FALSE
+10160001,GPP,Super-linear,Super-linear,FALSE
+10160002,ER,Super-linear,Super-linear,FALSE
+10160002,GPP,Super-linear,Seasonally variable,TRUE
+10160003,ER,Super-linear,Super-linear,FALSE
+10160003,GPP,Super-linear,Super-linear,FALSE
+10160004,ER,Super-linear,Super-linear,FALSE
+10160004,GPP,Seasonally variable,Seasonally variable,FALSE
+10160005,ER,Super-linear,Seasonally variable,TRUE
+10160005,GPP,Super-linear,Seasonally variable,TRUE
+10160006,ER,Super-linear,Super-linear,FALSE
+10160006,GPP,Super-linear,Seasonally variable,TRUE
+10160007,ER,Super-linear,Super-linear,FALSE
+10160007,GPP,Super-linear,Super-linear,FALSE
+10160008,ER,Super-linear,Super-linear,FALSE
+10160008,GPP,Super-linear,Super-linear,FALSE
+10160009,ER,Super-linear,Seasonally variable,TRUE
+10160009,GPP,Super-linear,Seasonally variable,TRUE
+10160011,ER,Super-linear,Super-linear,FALSE
+10160011,GPP,Super-linear,Super-linear,FALSE
+10170101,ER,Super-linear,Super-linear,FALSE
+10170101,GPP,Super-linear,Super-linear,FALSE
+10170102,ER,Super-linear,Super-linear,FALSE
+10170102,GPP,Super-linear,Super-linear,FALSE
+10170103,ER,Super-linear,Super-linear,FALSE
+10170103,GPP,Super-linear,Seasonally variable,TRUE
+10170201,ER,Super-linear,Super-linear,FALSE
+10170201,GPP,Super-linear,Seasonally variable,TRUE
+10170202,ER,Super-linear,Super-linear,FALSE
+10170202,GPP,Super-linear,Seasonally variable,TRUE
+10170203,ER,Super-linear,Super-linear,FALSE
+10170203,GPP,Super-linear,Super-linear,FALSE
+10170204,ER,Super-linear,Super-linear,FALSE
+10170204,GPP,Super-linear,Seasonally variable,TRUE
+10180001,ER,Super-linear,Super-linear,FALSE
+10180001,GPP,Super-linear,Super-linear,FALSE
+10180002,ER,Super-linear,Super-linear,FALSE
+10180002,GPP,Super-linear,Super-linear,FALSE
+10180003,ER,Super-linear,Super-linear,FALSE
+10180003,GPP,Super-linear,Super-linear,FALSE
+10180004,ER,Super-linear,Super-linear,FALSE
+10180004,GPP,Super-linear,Super-linear,FALSE
+10180005,ER,Super-linear,Seasonally variable,TRUE
+10180005,GPP,Super-linear,Super-linear,FALSE
+10180006,ER,Super-linear,Super-linear,FALSE
+10180006,GPP,Super-linear,Super-linear,FALSE
+10180007,ER,Super-linear,Super-linear,FALSE
+10180007,GPP,Super-linear,Super-linear,FALSE
+10180008,ER,Super-linear,Super-linear,FALSE
+10180008,GPP,Super-linear,Super-linear,FALSE
+10180009,ER,Super-linear,Super-linear,FALSE
+10180009,GPP,Super-linear,Super-linear,FALSE
+10180010,ER,Super-linear,Super-linear,FALSE
+10180010,GPP,Super-linear,Super-linear,FALSE
+10180011,ER,Super-linear,Super-linear,FALSE
+10180011,GPP,Super-linear,Super-linear,FALSE
+10180012,ER,Super-linear,Super-linear,FALSE
+10180012,GPP,Super-linear,Super-linear,FALSE
+10180013,ER,Super-linear,Seasonally variable,TRUE
+10180013,GPP,Super-linear,Super-linear,FALSE
+10180014,ER,Super-linear,Super-linear,FALSE
+10180014,GPP,Super-linear,Super-linear,FALSE
+10190001,ER,Super-linear,Super-linear,FALSE
+10190001,GPP,Super-linear,Super-linear,FALSE
+10190002,ER,Super-linear,Super-linear,FALSE
+10190002,GPP,Super-linear,Super-linear,FALSE
+10190003,ER,Super-linear,Super-linear,FALSE
+10190003,GPP,Super-linear,Super-linear,FALSE
+10190004,ER,Super-linear,Super-linear,FALSE
+10190004,GPP,Seasonally variable,Seasonally variable,FALSE
+10190005,ER,Seasonally variable,Super-linear,TRUE
+10190005,GPP,Seasonally variable,Seasonally variable,FALSE
+10190006,ER,Super-linear,Super-linear,FALSE
+10190006,GPP,Seasonally variable,Super-linear,TRUE
+10190007,ER,Super-linear,Seasonally variable,TRUE
+10190007,GPP,Super-linear,Super-linear,FALSE
+10190008,ER,Seasonally variable,Insufficient data,TRUE
+10190008,GPP,Super-linear,Seasonally variable,TRUE
+10190009,ER,Super-linear,Super-linear,FALSE
+10190009,GPP,Super-linear,Super-linear,FALSE
+10190010,ER,Super-linear,Super-linear,FALSE
+10190010,GPP,Super-linear,Super-linear,FALSE
+10190011,ER,Super-linear,Super-linear,FALSE
+10190011,GPP,Super-linear,Super-linear,FALSE
+10190012,ER,Super-linear,Super-linear,FALSE
+10190012,GPP,Super-linear,Super-linear,FALSE
+10190013,ER,Super-linear,Seasonally variable,TRUE
+10190013,GPP,Super-linear,Super-linear,FALSE
+10190014,ER,Super-linear,Super-linear,FALSE
+10190014,GPP,Super-linear,Super-linear,FALSE
+10190015,ER,Super-linear,Super-linear,FALSE
+10190015,GPP,Super-linear,Super-linear,FALSE
+10190016,ER,Super-linear,Super-linear,FALSE
+10190016,GPP,Super-linear,Super-linear,FALSE
+10190017,ER,Super-linear,Super-linear,FALSE
+10190017,GPP,Super-linear,Super-linear,FALSE
+10190018,ER,Super-linear,Super-linear,FALSE
+10190018,GPP,Super-linear,Super-linear,FALSE
+10200101,ER,Super-linear,Super-linear,FALSE
+10200101,GPP,Super-linear,Super-linear,FALSE
+10200102,ER,Super-linear,Seasonally variable,TRUE
+10200102,GPP,Super-linear,Super-linear,FALSE
+10200103,ER,Super-linear,Super-linear,FALSE
+10200103,GPP,Super-linear,Super-linear,FALSE
+10200201,ER,Super-linear,Super-linear,FALSE
+10200201,GPP,Super-linear,Super-linear,FALSE
+10200202,ER,Super-linear,Super-linear,FALSE
+10200202,GPP,Super-linear,Super-linear,FALSE
+10200203,ER,Seasonally variable,Seasonally variable,FALSE
+10200203,GPP,Super-linear,Super-linear,FALSE
+10210001,ER,Super-linear,Super-linear,FALSE
+10210001,GPP,Super-linear,Super-linear,FALSE
+10210002,ER,Super-linear,Seasonally variable,TRUE
+10210002,GPP,Super-linear,Super-linear,FALSE
+10210003,ER,Super-linear,Super-linear,FALSE
+10210003,GPP,Super-linear,Super-linear,FALSE
+10210004,ER,Super-linear,Seasonally variable,TRUE
+10210004,GPP,Super-linear,Super-linear,FALSE
+10210005,ER,Seasonally variable,Seasonally variable,FALSE
+10210005,GPP,Super-linear,Super-linear,FALSE
+10210006,ER,Super-linear,Super-linear,FALSE
+10210006,GPP,Super-linear,Super-linear,FALSE
+10210007,ER,Super-linear,Super-linear,FALSE
+10210007,GPP,Super-linear,Super-linear,FALSE
+10210008,ER,Super-linear,Super-linear,FALSE
+10210008,GPP,Super-linear,Super-linear,FALSE
+10210009,ER,Super-linear,Seasonally variable,TRUE
+10210009,GPP,Super-linear,Super-linear,FALSE
+10210010,ER,Super-linear,Uncertain,TRUE
+10210010,GPP,Super-linear,Super-linear,FALSE
+10220001,ER,Super-linear,Super-linear,FALSE
+10220001,GPP,Super-linear,Super-linear,FALSE
+10220002,ER,Super-linear,Uncertain,TRUE
+10220002,GPP,Super-linear,Seasonally variable,TRUE
+10220003,ER,Super-linear,Seasonally variable,TRUE
+10220003,GPP,Super-linear,Super-linear,FALSE
+10220004,ER,Seasonally variable,Seasonally variable,FALSE
+10220004,GPP,Super-linear,Super-linear,FALSE
+10230001,ER,Super-linear,Super-linear,FALSE
+10230001,GPP,Super-linear,Super-linear,FALSE
+10230002,ER,Seasonally variable,Insufficient data,TRUE
+10230002,GPP,Super-linear,Super-linear,FALSE
+10230003,ER,Super-linear,Seasonally variable,TRUE
+10230003,GPP,Super-linear,Super-linear,FALSE
+10230004,ER,Seasonally variable,Uncertain,TRUE
+10230004,GPP,Super-linear,Seasonally variable,TRUE
+10230005,ER,Super-linear,Seasonally variable,TRUE
+10230005,GPP,Super-linear,Super-linear,FALSE
+10230006,ER,Super-linear,Super-linear,FALSE
+10230006,GPP,Super-linear,Super-linear,FALSE
+10230007,ER,Super-linear,Seasonally variable,TRUE
+10230007,GPP,Super-linear,Super-linear,FALSE
+10240001,ER,Super-linear,Super-linear,FALSE
+10240001,GPP,Super-linear,Super-linear,FALSE
+10240002,ER,Seasonally variable,Super-linear,TRUE
+10240002,GPP,Super-linear,Super-linear,FALSE
+10240003,ER,Seasonally variable,Seasonally variable,FALSE
+10240003,GPP,Super-linear,Super-linear,FALSE
+10240004,ER,Insufficient data,Insufficient data,FALSE
+10240004,GPP,Insufficient data,Insufficient data,FALSE
+10240005,ER,Super-linear,Super-linear,FALSE
+10240005,GPP,Super-linear,Super-linear,FALSE
+10240006,ER,Super-linear,Seasonally variable,TRUE
+10240006,GPP,Super-linear,Super-linear,FALSE
+10240007,ER,Seasonally variable,Seasonally variable,FALSE
+10240007,GPP,Super-linear,Super-linear,FALSE
+10240008,ER,Seasonally variable,Seasonally variable,FALSE
+10240008,GPP,Super-linear,Super-linear,FALSE
+10240009,ER,Super-linear,Seasonally variable,TRUE
+10240009,GPP,Super-linear,Super-linear,FALSE
+10240010,ER,Seasonally variable,Seasonally variable,FALSE
+10240010,GPP,Super-linear,Super-linear,FALSE
+10240011,ER,Super-linear,Super-linear,FALSE
+10240011,GPP,Super-linear,Super-linear,FALSE
+10240012,ER,Super-linear,Super-linear,FALSE
+10240012,GPP,Super-linear,Super-linear,FALSE
+10240013,ER,Seasonally variable,Seasonally variable,FALSE
+10240013,GPP,Super-linear,Super-linear,FALSE
+10250001,ER,Super-linear,Super-linear,FALSE
+10250001,GPP,Super-linear,Super-linear,FALSE
+10250002,ER,Super-linear,Super-linear,FALSE
+10250002,GPP,Super-linear,Super-linear,FALSE
+10250003,ER,Super-linear,Super-linear,FALSE
+10250003,GPP,Super-linear,Super-linear,FALSE
+10250004,ER,Super-linear,Super-linear,FALSE
+10250004,GPP,Super-linear,Super-linear,FALSE
+10250005,ER,Super-linear,Super-linear,FALSE
+10250005,GPP,Super-linear,Super-linear,FALSE
+10250006,ER,Super-linear,Super-linear,FALSE
+10250006,GPP,Super-linear,Super-linear,FALSE
+10250007,ER,Super-linear,Seasonally variable,TRUE
+10250007,GPP,Super-linear,Super-linear,FALSE
+10250008,ER,Super-linear,Seasonally variable,TRUE
+10250008,GPP,Super-linear,Seasonally variable,TRUE
+10250009,ER,Super-linear,Super-linear,FALSE
+10250009,GPP,Super-linear,Super-linear,FALSE
+10250010,ER,Super-linear,Super-linear,FALSE
+10250010,GPP,Super-linear,Super-linear,FALSE
+10250011,ER,Seasonally variable,Insufficient data,TRUE
+10250011,GPP,Super-linear,Seasonally variable,TRUE
+10250012,ER,Super-linear,Super-linear,FALSE
+10250012,GPP,Super-linear,Super-linear,FALSE
+10250013,ER,Super-linear,Super-linear,FALSE
+10250013,GPP,Super-linear,Super-linear,FALSE
+10250014,ER,Super-linear,Seasonally variable,TRUE
+10250014,GPP,Seasonally variable,Seasonally variable,FALSE
+10250015,ER,Super-linear,Seasonally variable,TRUE
+10250015,GPP,Super-linear,Seasonally variable,TRUE
+10250016,ER,Super-linear,Super-linear,FALSE
+10250016,GPP,Super-linear,Super-linear,FALSE
+10250017,ER,Super-linear,Super-linear,FALSE
+10250017,GPP,Super-linear,Super-linear,FALSE
+10260001,ER,Super-linear,Super-linear,FALSE
+10260001,GPP,Super-linear,Super-linear,FALSE
+10260002,ER,Super-linear,Super-linear,FALSE
+10260002,GPP,Super-linear,Super-linear,FALSE
+10260003,ER,Super-linear,Super-linear,FALSE
+10260003,GPP,Super-linear,Super-linear,FALSE
+10260004,ER,Super-linear,Super-linear,FALSE
+10260004,GPP,Super-linear,Super-linear,FALSE
+10260005,ER,Seasonally variable,Insufficient data,TRUE
+10260005,GPP,Super-linear,Super-linear,FALSE
+10260006,ER,Super-linear,Super-linear,FALSE
+10260006,GPP,Super-linear,Super-linear,FALSE
+10260007,ER,Super-linear,Seasonally variable,TRUE
+10260007,GPP,Seasonally variable,Super-linear,TRUE
+10260008,ER,Super-linear,Super-linear,FALSE
+10260008,GPP,Super-linear,Super-linear,FALSE
+10260009,ER,Super-linear,Uncertain,TRUE
+10260009,GPP,Super-linear,Super-linear,FALSE
+10260010,ER,Seasonally variable,Seasonally variable,FALSE
+10260010,GPP,Super-linear,Super-linear,FALSE
+10260011,ER,Super-linear,Super-linear,FALSE
+10260011,GPP,Super-linear,Super-linear,FALSE
+10260012,ER,Super-linear,Uncertain,TRUE
+10260012,GPP,Super-linear,Super-linear,FALSE
+10260013,ER,Seasonally variable,Seasonally variable,FALSE
+10260013,GPP,Seasonally variable,Super-linear,TRUE
+10260014,ER,Seasonally variable,Seasonally variable,FALSE
+10260014,GPP,Super-linear,Super-linear,FALSE
+10260015,ER,Seasonally variable,Seasonally variable,FALSE
+10260015,GPP,Super-linear,Super-linear,FALSE
+10270101,ER,Super-linear,Seasonally variable,TRUE
+10270101,GPP,Seasonally variable,Seasonally variable,FALSE
+10270102,ER,Super-linear,Seasonally variable,TRUE
+10270102,GPP,Super-linear,Super-linear,FALSE
+10270103,ER,Seasonally variable,Seasonally variable,FALSE
+10270103,GPP,Super-linear,Super-linear,FALSE
+10270104,ER,Super-linear,Seasonally variable,TRUE
+10270104,GPP,Super-linear,Super-linear,FALSE
+10270201,ER,Super-linear,Seasonally variable,TRUE
+10270201,GPP,Super-linear,Super-linear,FALSE
+10270202,ER,Seasonally variable,Insufficient data,TRUE
+10270202,GPP,Super-linear,Super-linear,FALSE
+10270203,ER,Super-linear,Seasonally variable,TRUE
+10270203,GPP,Super-linear,Seasonally variable,TRUE
+10270204,ER,Super-linear,Seasonally variable,TRUE
+10270204,GPP,Super-linear,Seasonally variable,TRUE
+10270205,ER,Seasonally variable,Seasonally variable,FALSE
+10270205,GPP,Super-linear,Super-linear,FALSE
+10270206,ER,Super-linear,Uncertain,TRUE
+10270206,GPP,Super-linear,Seasonally variable,TRUE
+10270207,ER,Seasonally variable,Seasonally variable,FALSE
+10270207,GPP,Super-linear,Super-linear,FALSE
+10280101,ER,Super-linear,Super-linear,FALSE
+10280101,GPP,Super-linear,Super-linear,FALSE
+10280102,ER,Super-linear,Super-linear,FALSE
+10280102,GPP,Super-linear,Super-linear,FALSE
+10280103,ER,Super-linear,Super-linear,FALSE
+10280103,GPP,Super-linear,Super-linear,FALSE
+10280201,ER,Super-linear,Super-linear,FALSE
+10280201,GPP,Super-linear,Super-linear,FALSE
+10280202,ER,Super-linear,Seasonally variable,TRUE
+10280202,GPP,Super-linear,Super-linear,FALSE
+10280203,ER,Seasonally variable,Seasonally variable,FALSE
+10280203,GPP,Super-linear,Super-linear,FALSE
+10290101,ER,Seasonally variable,Seasonally variable,FALSE
+10290101,GPP,Super-linear,Super-linear,FALSE
+10290102,ER,Super-linear,Seasonally variable,TRUE
+10290102,GPP,Super-linear,Super-linear,FALSE
+10290103,ER,Super-linear,Seasonally variable,TRUE
+10290103,GPP,Super-linear,Super-linear,FALSE
+10290104,ER,Super-linear,Seasonally variable,TRUE
+10290104,GPP,Super-linear,Super-linear,FALSE
+10290105,ER,Super-linear,Super-linear,FALSE
+10290105,GPP,Super-linear,Super-linear,FALSE
+10290106,ER,Super-linear,Super-linear,FALSE
+10290106,GPP,Super-linear,Super-linear,FALSE
+10290107,ER,Super-linear,Super-linear,FALSE
+10290107,GPP,Super-linear,Super-linear,FALSE
+10290108,ER,Super-linear,Super-linear,FALSE
+10290108,GPP,Super-linear,Super-linear,FALSE
+10290109,ER,Super-linear,Seasonally variable,TRUE
+10290109,GPP,Super-linear,Super-linear,FALSE
+10290110,ER,Super-linear,Super-linear,FALSE
+10290110,GPP,Super-linear,Super-linear,FALSE
+10290111,ER,Super-linear,Super-linear,FALSE
+10290111,GPP,Super-linear,Super-linear,FALSE
+10290201,ER,Super-linear,Super-linear,FALSE
+10290201,GPP,Super-linear,Super-linear,FALSE
+10290202,ER,Super-linear,Seasonally variable,TRUE
+10290202,GPP,Seasonally variable,Super-linear,TRUE
+10290203,ER,Super-linear,Seasonally variable,TRUE
+10290203,GPP,Super-linear,Super-linear,FALSE
+10300101,ER,Super-linear,Super-linear,FALSE
+10300101,GPP,Super-linear,Super-linear,FALSE
+10300102,ER,Super-linear,Super-linear,FALSE
+10300102,GPP,Super-linear,Super-linear,FALSE
+10300103,ER,Super-linear,Super-linear,FALSE
+10300103,GPP,Super-linear,Super-linear,FALSE
+10300104,ER,Super-linear,Super-linear,FALSE
+10300104,GPP,Super-linear,Super-linear,FALSE
+10300200,ER,Super-linear,Super-linear,FALSE
+10300200,GPP,Super-linear,Super-linear,FALSE
+11010001,ER,Super-linear,Seasonally variable,TRUE
+11010001,GPP,Super-linear,Super-linear,FALSE
+11010002,ER,Super-linear,Super-linear,FALSE
+11010002,GPP,Super-linear,Super-linear,FALSE
+11010003,ER,Super-linear,Seasonally variable,TRUE
+11010003,GPP,Super-linear,Super-linear,FALSE
+11010004,ER,Super-linear,Seasonally variable,TRUE
+11010004,GPP,Super-linear,Super-linear,FALSE
+11010005,ER,Seasonally variable,Seasonally variable,FALSE
+11010005,GPP,Super-linear,Super-linear,FALSE
+11010006,ER,Super-linear,Super-linear,FALSE
+11010006,GPP,Seasonally variable,Super-linear,TRUE
+11010007,ER,Seasonally variable,Seasonally variable,FALSE
+11010007,GPP,Super-linear,Super-linear,FALSE
+11010008,ER,Super-linear,Seasonally variable,TRUE
+11010008,GPP,Super-linear,Super-linear,FALSE
+11010009,ER,Super-linear,Seasonally variable,TRUE
+11010009,GPP,Super-linear,Super-linear,FALSE
+11010010,ER,Super-linear,Super-linear,FALSE
+11010010,GPP,Super-linear,Super-linear,FALSE
+11010011,ER,Super-linear,Seasonally variable,TRUE
+11010011,GPP,Super-linear,Super-linear,FALSE
+11010012,ER,Super-linear,Seasonally variable,TRUE
+11010012,GPP,Seasonally variable,Super-linear,TRUE
+11010013,ER,Super-linear,Seasonally variable,TRUE
+11010013,GPP,Super-linear,Super-linear,FALSE
+11010014,ER,Super-linear,Seasonally variable,TRUE
+11010014,GPP,Super-linear,Super-linear,FALSE
+11020001,ER,Super-linear,Super-linear,FALSE
+11020001,GPP,Super-linear,Super-linear,FALSE
+11020002,ER,Super-linear,Super-linear,FALSE
+11020002,GPP,Super-linear,Super-linear,FALSE
+11020003,ER,Super-linear,Super-linear,FALSE
+11020003,GPP,Super-linear,Super-linear,FALSE
+11020004,ER,Super-linear,Super-linear,FALSE
+11020004,GPP,Super-linear,Super-linear,FALSE
+11020005,ER,Super-linear,Super-linear,FALSE
+11020005,GPP,Super-linear,Super-linear,FALSE
+11020006,ER,Super-linear,Super-linear,FALSE
+11020006,GPP,Super-linear,Super-linear,FALSE
+11020007,ER,Super-linear,Seasonally variable,TRUE
+11020007,GPP,Super-linear,Super-linear,FALSE
+11020008,ER,Super-linear,Super-linear,FALSE
+11020008,GPP,Super-linear,Super-linear,FALSE
+11020009,ER,Super-linear,Super-linear,FALSE
+11020009,GPP,Super-linear,Super-linear,FALSE
+11020010,ER,Super-linear,Super-linear,FALSE
+11020010,GPP,Super-linear,Super-linear,FALSE
+11020011,ER,Super-linear,Super-linear,FALSE
+11020011,GPP,Super-linear,Super-linear,FALSE
+11020012,ER,Super-linear,Super-linear,FALSE
+11020012,GPP,Super-linear,Super-linear,FALSE
+11020013,ER,Super-linear,Seasonally variable,TRUE
+11020013,GPP,Super-linear,Super-linear,FALSE
+11030001,ER,Super-linear,Super-linear,FALSE
+11030001,GPP,Super-linear,Super-linear,FALSE
+11030002,ER,Super-linear,Super-linear,FALSE
+11030002,GPP,Super-linear,Super-linear,FALSE
+11030003,ER,Super-linear,Super-linear,FALSE
+11030003,GPP,Super-linear,Super-linear,FALSE
+11030004,ER,Super-linear,Super-linear,FALSE
+11030004,GPP,Super-linear,Super-linear,FALSE
+11030005,ER,Super-linear,Seasonally variable,TRUE
+11030005,GPP,Super-linear,Super-linear,FALSE
+11030006,ER,Seasonally variable,Seasonally variable,FALSE
+11030006,GPP,Super-linear,Super-linear,FALSE
+11030007,ER,Seasonally variable,Seasonally variable,FALSE
+11030007,GPP,Super-linear,Super-linear,FALSE
+11030008,ER,Super-linear,Seasonally variable,TRUE
+11030008,GPP,Super-linear,Seasonally variable,TRUE
+11030009,ER,Seasonally variable,Uncertain,TRUE
+11030009,GPP,Super-linear,Seasonally variable,TRUE
+11030010,ER,Super-linear,Super-linear,FALSE
+11030010,GPP,Super-linear,Super-linear,FALSE
+11030011,ER,Super-linear,Seasonally variable,TRUE
+11030011,GPP,Seasonally variable,Seasonally variable,FALSE
+11030012,ER,Super-linear,Seasonally variable,TRUE
+11030012,GPP,Super-linear,Seasonally variable,TRUE
+11030013,ER,Super-linear,Super-linear,FALSE
+11030013,GPP,Super-linear,Super-linear,FALSE
+11030014,ER,Super-linear,Seasonally variable,TRUE
+11030014,GPP,Seasonally variable,Seasonally variable,FALSE
+11030015,ER,Super-linear,Insufficient data,TRUE
+11030015,GPP,Super-linear,Seasonally variable,TRUE
+11030016,ER,Super-linear,Insufficient data,TRUE
+11030016,GPP,Seasonally variable,Super-linear,TRUE
+11030017,ER,Super-linear,Seasonally variable,TRUE
+11030017,GPP,Super-linear,Seasonally variable,TRUE
+11030018,ER,Super-linear,Super-linear,FALSE
+11030018,GPP,Super-linear,Super-linear,FALSE
+11040001,ER,Super-linear,Seasonally variable,TRUE
+11040001,GPP,Super-linear,Super-linear,FALSE
+11040002,ER,Super-linear,Seasonally variable,TRUE
+11040002,GPP,Super-linear,Super-linear,FALSE
+11040003,ER,Super-linear,Super-linear,FALSE
+11040003,GPP,Super-linear,Super-linear,FALSE
+11040004,ER,Super-linear,Super-linear,FALSE
+11040004,GPP,Super-linear,Super-linear,FALSE
+11040005,ER,Super-linear,Super-linear,FALSE
+11040005,GPP,Super-linear,Super-linear,FALSE
+11040006,ER,Super-linear,Super-linear,FALSE
+11040006,GPP,Super-linear,Super-linear,FALSE
+11040007,ER,Super-linear,Super-linear,FALSE
+11040007,GPP,Super-linear,Super-linear,FALSE
+11040008,ER,Super-linear,Super-linear,FALSE
+11040008,GPP,Super-linear,Super-linear,FALSE
+11050001,ER,Super-linear,Super-linear,FALSE
+11050001,GPP,Super-linear,Super-linear,FALSE
+11050002,ER,Super-linear,Seasonally variable,TRUE
+11050002,GPP,Super-linear,Super-linear,FALSE
+11050003,ER,Super-linear,Seasonally variable,TRUE
+11050003,GPP,Super-linear,Super-linear,FALSE
+11060001,ER,Super-linear,Super-linear,FALSE
+11060001,GPP,Super-linear,Super-linear,FALSE
+11060002,ER,Seasonally variable,Insufficient data,TRUE
+11060002,GPP,Super-linear,Super-linear,FALSE
+11060003,ER,Super-linear,Uncertain,TRUE
+11060003,GPP,Super-linear,Super-linear,FALSE
+11060004,ER,Super-linear,Uncertain,TRUE
+11060004,GPP,Super-linear,Super-linear,FALSE
+11060005,ER,Seasonally variable,Seasonally variable,FALSE
+11060005,GPP,Super-linear,Super-linear,FALSE
+11060006,ER,Super-linear,Seasonally variable,TRUE
+11060006,GPP,Super-linear,Super-linear,FALSE
+11070101,ER,Seasonally variable,Seasonally variable,FALSE
+11070101,GPP,Super-linear,Super-linear,FALSE
+11070102,ER,Seasonally variable,Seasonally variable,FALSE
+11070102,GPP,Super-linear,Super-linear,FALSE
+11070103,ER,Super-linear,Seasonally variable,TRUE
+11070103,GPP,Super-linear,Super-linear,FALSE
+11070104,ER,Seasonally variable,Insufficient data,TRUE
+11070104,GPP,Super-linear,Super-linear,FALSE
+11070105,ER,Super-linear,Seasonally variable,TRUE
+11070105,GPP,Super-linear,Super-linear,FALSE
+11070106,ER,Seasonally variable,Seasonally variable,FALSE
+11070106,GPP,Super-linear,Super-linear,FALSE
+11070107,ER,Seasonally variable,Super-linear,TRUE
+11070107,GPP,Super-linear,Super-linear,FALSE
+11070201,ER,Super-linear,Seasonally variable,TRUE
+11070201,GPP,Super-linear,Super-linear,FALSE
+11070202,ER,Super-linear,Seasonally variable,TRUE
+11070202,GPP,Super-linear,Seasonally variable,TRUE
+11070203,ER,Super-linear,Seasonally variable,TRUE
+11070203,GPP,Super-linear,Super-linear,FALSE
+11070204,ER,Super-linear,Seasonally variable,TRUE
+11070204,GPP,Super-linear,Super-linear,FALSE
+11070205,ER,Super-linear,Seasonally variable,TRUE
+11070205,GPP,Super-linear,Super-linear,FALSE
+11070206,ER,Super-linear,Seasonally variable,TRUE
+11070206,GPP,Super-linear,Super-linear,FALSE
+11070207,ER,Super-linear,Seasonally variable,TRUE
+11070207,GPP,Super-linear,Super-linear,FALSE
+11070208,ER,Super-linear,Seasonally variable,TRUE
+11070208,GPP,Super-linear,Super-linear,FALSE
+11070209,ER,Super-linear,Seasonally variable,TRUE
+11070209,GPP,Super-linear,Super-linear,FALSE
+11080001,ER,Super-linear,Seasonally variable,TRUE
+11080001,GPP,Super-linear,Super-linear,FALSE
+11080002,ER,Super-linear,Super-linear,FALSE
+11080002,GPP,Super-linear,Super-linear,FALSE
+11080003,ER,Super-linear,Super-linear,FALSE
+11080003,GPP,Super-linear,Super-linear,FALSE
+11080004,ER,Super-linear,Super-linear,FALSE
+11080004,GPP,Super-linear,Super-linear,FALSE
+11080005,ER,Uncertain,Seasonally variable,TRUE
+11080005,GPP,Super-linear,Super-linear,FALSE
+11080006,ER,Super-linear,Seasonally variable,TRUE
+11080006,GPP,Super-linear,Super-linear,FALSE
+11080007,ER,Seasonally variable,Seasonally variable,FALSE
+11080007,GPP,Super-linear,Super-linear,FALSE
+11080008,ER,Super-linear,Seasonally variable,TRUE
+11080008,GPP,Super-linear,Super-linear,FALSE
+11090101,ER,Super-linear,Seasonally variable,TRUE
+11090101,GPP,Super-linear,Super-linear,FALSE
+11090102,ER,Super-linear,Seasonally variable,TRUE
+11090102,GPP,Super-linear,Super-linear,FALSE
+11090103,ER,Super-linear,Seasonally variable,TRUE
+11090103,GPP,Super-linear,Super-linear,FALSE
+11090104,ER,Super-linear,Uncertain,TRUE
+11090104,GPP,Super-linear,Super-linear,FALSE
+11090105,ER,Super-linear,Seasonally variable,TRUE
+11090105,GPP,Super-linear,Super-linear,FALSE
+11090106,ER,Super-linear,Seasonally variable,TRUE
+11090106,GPP,Super-linear,Super-linear,FALSE
+11090201,ER,Super-linear,Seasonally variable,TRUE
+11090201,GPP,Super-linear,Super-linear,FALSE
+11090202,ER,Super-linear,Seasonally variable,TRUE
+11090202,GPP,Super-linear,Super-linear,FALSE
+11090203,ER,Super-linear,Super-linear,FALSE
+11090203,GPP,Super-linear,Super-linear,FALSE
+11090204,ER,Super-linear,Super-linear,FALSE
+11090204,GPP,Super-linear,Super-linear,FALSE
+11100101,ER,Super-linear,Super-linear,FALSE
+11100101,GPP,Super-linear,Super-linear,FALSE
+11100102,ER,Super-linear,Super-linear,FALSE
+11100102,GPP,Super-linear,Super-linear,FALSE
+11100103,ER,Super-linear,Super-linear,FALSE
+11100103,GPP,Super-linear,Super-linear,FALSE
+11100104,ER,Super-linear,Super-linear,FALSE
+11100104,GPP,Super-linear,Super-linear,FALSE
+11100201,ER,Super-linear,Super-linear,FALSE
+11100201,GPP,Super-linear,Super-linear,FALSE
+11100202,ER,Super-linear,Super-linear,FALSE
+11100202,GPP,Super-linear,Super-linear,FALSE
+11100203,ER,Super-linear,Super-linear,FALSE
+11100203,GPP,Super-linear,Super-linear,FALSE
+11100301,ER,Super-linear,Super-linear,FALSE
+11100301,GPP,Super-linear,Super-linear,FALSE
+11100302,ER,Super-linear,Super-linear,FALSE
+11100302,GPP,Super-linear,Super-linear,FALSE
+11100303,ER,Super-linear,Super-linear,FALSE
+11100303,GPP,Super-linear,Super-linear,FALSE
+11110101,ER,Super-linear,Super-linear,FALSE
+11110101,GPP,Super-linear,Super-linear,FALSE
+11110102,ER,Super-linear,Seasonally variable,TRUE
+11110102,GPP,Super-linear,Super-linear,FALSE
+11110103,ER,Super-linear,Super-linear,FALSE
+11110103,GPP,Super-linear,Super-linear,FALSE
+11110104,ER,Super-linear,Seasonally variable,TRUE
+11110104,GPP,Super-linear,Super-linear,FALSE
+11110105,ER,Super-linear,Super-linear,FALSE
+11110105,GPP,Super-linear,Super-linear,FALSE
+11110201,ER,Super-linear,Seasonally variable,TRUE
+11110201,GPP,Super-linear,Super-linear,FALSE
+11110202,ER,Super-linear,Seasonally variable,TRUE
+11110202,GPP,Super-linear,Super-linear,FALSE
+11110203,ER,Super-linear,Seasonally variable,TRUE
+11110203,GPP,Super-linear,Super-linear,FALSE
+11110204,ER,Super-linear,Seasonally variable,TRUE
+11110204,GPP,Super-linear,Super-linear,FALSE
+11110205,ER,Seasonally variable,Seasonally variable,FALSE
+11110205,GPP,Seasonally variable,Super-linear,TRUE
+11110206,ER,Super-linear,Seasonally variable,TRUE
+11110206,GPP,Super-linear,Super-linear,FALSE
+11110207,ER,Super-linear,Seasonally variable,TRUE
+11110207,GPP,Super-linear,Super-linear,FALSE
+11120101,ER,Super-linear,Super-linear,FALSE
+11120101,GPP,Super-linear,Super-linear,FALSE
+11120102,ER,Super-linear,Super-linear,FALSE
+11120102,GPP,Super-linear,Super-linear,FALSE
+11120103,ER,Super-linear,Super-linear,FALSE
+11120103,GPP,Super-linear,Super-linear,FALSE
+11120104,ER,Super-linear,Super-linear,FALSE
+11120104,GPP,Super-linear,Super-linear,FALSE
+11120105,ER,Super-linear,Super-linear,FALSE
+11120105,GPP,Super-linear,Super-linear,FALSE
+11120201,ER,Super-linear,Seasonally variable,TRUE
+11120201,GPP,Super-linear,Super-linear,FALSE
+11120202,ER,Super-linear,Seasonally variable,TRUE
+11120202,GPP,Super-linear,Super-linear,FALSE
+11120301,ER,Super-linear,Super-linear,FALSE
+11120301,GPP,Super-linear,Super-linear,FALSE
+11120302,ER,Super-linear,Super-linear,FALSE
+11120302,GPP,Super-linear,Super-linear,FALSE
+11120303,ER,Super-linear,Seasonally variable,TRUE
+11120303,GPP,Super-linear,Seasonally variable,TRUE
+11120304,ER,Seasonally variable,Seasonally variable,FALSE
+11120304,GPP,Super-linear,Super-linear,FALSE
+11130101,ER,Super-linear,Super-linear,FALSE
+11130101,GPP,Super-linear,Super-linear,FALSE
+11130102,ER,Super-linear,Seasonally variable,TRUE
+11130102,GPP,Super-linear,Super-linear,FALSE
+11130103,ER,Super-linear,Super-linear,FALSE
+11130103,GPP,Super-linear,Super-linear,FALSE
+11130104,ER,Super-linear,Seasonally variable,TRUE
+11130104,GPP,Super-linear,Super-linear,FALSE
+11130105,ER,Super-linear,Seasonally variable,TRUE
+11130105,GPP,Super-linear,Super-linear,FALSE
+11130201,ER,Super-linear,Seasonally variable,TRUE
+11130201,GPP,Super-linear,Super-linear,FALSE
+11130202,ER,Seasonally variable,Seasonally variable,FALSE
+11130202,GPP,Super-linear,Super-linear,FALSE
+11130203,ER,Seasonally variable,Seasonally variable,FALSE
+11130203,GPP,Super-linear,Seasonally variable,TRUE
+11130204,ER,Seasonally variable,Seasonally variable,FALSE
+11130204,GPP,Super-linear,Super-linear,FALSE
+11130205,ER,Seasonally variable,Seasonally variable,FALSE
+11130205,GPP,Super-linear,Super-linear,FALSE
+11130206,ER,Uncertain,Seasonally variable,TRUE
+11130206,GPP,Super-linear,Super-linear,FALSE
+11130207,ER,Seasonally variable,Seasonally variable,FALSE
+11130207,GPP,Super-linear,Seasonally variable,TRUE
+11130208,ER,Seasonally variable,Seasonally variable,FALSE
+11130208,GPP,Super-linear,Super-linear,FALSE
+11130209,ER,Seasonally variable,Seasonally variable,FALSE
+11130209,GPP,Super-linear,Super-linear,FALSE
+11130210,ER,Super-linear,Seasonally variable,TRUE
+11130210,GPP,Super-linear,Super-linear,FALSE
+11130301,ER,Super-linear,Seasonally variable,TRUE
+11130301,GPP,Super-linear,Super-linear,FALSE
+11130302,ER,Super-linear,Seasonally variable,TRUE
+11130302,GPP,Super-linear,Super-linear,FALSE
+11130303,ER,Super-linear,Seasonally variable,TRUE
+11130303,GPP,Super-linear,Super-linear,FALSE
+11130304,ER,Seasonally variable,Seasonally variable,FALSE
+11130304,GPP,Super-linear,Super-linear,FALSE
+11140101,ER,Super-linear,Seasonally variable,TRUE
+11140101,GPP,Super-linear,Super-linear,FALSE
+11140102,ER,Seasonally variable,Super-linear,TRUE
+11140102,GPP,Super-linear,Super-linear,FALSE
+11140103,ER,Super-linear,Super-linear,FALSE
+11140103,GPP,Super-linear,Super-linear,FALSE
+11140104,ER,Super-linear,Super-linear,FALSE
+11140104,GPP,Super-linear,Super-linear,FALSE
+11140105,ER,Seasonally variable,Seasonally variable,FALSE
+11140105,GPP,Super-linear,Super-linear,FALSE
+11140106,ER,Super-linear,Seasonally variable,TRUE
+11140106,GPP,Super-linear,Super-linear,FALSE
+11140107,ER,Super-linear,Seasonally variable,TRUE
+11140107,GPP,Super-linear,Super-linear,FALSE
+11140108,ER,Super-linear,Seasonally variable,TRUE
+11140108,GPP,Super-linear,Super-linear,FALSE
+11140109,ER,Super-linear,Seasonally variable,TRUE
+11140109,GPP,Super-linear,Super-linear,FALSE
+11140201,ER,Super-linear,Super-linear,FALSE
+11140201,GPP,Super-linear,Super-linear,FALSE
+11140202,ER,Insufficient data,Insufficient data,FALSE
+11140202,GPP,Insufficient data,Insufficient data,FALSE
+11140203,ER,Super-linear,Seasonally variable,TRUE
+11140203,GPP,Super-linear,Super-linear,FALSE
+11140204,ER,Seasonally variable,Seasonally variable,FALSE
+11140204,GPP,Super-linear,Super-linear,FALSE
+11140205,ER,Super-linear,Super-linear,FALSE
+11140205,GPP,Super-linear,Super-linear,FALSE
+11140206,ER,Super-linear,Super-linear,FALSE
+11140206,GPP,Super-linear,Super-linear,FALSE
+11140207,ER,Super-linear,Super-linear,FALSE
+11140207,GPP,Super-linear,Super-linear,FALSE
+11140208,ER,Super-linear,Super-linear,FALSE
+11140208,GPP,Super-linear,Super-linear,FALSE
+11140209,ER,Super-linear,Super-linear,FALSE
+11140209,GPP,Super-linear,Super-linear,FALSE
+11140301,ER,Super-linear,Super-linear,FALSE
+11140301,GPP,Super-linear,Super-linear,FALSE
+11140302,ER,Super-linear,Super-linear,FALSE
+11140302,GPP,Super-linear,Super-linear,FALSE
+11140303,ER,Super-linear,Super-linear,FALSE
+11140303,GPP,Super-linear,Super-linear,FALSE
+11140304,ER,Super-linear,Super-linear,FALSE
+11140304,GPP,Super-linear,Super-linear,FALSE
+11140305,ER,Super-linear,Seasonally variable,TRUE
+11140305,GPP,Seasonally variable,Super-linear,TRUE
+11140306,ER,Super-linear,Super-linear,FALSE
+11140306,GPP,Super-linear,Super-linear,FALSE
+11140307,ER,Super-linear,Super-linear,FALSE
+11140307,GPP,Super-linear,Super-linear,FALSE
+12010001,ER,Super-linear,Super-linear,FALSE
+12010001,GPP,Super-linear,Super-linear,FALSE
+12010002,ER,Super-linear,Super-linear,FALSE
+12010002,GPP,Super-linear,Super-linear,FALSE
+12010003,ER,Super-linear,Seasonally variable,TRUE
+12010003,GPP,Seasonally variable,Super-linear,TRUE
+12010004,ER,Super-linear,Super-linear,FALSE
+12010004,GPP,Super-linear,Super-linear,FALSE
+12010005,ER,Super-linear,Super-linear,FALSE
+12010005,GPP,Super-linear,Super-linear,FALSE
+12020001,ER,Super-linear,Super-linear,FALSE
+12020001,GPP,Super-linear,Super-linear,FALSE
+12020002,ER,Super-linear,Super-linear,FALSE
+12020002,GPP,Super-linear,Super-linear,FALSE
+12020003,ER,Super-linear,Super-linear,FALSE
+12020003,GPP,Super-linear,Super-linear,FALSE
+12020004,ER,Super-linear,Super-linear,FALSE
+12020004,GPP,Super-linear,Super-linear,FALSE
+12020005,ER,Super-linear,Super-linear,FALSE
+12020005,GPP,Super-linear,Super-linear,FALSE
+12020006,ER,Super-linear,Super-linear,FALSE
+12020006,GPP,Super-linear,Super-linear,FALSE
+12020007,ER,Super-linear,Super-linear,FALSE
+12020007,GPP,Super-linear,Super-linear,FALSE
+12030101,ER,Seasonally variable,Seasonally variable,FALSE
+12030101,GPP,Super-linear,Super-linear,FALSE
+12030102,ER,Seasonally variable,Uncertain,TRUE
+12030102,GPP,Super-linear,Super-linear,FALSE
+12030103,ER,Seasonally variable,Seasonally variable,FALSE
+12030103,GPP,Super-linear,Super-linear,FALSE
+12030104,ER,Seasonally variable,Seasonally variable,FALSE
+12030104,GPP,Super-linear,Super-linear,FALSE
+12030105,ER,Super-linear,Seasonally variable,TRUE
+12030105,GPP,Super-linear,Super-linear,FALSE
+12030106,ER,Super-linear,Seasonally variable,TRUE
+12030106,GPP,Super-linear,Super-linear,FALSE
+12030107,ER,Super-linear,Super-linear,FALSE
+12030107,GPP,Super-linear,Super-linear,FALSE
+12030108,ER,Super-linear,Super-linear,FALSE
+12030108,GPP,Super-linear,Seasonally variable,TRUE
+12030109,ER,Super-linear,Super-linear,FALSE
+12030109,GPP,Super-linear,Super-linear,FALSE
+12030201,ER,Super-linear,Super-linear,FALSE
+12030201,GPP,Super-linear,Super-linear,FALSE
+12030202,ER,Super-linear,Seasonally variable,TRUE
+12030202,GPP,Super-linear,Super-linear,FALSE
+12030203,ER,Super-linear,Super-linear,FALSE
+12030203,GPP,Super-linear,Super-linear,FALSE
+12040101,ER,Super-linear,Super-linear,FALSE
+12040101,GPP,Super-linear,Super-linear,FALSE
+12040102,ER,Super-linear,Super-linear,FALSE
+12040102,GPP,Super-linear,Seasonally variable,TRUE
+12040103,ER,Super-linear,Super-linear,FALSE
+12040103,GPP,Super-linear,Super-linear,FALSE
+12040104,ER,Super-linear,Seasonally variable,TRUE
+12040104,GPP,Super-linear,Super-linear,FALSE
+12040201,ER,Super-linear,Super-linear,FALSE
+12040201,GPP,Seasonally variable,Super-linear,TRUE
+12040205,ER,Super-linear,Super-linear,FALSE
+12040205,GPP,Seasonally variable,Super-linear,TRUE
+12050001,ER,Super-linear,Super-linear,FALSE
+12050001,GPP,Super-linear,Super-linear,FALSE
+12050002,ER,Super-linear,Super-linear,FALSE
+12050002,GPP,Super-linear,Super-linear,FALSE
+12050003,ER,Super-linear,Super-linear,FALSE
+12050003,GPP,Super-linear,Super-linear,FALSE
+12050004,ER,Super-linear,Super-linear,FALSE
+12050004,GPP,Super-linear,Super-linear,FALSE
+12050005,ER,Super-linear,Super-linear,FALSE
+12050005,GPP,Super-linear,Super-linear,FALSE
+12050006,ER,Super-linear,Super-linear,FALSE
+12050006,GPP,Super-linear,Super-linear,FALSE
+12050007,ER,Super-linear,Super-linear,FALSE
+12050007,GPP,Super-linear,Super-linear,FALSE
+12060101,ER,Super-linear,Seasonally variable,TRUE
+12060101,GPP,Super-linear,Super-linear,FALSE
+12060102,ER,Super-linear,Seasonally variable,TRUE
+12060102,GPP,Super-linear,Super-linear,FALSE
+12060103,ER,Super-linear,Seasonally variable,TRUE
+12060103,GPP,Super-linear,Seasonally variable,TRUE
+12060104,ER,Seasonally variable,Seasonally variable,FALSE
+12060104,GPP,Super-linear,Super-linear,FALSE
+12060105,ER,Seasonally variable,Seasonally variable,FALSE
+12060105,GPP,Super-linear,Super-linear,FALSE
+12060201,ER,Super-linear,Seasonally variable,TRUE
+12060201,GPP,Super-linear,Super-linear,FALSE
+12060202,ER,Super-linear,Super-linear,FALSE
+12060202,GPP,Super-linear,Super-linear,FALSE
+12060203,ER,Super-linear,Super-linear,FALSE
+12060203,GPP,Super-linear,Super-linear,FALSE
+12060204,ER,Super-linear,Super-linear,FALSE
+12060204,GPP,Super-linear,Super-linear,FALSE
+12070101,ER,Super-linear,Super-linear,FALSE
+12070101,GPP,Super-linear,Super-linear,FALSE
+12070102,ER,Super-linear,Super-linear,FALSE
+12070102,GPP,Super-linear,Super-linear,FALSE
+12070103,ER,Super-linear,Super-linear,FALSE
+12070103,GPP,Super-linear,Super-linear,FALSE
+12070104,ER,Super-linear,Super-linear,FALSE
+12070104,GPP,Super-linear,Super-linear,FALSE
+12070201,ER,Super-linear,Seasonally variable,TRUE
+12070201,GPP,Super-linear,Super-linear,FALSE
+12070202,ER,Super-linear,Seasonally variable,TRUE
+12070202,GPP,Super-linear,Super-linear,FALSE
+12070203,ER,Seasonally variable,Seasonally variable,FALSE
+12070203,GPP,Super-linear,Super-linear,FALSE
+12070204,ER,Super-linear,Super-linear,FALSE
+12070204,GPP,Super-linear,Super-linear,FALSE
+12070205,ER,Super-linear,Seasonally variable,TRUE
+12070205,GPP,Super-linear,Super-linear,FALSE
+12080001,ER,Super-linear,Super-linear,FALSE
+12080001,GPP,Super-linear,Super-linear,FALSE
+12080002,ER,Super-linear,Super-linear,FALSE
+12080002,GPP,Super-linear,Super-linear,FALSE
+12080003,ER,Super-linear,Super-linear,FALSE
+12080003,GPP,Super-linear,Super-linear,FALSE
+12080004,ER,Super-linear,Super-linear,FALSE
+12080004,GPP,Super-linear,Super-linear,FALSE
+12080005,ER,Super-linear,Super-linear,FALSE
+12080005,GPP,Super-linear,Super-linear,FALSE
+12080006,ER,Super-linear,Super-linear,FALSE
+12080006,GPP,Super-linear,Super-linear,FALSE
+12080007,ER,Super-linear,Super-linear,FALSE
+12080007,GPP,Super-linear,Super-linear,FALSE
+12080008,ER,Super-linear,Super-linear,FALSE
+12080008,GPP,Super-linear,Super-linear,FALSE
+12090101,ER,Super-linear,Super-linear,FALSE
+12090101,GPP,Super-linear,Super-linear,FALSE
+12090102,ER,Super-linear,Seasonally variable,TRUE
+12090102,GPP,Super-linear,Super-linear,FALSE
+12090103,ER,Super-linear,Seasonally variable,TRUE
+12090103,GPP,Super-linear,Super-linear,FALSE
+12090104,ER,Super-linear,Seasonally variable,TRUE
+12090104,GPP,Super-linear,Super-linear,FALSE
+12090105,ER,Super-linear,Seasonally variable,TRUE
+12090105,GPP,Super-linear,Super-linear,FALSE
+12090106,ER,Super-linear,Seasonally variable,TRUE
+12090106,GPP,Super-linear,Super-linear,FALSE
+12090107,ER,Super-linear,Seasonally variable,TRUE
+12090107,GPP,Super-linear,Super-linear,FALSE
+12090108,ER,Uncertain,Seasonally variable,TRUE
+12090108,GPP,Super-linear,Super-linear,FALSE
+12090109,ER,Seasonally variable,Seasonally variable,FALSE
+12090109,GPP,Super-linear,Super-linear,FALSE
+12090110,ER,Uncertain,Seasonally variable,TRUE
+12090110,GPP,Super-linear,Super-linear,FALSE
+12090201,ER,Super-linear,Seasonally variable,TRUE
+12090201,GPP,Super-linear,Super-linear,FALSE
+12090202,ER,Super-linear,Seasonally variable,TRUE
+12090202,GPP,Super-linear,Super-linear,FALSE
+12090203,ER,Seasonally variable,Seasonally variable,FALSE
+12090203,GPP,Super-linear,Super-linear,FALSE
+12090204,ER,Seasonally variable,Seasonally variable,FALSE
+12090204,GPP,Super-linear,Super-linear,FALSE
+12090205,ER,Super-linear,Super-linear,FALSE
+12090205,GPP,Super-linear,Super-linear,FALSE
+12090206,ER,Insufficient data,Seasonally variable,TRUE
+12090206,GPP,Super-linear,Super-linear,FALSE
+12090301,ER,Super-linear,Super-linear,FALSE
+12090301,GPP,Super-linear,Super-linear,FALSE
+12090302,ER,Seasonally variable,Seasonally variable,FALSE
+12090302,GPP,Super-linear,Super-linear,FALSE
+12090401,ER,Super-linear,Super-linear,FALSE
+12090401,GPP,Super-linear,Super-linear,FALSE
+12100101,ER,Super-linear,Super-linear,FALSE
+12100101,GPP,Super-linear,Super-linear,FALSE
+12100102,ER,Super-linear,Super-linear,FALSE
+12100102,GPP,Super-linear,Super-linear,FALSE
+12100201,ER,Super-linear,Super-linear,FALSE
+12100201,GPP,Super-linear,Super-linear,FALSE
+12100202,ER,Super-linear,Super-linear,FALSE
+12100202,GPP,Super-linear,Super-linear,FALSE
+12100203,ER,Super-linear,Super-linear,FALSE
+12100203,GPP,Super-linear,Super-linear,FALSE
+12100204,ER,Super-linear,Super-linear,FALSE
+12100204,GPP,Super-linear,Super-linear,FALSE
+12100301,ER,Super-linear,Super-linear,FALSE
+12100301,GPP,Super-linear,Super-linear,FALSE
+12100302,ER,Super-linear,Super-linear,FALSE
+12100302,GPP,Super-linear,Super-linear,FALSE
+12100303,ER,Super-linear,Super-linear,FALSE
+12100303,GPP,Super-linear,Super-linear,FALSE
+12100304,ER,Seasonally variable,Super-linear,TRUE
+12100304,GPP,Super-linear,Seasonally variable,TRUE
+12100402,ER,Super-linear,Seasonally variable,TRUE
+12100402,GPP,Seasonally variable,Super-linear,TRUE
+12100406,ER,Super-linear,Super-linear,FALSE
+12100406,GPP,Super-linear,Super-linear,FALSE
+12100407,ER,Uncertain,Uncertain,FALSE
+12100407,GPP,Seasonally variable,Uncertain,TRUE
+12110101,ER,Super-linear,Super-linear,FALSE
+12110101,GPP,Super-linear,Super-linear,FALSE
+12110102,ER,Seasonally variable,Seasonally variable,FALSE
+12110102,GPP,Super-linear,Super-linear,FALSE
+12110103,ER,Super-linear,Seasonally variable,TRUE
+12110103,GPP,Super-linear,Super-linear,FALSE
+12110104,ER,Seasonally variable,Seasonally variable,FALSE
+12110104,GPP,Super-linear,Super-linear,FALSE
+12110105,ER,Super-linear,Super-linear,FALSE
+12110105,GPP,Super-linear,Super-linear,FALSE
+12110106,ER,Super-linear,Super-linear,FALSE
+12110106,GPP,Super-linear,Super-linear,FALSE
+12110107,ER,Seasonally variable,Seasonally variable,FALSE
+12110107,GPP,Super-linear,Seasonally variable,TRUE
+12110108,ER,Super-linear,Super-linear,FALSE
+12110108,GPP,Super-linear,Super-linear,FALSE
+12110109,ER,Super-linear,Super-linear,FALSE
+12110109,GPP,Super-linear,Super-linear,FALSE
+12110110,ER,Super-linear,Super-linear,FALSE
+12110110,GPP,Super-linear,Super-linear,FALSE
+12110111,ER,Super-linear,Super-linear,FALSE
+12110111,GPP,Super-linear,Super-linear,FALSE
+12110204,ER,Super-linear,Super-linear,FALSE
+12110204,GPP,Super-linear,Super-linear,FALSE
+12110205,ER,Super-linear,Super-linear,FALSE
+12110205,GPP,Super-linear,Super-linear,FALSE
+12110206,ER,Super-linear,Seasonally variable,TRUE
+12110206,GPP,Super-linear,Super-linear,FALSE
+12110207,ER,Super-linear,Seasonally variable,TRUE
+12110207,GPP,Super-linear,Super-linear,FALSE
+12110208,ER,Super-linear,Uncertain,TRUE
+12110208,GPP,Super-linear,Super-linear,FALSE
+13010001,ER,Super-linear,Super-linear,FALSE
+13010001,GPP,Super-linear,Super-linear,FALSE
+13010002,ER,Super-linear,Super-linear,FALSE
+13010002,GPP,Super-linear,Super-linear,FALSE
+13010003,ER,Super-linear,Super-linear,FALSE
+13010003,GPP,Super-linear,Super-linear,FALSE
+13010004,ER,Super-linear,Super-linear,FALSE
+13010004,GPP,Super-linear,Super-linear,FALSE
+13010005,ER,Seasonally variable,Super-linear,TRUE
+13010005,GPP,Seasonally variable,Super-linear,TRUE
+13020101,ER,Super-linear,Super-linear,FALSE
+13020101,GPP,Super-linear,Super-linear,FALSE
+13020102,ER,Super-linear,Super-linear,FALSE
+13020102,GPP,Super-linear,Super-linear,FALSE
+13020201,ER,Super-linear,Super-linear,FALSE
+13020201,GPP,Super-linear,Super-linear,FALSE
+13020202,ER,Super-linear,Seasonally variable,TRUE
+13020202,GPP,Super-linear,Seasonally variable,TRUE
+13020203,ER,Super-linear,Seasonally variable,TRUE
+13020203,GPP,Super-linear,Super-linear,FALSE
+13020204,ER,Super-linear,Seasonally variable,TRUE
+13020204,GPP,Super-linear,Super-linear,FALSE
+13020205,ER,Super-linear,Seasonally variable,TRUE
+13020205,GPP,Super-linear,Super-linear,FALSE
+13020206,ER,Seasonally variable,Seasonally variable,FALSE
+13020206,GPP,Super-linear,Super-linear,FALSE
+13020207,ER,Seasonally variable,Seasonally variable,FALSE
+13020207,GPP,Super-linear,Super-linear,FALSE
+13020208,ER,Seasonally variable,Seasonally variable,FALSE
+13020208,GPP,Super-linear,Super-linear,FALSE
+13020209,ER,Seasonally variable,Seasonally variable,FALSE
+13020209,GPP,Super-linear,Super-linear,FALSE
+13020210,ER,Super-linear,Seasonally variable,TRUE
+13020210,GPP,Super-linear,Super-linear,FALSE
+13020211,ER,Super-linear,Seasonally variable,TRUE
+13020211,GPP,Super-linear,Super-linear,FALSE
+13030101,ER,Super-linear,Seasonally variable,TRUE
+13030101,GPP,Super-linear,Super-linear,FALSE
+13030103,ER,Super-linear,Seasonally variable,TRUE
+13030103,GPP,Super-linear,Super-linear,FALSE
+13040202,ER,Super-linear,Super-linear,FALSE
+13040202,GPP,Super-linear,Super-linear,FALSE
+13040204,ER,Super-linear,Super-linear,FALSE
+13040204,GPP,Super-linear,Super-linear,FALSE
+13040206,ER,Seasonally variable,Seasonally variable,FALSE
+13040206,GPP,Super-linear,Super-linear,FALSE
+13040207,ER,Seasonally variable,Seasonally variable,FALSE
+13040207,GPP,Super-linear,Super-linear,FALSE
+13040209,ER,Seasonally variable,Seasonally variable,FALSE
+13040209,GPP,Super-linear,Super-linear,FALSE
+13040210,ER,Uncertain,Seasonally variable,TRUE
+13040210,GPP,Super-linear,Super-linear,FALSE
+13040211,ER,Seasonally variable,Super-linear,TRUE
+13040211,GPP,Super-linear,Super-linear,FALSE
+13040301,ER,Super-linear,Seasonally variable,TRUE
+13040301,GPP,Super-linear,Super-linear,FALSE
+13040302,ER,Super-linear,Seasonally variable,TRUE
+13040302,GPP,Super-linear,Super-linear,FALSE
+13040303,ER,Super-linear,Seasonally variable,TRUE
+13040303,GPP,Super-linear,Super-linear,FALSE
+13050001,ER,Super-linear,Seasonally variable,TRUE
+13050001,GPP,Super-linear,Super-linear,FALSE
+13050002,ER,Uncertain,Uncertain,FALSE
+13050002,GPP,Uncertain,Uncertain,FALSE
+13050003,ER,Super-linear,Seasonally variable,TRUE
+13050003,GPP,Super-linear,Super-linear,FALSE
+13050004,ER,Super-linear,Seasonally variable,TRUE
+13050004,GPP,Super-linear,Super-linear,FALSE
+13060001,ER,Super-linear,Seasonally variable,TRUE
+13060001,GPP,Super-linear,Super-linear,FALSE
+13060002,ER,Super-linear,Seasonally variable,TRUE
+13060002,GPP,Super-linear,Super-linear,FALSE
+13060003,ER,Super-linear,Seasonally variable,TRUE
+13060003,GPP,Super-linear,Super-linear,FALSE
+13060004,ER,Super-linear,Super-linear,FALSE
+13060004,GPP,Super-linear,Super-linear,FALSE
+13060005,ER,Super-linear,Seasonally variable,TRUE
+13060005,GPP,Super-linear,Super-linear,FALSE
+13060006,ER,Uncertain,Seasonally variable,TRUE
+13060006,GPP,Seasonally variable,Seasonally variable,FALSE
+13060007,ER,Super-linear,Super-linear,FALSE
+13060007,GPP,Super-linear,Super-linear,FALSE
+13060008,ER,Seasonally variable,Seasonally variable,FALSE
+13060008,GPP,Super-linear,Seasonally variable,TRUE
+13060009,ER,Seasonally variable,Seasonally variable,FALSE
+13060009,GPP,Super-linear,Super-linear,FALSE
+13060010,ER,Seasonally variable,Seasonally variable,FALSE
+13060010,GPP,Super-linear,Seasonally variable,TRUE
+13060011,ER,Super-linear,Seasonally variable,TRUE
+13060011,GPP,Super-linear,Super-linear,FALSE
+13070001,ER,Super-linear,Super-linear,FALSE
+13070001,GPP,Super-linear,Super-linear,FALSE
+13070002,ER,Super-linear,Seasonally variable,TRUE
+13070002,GPP,Super-linear,Super-linear,FALSE
+13070003,ER,Super-linear,Seasonally variable,TRUE
+13070003,GPP,Super-linear,Super-linear,FALSE
+13070004,ER,Super-linear,Seasonally variable,TRUE
+13070004,GPP,Super-linear,Super-linear,FALSE
+13070005,ER,Seasonally variable,Seasonally variable,FALSE
+13070005,GPP,Super-linear,Seasonally variable,TRUE
+13070006,ER,Seasonally variable,Seasonally variable,FALSE
+13070006,GPP,Super-linear,Super-linear,FALSE
+13070007,ER,Super-linear,Super-linear,FALSE
+13070007,GPP,Super-linear,Super-linear,FALSE
+13070008,ER,Super-linear,Seasonally variable,TRUE
+13070008,GPP,Super-linear,Super-linear,FALSE
+13070009,ER,Super-linear,Seasonally variable,TRUE
+13070009,GPP,Super-linear,Super-linear,FALSE
+13070010,ER,Super-linear,Seasonally variable,TRUE
+13070010,GPP,Super-linear,Super-linear,FALSE
+13070011,ER,Seasonally variable,Seasonally variable,FALSE
+13070011,GPP,Super-linear,Super-linear,FALSE
+13070012,ER,Super-linear,Seasonally variable,TRUE
+13070012,GPP,Super-linear,Super-linear,FALSE
+14010001,ER,Seasonally variable,Seasonally variable,FALSE
+14010001,GPP,Super-linear,Super-linear,FALSE
+14010002,ER,Seasonally variable,Seasonally variable,FALSE
+14010002,GPP,Super-linear,Super-linear,FALSE
+14010003,ER,Super-linear,Seasonally variable,TRUE
+14010003,GPP,Super-linear,Super-linear,FALSE
+14010004,ER,Super-linear,Seasonally variable,TRUE
+14010004,GPP,Super-linear,Super-linear,FALSE
+14010005,ER,Super-linear,Super-linear,FALSE
+14010005,GPP,Super-linear,Super-linear,FALSE
+14020001,ER,Super-linear,Seasonally variable,TRUE
+14020001,GPP,Seasonally variable,Super-linear,TRUE
+14020002,ER,Seasonally variable,Seasonally variable,FALSE
+14020002,GPP,Super-linear,Super-linear,FALSE
+14020003,ER,Seasonally variable,Seasonally variable,FALSE
+14020003,GPP,Super-linear,Super-linear,FALSE
+14020004,ER,Super-linear,Super-linear,FALSE
+14020004,GPP,Super-linear,Super-linear,FALSE
+14020005,ER,Super-linear,Super-linear,FALSE
+14020005,GPP,Super-linear,Super-linear,FALSE
+14020006,ER,Seasonally variable,Super-linear,TRUE
+14020006,GPP,Super-linear,Super-linear,FALSE
+14030001,ER,Super-linear,Super-linear,FALSE
+14030001,GPP,Super-linear,Super-linear,FALSE
+14030002,ER,Seasonally variable,Seasonally variable,FALSE
+14030002,GPP,Super-linear,Super-linear,FALSE
+14030003,ER,Super-linear,Seasonally variable,TRUE
+14030003,GPP,Super-linear,Super-linear,FALSE
+14030004,ER,Seasonally variable,Seasonally variable,FALSE
+14030004,GPP,Super-linear,Super-linear,FALSE
+14030005,ER,Super-linear,Seasonally variable,TRUE
+14030005,GPP,Super-linear,Super-linear,FALSE
+14040101,ER,Super-linear,Super-linear,FALSE
+14040101,GPP,Super-linear,Super-linear,FALSE
+14040102,ER,Super-linear,Seasonally variable,TRUE
+14040102,GPP,Super-linear,Super-linear,FALSE
+14040103,ER,Super-linear,Super-linear,FALSE
+14040103,GPP,Super-linear,Super-linear,FALSE
+14040104,ER,Super-linear,Super-linear,FALSE
+14040104,GPP,Super-linear,Super-linear,FALSE
+14040105,ER,Super-linear,Seasonally variable,TRUE
+14040105,GPP,Super-linear,Super-linear,FALSE
+14040106,ER,Super-linear,Super-linear,FALSE
+14040106,GPP,Super-linear,Super-linear,FALSE
+14040107,ER,Super-linear,Seasonally variable,TRUE
+14040107,GPP,Super-linear,Super-linear,FALSE
+14040108,ER,Super-linear,Super-linear,FALSE
+14040108,GPP,Super-linear,Super-linear,FALSE
+14040109,ER,Super-linear,Seasonally variable,TRUE
+14040109,GPP,Super-linear,Super-linear,FALSE
+14040200,ER,Super-linear,Super-linear,FALSE
+14040200,GPP,Super-linear,Super-linear,FALSE
+14050001,ER,Seasonally variable,Super-linear,TRUE
+14050001,GPP,Super-linear,Super-linear,FALSE
+14050002,ER,Seasonally variable,Seasonally variable,FALSE
+14050002,GPP,Super-linear,Super-linear,FALSE
+14050003,ER,Super-linear,Super-linear,FALSE
+14050003,GPP,Super-linear,Super-linear,FALSE
+14050004,ER,Super-linear,Super-linear,FALSE
+14050004,GPP,Super-linear,Super-linear,FALSE
+14050005,ER,Seasonally variable,Super-linear,TRUE
+14050005,GPP,Super-linear,Super-linear,FALSE
+14050006,ER,Uncertain,Seasonally variable,TRUE
+14050006,GPP,Super-linear,Super-linear,FALSE
+14050007,ER,Super-linear,Seasonally variable,TRUE
+14050007,GPP,Super-linear,Super-linear,FALSE
+14060003,ER,Seasonally variable,Seasonally variable,FALSE
+14060003,GPP,Seasonally variable,Super-linear,TRUE
+14060004,ER,Seasonally variable,Super-linear,TRUE
+14060004,GPP,Super-linear,Super-linear,FALSE
+14060005,ER,Super-linear,Seasonally variable,TRUE
+14060005,GPP,Super-linear,Super-linear,FALSE
+14060006,ER,Super-linear,Seasonally variable,TRUE
+14060006,GPP,Super-linear,Super-linear,FALSE
+14060007,ER,Super-linear,Seasonally variable,TRUE
+14060007,GPP,Super-linear,Super-linear,FALSE
+14060008,ER,Super-linear,Seasonally variable,TRUE
+14060008,GPP,Super-linear,Super-linear,FALSE
+14060009,ER,Seasonally variable,Seasonally variable,FALSE
+14060009,GPP,Super-linear,Super-linear,FALSE
+14060010,ER,Super-linear,Super-linear,FALSE
+14060010,GPP,Super-linear,Super-linear,FALSE
+14070001,ER,Super-linear,Seasonally variable,TRUE
+14070001,GPP,Super-linear,Super-linear,FALSE
+14070002,ER,Super-linear,Seasonally variable,TRUE
+14070002,GPP,Super-linear,Super-linear,FALSE
+14070003,ER,Super-linear,Seasonally variable,TRUE
+14070003,GPP,Super-linear,Super-linear,FALSE
+14070004,ER,Super-linear,Seasonally variable,TRUE
+14070004,GPP,Super-linear,Super-linear,FALSE
+14070005,ER,Super-linear,Seasonally variable,TRUE
+14070005,GPP,Super-linear,Super-linear,FALSE
+14070006,ER,Super-linear,Seasonally variable,TRUE
+14070006,GPP,Super-linear,Super-linear,FALSE
+14070007,ER,Seasonally variable,Seasonally variable,FALSE
+14070007,GPP,Super-linear,Super-linear,FALSE
+14080101,ER,Seasonally variable,Seasonally variable,FALSE
+14080101,GPP,Super-linear,Super-linear,FALSE
+14080102,ER,Seasonally variable,Seasonally variable,FALSE
+14080102,GPP,Super-linear,Super-linear,FALSE
+14080103,ER,Seasonally variable,Seasonally variable,FALSE
+14080103,GPP,Super-linear,Super-linear,FALSE
+14080104,ER,Seasonally variable,Super-linear,TRUE
+14080104,GPP,Seasonally variable,Super-linear,TRUE
+14080105,ER,Super-linear,Seasonally variable,TRUE
+14080105,GPP,Super-linear,Super-linear,FALSE
+14080106,ER,Super-linear,Seasonally variable,TRUE
+14080106,GPP,Super-linear,Super-linear,FALSE
+14080107,ER,Super-linear,Seasonally variable,TRUE
+14080107,GPP,Super-linear,Super-linear,FALSE
+14080201,ER,Super-linear,Seasonally variable,TRUE
+14080201,GPP,Super-linear,Super-linear,FALSE
+14080202,ER,Super-linear,Seasonally variable,TRUE
+14080202,GPP,Super-linear,Seasonally variable,TRUE
+14080203,ER,Super-linear,Seasonally variable,TRUE
+14080203,GPP,Super-linear,Seasonally variable,TRUE
+14080204,ER,Super-linear,Seasonally variable,TRUE
+14080204,GPP,Super-linear,Super-linear,FALSE
+14080205,ER,Super-linear,Seasonally variable,TRUE
+14080205,GPP,Super-linear,Super-linear,FALSE
+15010001,ER,Super-linear,Seasonally variable,TRUE
+15010001,GPP,Super-linear,Super-linear,FALSE
+15010002,ER,Super-linear,Seasonally variable,TRUE
+15010002,GPP,Super-linear,Super-linear,FALSE
+15010003,ER,Seasonally variable,Seasonally variable,FALSE
+15010003,GPP,Super-linear,Super-linear,FALSE
+15010004,ER,Seasonally variable,Seasonally variable,FALSE
+15010004,GPP,Super-linear,Super-linear,FALSE
+15010005,ER,Super-linear,Seasonally variable,TRUE
+15010005,GPP,Super-linear,Super-linear,FALSE
+15010006,ER,Seasonally variable,Seasonally variable,FALSE
+15010006,GPP,Seasonally variable,Uncertain,TRUE
+15010007,ER,Seasonally variable,Seasonally variable,FALSE
+15010007,GPP,Super-linear,Super-linear,FALSE
+15010008,ER,Super-linear,Seasonally variable,TRUE
+15010008,GPP,Super-linear,Super-linear,FALSE
+15010009,ER,Seasonally variable,Seasonally variable,FALSE
+15010009,GPP,Super-linear,Super-linear,FALSE
+15010010,ER,Super-linear,Seasonally variable,TRUE
+15010010,GPP,Super-linear,Super-linear,FALSE
+15010011,ER,Super-linear,Seasonally variable,TRUE
+15010011,GPP,Super-linear,Super-linear,FALSE
+15010012,ER,Super-linear,Seasonally variable,TRUE
+15010012,GPP,Super-linear,Seasonally variable,TRUE
+15010013,ER,Seasonally variable,Seasonally variable,FALSE
+15010013,GPP,Super-linear,Seasonally variable,TRUE
+15010014,ER,Super-linear,Seasonally variable,TRUE
+15010014,GPP,Super-linear,Super-linear,FALSE
+15010015,ER,Super-linear,Seasonally variable,TRUE
+15010015,GPP,Super-linear,Super-linear,FALSE
+15020001,ER,Seasonally variable,Seasonally variable,FALSE
+15020001,GPP,Seasonally variable,Super-linear,TRUE
+15020002,ER,Seasonally variable,Seasonally variable,FALSE
+15020002,GPP,Super-linear,Super-linear,FALSE
+15020003,ER,Seasonally variable,Seasonally variable,FALSE
+15020003,GPP,Super-linear,Super-linear,FALSE
+15020004,ER,Seasonally variable,Seasonally variable,FALSE
+15020004,GPP,Super-linear,Super-linear,FALSE
+15020005,ER,Super-linear,Super-linear,FALSE
+15020005,GPP,Super-linear,Super-linear,FALSE
+15020006,ER,Seasonally variable,Seasonally variable,FALSE
+15020006,GPP,Super-linear,Super-linear,FALSE
+15020007,ER,Seasonally variable,Seasonally variable,FALSE
+15020007,GPP,Super-linear,Super-linear,FALSE
+15020008,ER,Seasonally variable,Seasonally variable,FALSE
+15020008,GPP,Super-linear,Super-linear,FALSE
+15020009,ER,Seasonally variable,Seasonally variable,FALSE
+15020009,GPP,Seasonally variable,Seasonally variable,FALSE
+15020010,ER,Seasonally variable,Seasonally variable,FALSE
+15020010,GPP,Super-linear,Super-linear,FALSE
+15020011,ER,Seasonally variable,Seasonally variable,FALSE
+15020011,GPP,Super-linear,Seasonally variable,TRUE
+15020012,ER,Seasonally variable,Seasonally variable,FALSE
+15020012,GPP,Seasonally variable,Seasonally variable,FALSE
+15020013,ER,Seasonally variable,Seasonally variable,FALSE
+15020013,GPP,Super-linear,Super-linear,FALSE
+15020014,ER,Seasonally variable,Seasonally variable,FALSE
+15020014,GPP,Super-linear,Super-linear,FALSE
+15020015,ER,Super-linear,Seasonally variable,TRUE
+15020015,GPP,Super-linear,Super-linear,FALSE
+15020016,ER,Seasonally variable,Seasonally variable,FALSE
+15020016,GPP,Super-linear,Super-linear,FALSE
+15020017,ER,Super-linear,Seasonally variable,TRUE
+15020017,GPP,Seasonally variable,Uncertain,TRUE
+15020018,ER,Uncertain,Uncertain,FALSE
+15020018,GPP,Uncertain,Uncertain,FALSE
+15030101,ER,Super-linear,Seasonally variable,TRUE
+15030101,GPP,Super-linear,Super-linear,FALSE
+15030102,ER,Super-linear,Seasonally variable,TRUE
+15030102,GPP,Super-linear,Super-linear,FALSE
+15030103,ER,Super-linear,Seasonally variable,TRUE
+15030103,GPP,Super-linear,Super-linear,FALSE
+15030104,ER,Super-linear,Seasonally variable,TRUE
+15030104,GPP,Super-linear,Super-linear,FALSE
+15030105,ER,Super-linear,Super-linear,FALSE
+15030105,GPP,Super-linear,Super-linear,FALSE
+15030106,ER,Super-linear,Super-linear,FALSE
+15030106,GPP,Super-linear,Super-linear,FALSE
+15030201,ER,Seasonally variable,Seasonally variable,FALSE
+15030201,GPP,Super-linear,Super-linear,FALSE
+15030202,ER,Seasonally variable,Seasonally variable,FALSE
+15030202,GPP,Super-linear,Super-linear,FALSE
+15030203,ER,Super-linear,Seasonally variable,TRUE
+15030203,GPP,Super-linear,Super-linear,FALSE
+15030204,ER,Seasonally variable,Uncertain,TRUE
+15030204,GPP,Super-linear,Super-linear,FALSE
+15040001,ER,Super-linear,Super-linear,FALSE
+15040001,GPP,Super-linear,Super-linear,FALSE
+15040002,ER,Seasonally variable,Seasonally variable,FALSE
+15040002,GPP,Super-linear,Super-linear,FALSE
+15040003,ER,Super-linear,Seasonally variable,TRUE
+15040003,GPP,Super-linear,Super-linear,FALSE
+15040004,ER,Super-linear,Super-linear,FALSE
+15040004,GPP,Super-linear,Super-linear,FALSE
+15040005,ER,Super-linear,Seasonally variable,TRUE
+15040005,GPP,Super-linear,Super-linear,FALSE
+15040006,ER,Super-linear,Seasonally variable,TRUE
+15040006,GPP,Super-linear,Super-linear,FALSE
+15040007,ER,Super-linear,Seasonally variable,TRUE
+15040007,GPP,Super-linear,Super-linear,FALSE
+15050100,ER,Super-linear,Seasonally variable,TRUE
+15050100,GPP,Super-linear,Super-linear,FALSE
+15050201,ER,Super-linear,Seasonally variable,TRUE
+15050201,GPP,Super-linear,Super-linear,FALSE
+15050203,ER,Uncertain,Seasonally variable,TRUE
+15050203,GPP,Seasonally variable,Seasonally variable,FALSE
+15050301,ER,Uncertain,Uncertain,FALSE
+15050301,GPP,Uncertain,Uncertain,FALSE
+15050302,ER,Seasonally variable,Seasonally variable,FALSE
+15050302,GPP,Super-linear,Super-linear,FALSE
+15050303,ER,Super-linear,Uncertain,TRUE
+15050303,GPP,Super-linear,Super-linear,FALSE
+15050304,ER,Super-linear,Uncertain,TRUE
+15050304,GPP,Super-linear,Super-linear,FALSE
+15050305,ER,Super-linear,Seasonally variable,TRUE
+15050305,GPP,Seasonally variable,Super-linear,TRUE
+15050306,ER,Super-linear,Seasonally variable,TRUE
+15050306,GPP,Super-linear,Super-linear,FALSE
+15060101,ER,Super-linear,Super-linear,FALSE
+15060101,GPP,Super-linear,Super-linear,FALSE
+15060102,ER,Super-linear,Super-linear,FALSE
+15060102,GPP,Super-linear,Super-linear,FALSE
+15060103,ER,Super-linear,Super-linear,FALSE
+15060103,GPP,Super-linear,Super-linear,FALSE
+15060104,ER,Super-linear,Super-linear,FALSE
+15060104,GPP,Super-linear,Seasonally variable,TRUE
+15060105,ER,Seasonally variable,Super-linear,TRUE
+15060105,GPP,Super-linear,Super-linear,FALSE
+15060106,ER,Super-linear,Super-linear,FALSE
+15060106,GPP,Super-linear,Super-linear,FALSE
+15060201,ER,Seasonally variable,Seasonally variable,FALSE
+15060201,GPP,Super-linear,Super-linear,FALSE
+15060202,ER,Seasonally variable,Seasonally variable,FALSE
+15060202,GPP,Super-linear,Super-linear,FALSE
+15060203,ER,Super-linear,Seasonally variable,TRUE
+15060203,GPP,Super-linear,Super-linear,FALSE
+15070101,ER,Super-linear,Seasonally variable,TRUE
+15070101,GPP,Super-linear,Super-linear,FALSE
+15070102,ER,Super-linear,Seasonally variable,TRUE
+15070102,GPP,Super-linear,Super-linear,FALSE
+15070103,ER,Seasonally variable,Uncertain,TRUE
+15070103,GPP,Super-linear,Seasonally variable,TRUE
+15070104,ER,Uncertain,Uncertain,FALSE
+15070104,GPP,Super-linear,Super-linear,FALSE
+15070201,ER,Super-linear,Super-linear,FALSE
+15070201,GPP,Super-linear,Super-linear,FALSE
+15070202,ER,Super-linear,Seasonally variable,TRUE
+15070202,GPP,Super-linear,Super-linear,FALSE
+15070203,ER,Super-linear,Super-linear,FALSE
+15070203,GPP,Super-linear,Super-linear,FALSE
+16010101,ER,Super-linear,Seasonally variable,TRUE
+16010101,GPP,Super-linear,Super-linear,FALSE
+16010102,ER,Super-linear,Seasonally variable,TRUE
+16010102,GPP,Super-linear,Super-linear,FALSE
+16010201,ER,Super-linear,Seasonally variable,TRUE
+16010201,GPP,Super-linear,Super-linear,FALSE
+16010202,ER,Super-linear,Seasonally variable,TRUE
+16010202,GPP,Super-linear,Super-linear,FALSE
+16010203,ER,Seasonally variable,Seasonally variable,FALSE
+16010203,GPP,Super-linear,Super-linear,FALSE
+16010204,ER,Super-linear,Super-linear,FALSE
+16010204,GPP,Super-linear,Super-linear,FALSE
+16020101,ER,Seasonally variable,Super-linear,TRUE
+16020101,GPP,Super-linear,Super-linear,FALSE
+16020102,ER,Seasonally variable,Seasonally variable,FALSE
+16020102,GPP,Super-linear,Super-linear,FALSE
+16020201,ER,Seasonally variable,Seasonally variable,FALSE
+16020201,GPP,Seasonally variable,Super-linear,TRUE
+16020202,ER,Uncertain,Uncertain,FALSE
+16020202,GPP,Seasonally variable,Uncertain,TRUE
+16020203,ER,Super-linear,Seasonally variable,TRUE
+16020203,GPP,Super-linear,Super-linear,FALSE
+16020204,ER,Super-linear,Seasonally variable,TRUE
+16020204,GPP,Super-linear,Super-linear,FALSE
+16020301,ER,Uncertain,Seasonally variable,TRUE
+16020301,GPP,Super-linear,Super-linear,FALSE
+16020302,ER,Seasonally variable,Seasonally variable,FALSE
+16020302,GPP,Seasonally variable,Uncertain,TRUE
+16020303,ER,Uncertain,Seasonally variable,TRUE
+16020303,GPP,Super-linear,Super-linear,FALSE
+16020304,ER,Uncertain,Seasonally variable,TRUE
+16020304,GPP,Seasonally variable,Seasonally variable,FALSE
+16020305,ER,Super-linear,Seasonally variable,TRUE
+16020305,GPP,Super-linear,Super-linear,FALSE
+16020306,ER,Seasonally variable,Seasonally variable,FALSE
+16020306,GPP,Super-linear,Super-linear,FALSE
+16020307,ER,Super-linear,Seasonally variable,TRUE
+16020307,GPP,Super-linear,Super-linear,FALSE
+16020308,ER,Super-linear,Seasonally variable,TRUE
+16020308,GPP,Super-linear,Super-linear,FALSE
+16020309,ER,Uncertain,Uncertain,FALSE
+16020309,GPP,Super-linear,Seasonally variable,TRUE
+16020310,ER,Super-linear,Seasonally variable,TRUE
+16020310,GPP,Super-linear,Super-linear,FALSE
+16030001,ER,Super-linear,Seasonally variable,TRUE
+16030001,GPP,Super-linear,Super-linear,FALSE
+16030002,ER,Super-linear,Seasonally variable,TRUE
+16030002,GPP,Super-linear,Super-linear,FALSE
+16030003,ER,Super-linear,Seasonally variable,TRUE
+16030003,GPP,Super-linear,Super-linear,FALSE
+16030004,ER,Seasonally variable,Seasonally variable,FALSE
+16030004,GPP,Super-linear,Super-linear,FALSE
+16030005,ER,Super-linear,Seasonally variable,TRUE
+16030005,GPP,Super-linear,Super-linear,FALSE
+16030006,ER,Seasonally variable,Seasonally variable,FALSE
+16030006,GPP,Super-linear,Seasonally variable,TRUE
+16030007,ER,Seasonally variable,Seasonally variable,FALSE
+16030007,GPP,Super-linear,Super-linear,FALSE
+16030008,ER,Super-linear,Seasonally variable,TRUE
+16030008,GPP,Super-linear,Super-linear,FALSE
+16030009,ER,Uncertain,Uncertain,FALSE
+16030009,GPP,Seasonally variable,Uncertain,TRUE
+16040101,ER,Super-linear,Seasonally variable,TRUE
+16040101,GPP,Super-linear,Super-linear,FALSE
+16040102,ER,Super-linear,Super-linear,FALSE
+16040102,GPP,Super-linear,Super-linear,FALSE
+16040103,ER,Seasonally variable,Seasonally variable,FALSE
+16040103,GPP,Super-linear,Super-linear,FALSE
+16040104,ER,Super-linear,Seasonally variable,TRUE
+16040104,GPP,Super-linear,Seasonally variable,TRUE
+16040105,ER,Super-linear,Seasonally variable,TRUE
+16040105,GPP,Super-linear,Super-linear,FALSE
+16040106,ER,Super-linear,Seasonally variable,TRUE
+16040106,GPP,Super-linear,Super-linear,FALSE
+16040107,ER,Super-linear,Seasonally variable,TRUE
+16040107,GPP,Super-linear,Super-linear,FALSE
+16040108,ER,Super-linear,Seasonally variable,TRUE
+16040108,GPP,Super-linear,Super-linear,FALSE
+16040109,ER,Super-linear,Seasonally variable,TRUE
+16040109,GPP,Super-linear,Super-linear,FALSE
+16040201,ER,Super-linear,Seasonally variable,TRUE
+16040201,GPP,Super-linear,Super-linear,FALSE
+16040202,ER,Super-linear,Super-linear,FALSE
+16040202,GPP,Super-linear,Super-linear,FALSE
+16040203,ER,Super-linear,Uncertain,TRUE
+16040203,GPP,Super-linear,Super-linear,FALSE
+16040204,ER,Seasonally variable,Uncertain,TRUE
+16040204,GPP,Seasonally variable,Super-linear,TRUE
+16040205,ER,Seasonally variable,Uncertain,TRUE
+16040205,GPP,Super-linear,Super-linear,FALSE
+16050101,ER,Seasonally variable,Seasonally variable,FALSE
+16050101,GPP,Seasonally variable,Seasonally variable,FALSE
+16050102,ER,Seasonally variable,Super-linear,TRUE
+16050102,GPP,Super-linear,Super-linear,FALSE
+16050103,ER,Super-linear,Seasonally variable,TRUE
+16050103,GPP,Super-linear,Super-linear,FALSE
+16050104,ER,Seasonally variable,Uncertain,TRUE
+16050104,GPP,Super-linear,Super-linear,FALSE
+16050201,ER,Seasonally variable,Seasonally variable,FALSE
+16050201,GPP,Super-linear,Super-linear,FALSE
+16050202,ER,Super-linear,Seasonally variable,TRUE
+16050202,GPP,Super-linear,Super-linear,FALSE
+16050203,ER,Super-linear,Seasonally variable,TRUE
+16050203,GPP,Super-linear,Super-linear,FALSE
+16050301,ER,Seasonally variable,Seasonally variable,FALSE
+16050301,GPP,Seasonally variable,Super-linear,TRUE
+16050302,ER,Seasonally variable,Seasonally variable,FALSE
+16050302,GPP,Seasonally variable,Seasonally variable,FALSE
+16050303,ER,Super-linear,Seasonally variable,TRUE
+16050303,GPP,Super-linear,Super-linear,FALSE
+16050304,ER,Super-linear,Seasonally variable,TRUE
+16050304,GPP,Super-linear,Super-linear,FALSE
+16060001,ER,Seasonally variable,Uncertain,TRUE
+16060001,GPP,Super-linear,Super-linear,FALSE
+16060002,ER,Seasonally variable,Uncertain,TRUE
+16060002,GPP,Seasonally variable,Seasonally variable,FALSE
+16060003,ER,Uncertain,Uncertain,FALSE
+16060003,GPP,Seasonally variable,Uncertain,TRUE
+16060004,ER,Super-linear,Seasonally variable,TRUE
+16060004,GPP,Super-linear,Seasonally variable,TRUE
+16060005,ER,Super-linear,Seasonally variable,TRUE
+16060005,GPP,Super-linear,Seasonally variable,TRUE
+16060006,ER,Seasonally variable,Seasonally variable,FALSE
+16060006,GPP,Super-linear,Super-linear,FALSE
+16060007,ER,Super-linear,Seasonally variable,TRUE
+16060007,GPP,Super-linear,Seasonally variable,TRUE
+16060008,ER,Super-linear,Seasonally variable,TRUE
+16060008,GPP,Super-linear,Super-linear,FALSE
+16060009,ER,Seasonally variable,Uncertain,TRUE
+16060009,GPP,Seasonally variable,Uncertain,TRUE
+16060010,ER,Uncertain,Uncertain,FALSE
+16060010,GPP,Seasonally variable,Uncertain,TRUE
+16060011,ER,Seasonally variable,Uncertain,TRUE
+16060011,GPP,Seasonally variable,Uncertain,TRUE
+16060012,ER,Seasonally variable,Uncertain,TRUE
+16060012,GPP,Super-linear,Seasonally variable,TRUE
+16060013,ER,Uncertain,Uncertain,FALSE
+16060013,GPP,Seasonally variable,Seasonally variable,FALSE
+16060014,ER,Uncertain,Uncertain,FALSE
+16060014,GPP,Uncertain,Uncertain,FALSE
+16060015,ER,Super-linear,Seasonally variable,TRUE
+16060015,GPP,Super-linear,Super-linear,FALSE
+17010102,ER,Super-linear,Seasonally variable,TRUE
+17010102,GPP,Super-linear,Super-linear,FALSE
+17010201,ER,Super-linear,Super-linear,FALSE
+17010201,GPP,Super-linear,Super-linear,FALSE
+17010202,ER,Super-linear,Super-linear,FALSE
+17010202,GPP,Super-linear,Super-linear,FALSE
+17010203,ER,Super-linear,Super-linear,FALSE
+17010203,GPP,Super-linear,Super-linear,FALSE
+17010204,ER,Super-linear,Super-linear,FALSE
+17010204,GPP,Super-linear,Super-linear,FALSE
+17010205,ER,Super-linear,Seasonally variable,TRUE
+17010205,GPP,Super-linear,Seasonally variable,TRUE
+17010207,ER,Seasonally variable,Seasonally variable,FALSE
+17010207,GPP,Super-linear,Super-linear,FALSE
+17010208,ER,Seasonally variable,Seasonally variable,FALSE
+17010208,GPP,Seasonally variable,Seasonally variable,FALSE
+17010209,ER,Seasonally variable,Seasonally variable,FALSE
+17010209,GPP,Super-linear,Super-linear,FALSE
+17010210,ER,Super-linear,Seasonally variable,TRUE
+17010210,GPP,Super-linear,Seasonally variable,TRUE
+17010211,ER,Seasonally variable,Seasonally variable,FALSE
+17010211,GPP,Super-linear,Super-linear,FALSE
+17010212,ER,Seasonally variable,Seasonally variable,FALSE
+17010212,GPP,Super-linear,Seasonally variable,TRUE
+17010213,ER,Super-linear,Seasonally variable,TRUE
+17010213,GPP,Super-linear,Super-linear,FALSE
+17010214,ER,Super-linear,Super-linear,FALSE
+17010214,GPP,Super-linear,Super-linear,FALSE
+17010215,ER,Seasonally variable,Seasonally variable,FALSE
+17010215,GPP,Super-linear,Super-linear,FALSE
+17010301,ER,Seasonally variable,Seasonally variable,FALSE
+17010301,GPP,Super-linear,Super-linear,FALSE
+17010302,ER,Insufficient data,Insufficient data,FALSE
+17010302,GPP,Insufficient data,Insufficient data,FALSE
+17010303,ER,Seasonally variable,Seasonally variable,FALSE
+17010303,GPP,Super-linear,Super-linear,FALSE
+17010304,ER,Seasonally variable,Seasonally variable,FALSE
+17010304,GPP,Super-linear,Super-linear,FALSE
+17010305,ER,Seasonally variable,Seasonally variable,FALSE
+17010305,GPP,Super-linear,Super-linear,FALSE
+17010306,ER,Seasonally variable,Seasonally variable,FALSE
+17010306,GPP,Super-linear,Super-linear,FALSE
+17010307,ER,Seasonally variable,Seasonally variable,FALSE
+17010307,GPP,Super-linear,Super-linear,FALSE
+17010308,ER,Super-linear,Super-linear,FALSE
+17010308,GPP,Super-linear,Super-linear,FALSE
+17020003,ER,Super-linear,Seasonally variable,TRUE
+17020003,GPP,Super-linear,Super-linear,FALSE
+17020004,ER,Super-linear,Super-linear,FALSE
+17020004,GPP,Super-linear,Super-linear,FALSE
+17020005,ER,Uncertain,Uncertain,FALSE
+17020005,GPP,Uncertain,Uncertain,FALSE
+17020008,ER,Seasonally variable,Super-linear,TRUE
+17020008,GPP,Super-linear,Super-linear,FALSE
+17020009,ER,Seasonally variable,Seasonally variable,FALSE
+17020009,GPP,Super-linear,Super-linear,FALSE
+17020010,ER,Seasonally variable,Seasonally variable,FALSE
+17020010,GPP,Uncertain,Uncertain,FALSE
+17020011,ER,Seasonally variable,Seasonally variable,FALSE
+17020011,GPP,Super-linear,Super-linear,FALSE
+17020012,ER,Uncertain,Seasonally variable,TRUE
+17020012,GPP,Super-linear,Super-linear,FALSE
+17020013,ER,Super-linear,Super-linear,FALSE
+17020013,GPP,Super-linear,Super-linear,FALSE
+17020014,ER,Uncertain,Uncertain,FALSE
+17020014,GPP,Uncertain,Uncertain,FALSE
+17020015,ER,Super-linear,Super-linear,FALSE
+17020015,GPP,Super-linear,Super-linear,FALSE
+17020016,ER,Seasonally variable,Uncertain,TRUE
+17020016,GPP,Uncertain,Uncertain,FALSE
+17030001,ER,Seasonally variable,Seasonally variable,FALSE
+17030001,GPP,Super-linear,Super-linear,FALSE
+17030002,ER,Seasonally variable,Seasonally variable,FALSE
+17030002,GPP,Super-linear,Super-linear,FALSE
+17030003,ER,Seasonally variable,Seasonally variable,FALSE
+17030003,GPP,Super-linear,Seasonally variable,TRUE
+17040101,ER,Seasonally variable,Seasonally variable,FALSE
+17040101,GPP,Super-linear,Super-linear,FALSE
+17040102,ER,Seasonally variable,Seasonally variable,FALSE
+17040102,GPP,Super-linear,Super-linear,FALSE
+17040103,ER,Seasonally variable,Seasonally variable,FALSE
+17040103,GPP,Super-linear,Super-linear,FALSE
+17040104,ER,Seasonally variable,Seasonally variable,FALSE
+17040104,GPP,Super-linear,Super-linear,FALSE
+17040105,ER,Seasonally variable,Seasonally variable,FALSE
+17040105,GPP,Super-linear,Super-linear,FALSE
+17040201,ER,Super-linear,Seasonally variable,TRUE
+17040201,GPP,Super-linear,Super-linear,FALSE
+17040202,ER,Super-linear,Super-linear,FALSE
+17040202,GPP,Super-linear,Super-linear,FALSE
+17040203,ER,Super-linear,Super-linear,FALSE
+17040203,GPP,Super-linear,Seasonally variable,TRUE
+17040204,ER,Super-linear,Seasonally variable,TRUE
+17040204,GPP,Seasonally variable,Seasonally variable,FALSE
+17040205,ER,Super-linear,Seasonally variable,TRUE
+17040205,GPP,Super-linear,Super-linear,FALSE
+17040206,ER,Super-linear,Seasonally variable,TRUE
+17040206,GPP,Super-linear,Super-linear,FALSE
+17040207,ER,Super-linear,Super-linear,FALSE
+17040207,GPP,Super-linear,Super-linear,FALSE
+17040208,ER,Super-linear,Seasonally variable,TRUE
+17040208,GPP,Super-linear,Super-linear,FALSE
+17040209,ER,Super-linear,Super-linear,FALSE
+17040209,GPP,Super-linear,Super-linear,FALSE
+17040210,ER,Super-linear,Seasonally variable,TRUE
+17040210,GPP,Super-linear,Super-linear,FALSE
+17040211,ER,Super-linear,Seasonally variable,TRUE
+17040211,GPP,Super-linear,Super-linear,FALSE
+17040212,ER,Super-linear,Seasonally variable,TRUE
+17040212,GPP,Super-linear,Super-linear,FALSE
+17040213,ER,Super-linear,Seasonally variable,TRUE
+17040213,GPP,Super-linear,Super-linear,FALSE
+17040214,ER,Super-linear,Seasonally variable,TRUE
+17040214,GPP,Super-linear,Super-linear,FALSE
+17040215,ER,Super-linear,Seasonally variable,TRUE
+17040215,GPP,Super-linear,Seasonally variable,TRUE
+17040216,ER,Super-linear,Seasonally variable,TRUE
+17040216,GPP,Super-linear,Super-linear,FALSE
+17040217,ER,Seasonally variable,Seasonally variable,FALSE
+17040217,GPP,Super-linear,Super-linear,FALSE
+17040218,ER,Seasonally variable,Seasonally variable,FALSE
+17040218,GPP,Super-linear,Super-linear,FALSE
+17040219,ER,Super-linear,Super-linear,FALSE
+17040219,GPP,Super-linear,Super-linear,FALSE
+17040220,ER,Super-linear,Super-linear,FALSE
+17040220,GPP,Super-linear,Super-linear,FALSE
+17040221,ER,Super-linear,Super-linear,FALSE
+17040221,GPP,Super-linear,Super-linear,FALSE
+17050101,ER,Super-linear,Super-linear,FALSE
+17050101,GPP,Super-linear,Super-linear,FALSE
+17050102,ER,Super-linear,Seasonally variable,TRUE
+17050102,GPP,Super-linear,Super-linear,FALSE
+17050103,ER,Super-linear,Seasonally variable,TRUE
+17050103,GPP,Super-linear,Super-linear,FALSE
+17050104,ER,Super-linear,Super-linear,FALSE
+17050104,GPP,Super-linear,Super-linear,FALSE
+17050105,ER,Super-linear,Super-linear,FALSE
+17050105,GPP,Super-linear,Super-linear,FALSE
+17050106,ER,Super-linear,Seasonally variable,TRUE
+17050106,GPP,Super-linear,Super-linear,FALSE
+17050107,ER,Super-linear,Super-linear,FALSE
+17050107,GPP,Super-linear,Super-linear,FALSE
+17050108,ER,Super-linear,Super-linear,FALSE
+17050108,GPP,Super-linear,Super-linear,FALSE
+17050109,ER,Super-linear,Super-linear,FALSE
+17050109,GPP,Super-linear,Super-linear,FALSE
+17050110,ER,Super-linear,Super-linear,FALSE
+17050110,GPP,Super-linear,Super-linear,FALSE
+17050111,ER,Seasonally variable,Seasonally variable,FALSE
+17050111,GPP,Super-linear,Seasonally variable,TRUE
+17050112,ER,Seasonally variable,Super-linear,TRUE
+17050112,GPP,Super-linear,Super-linear,FALSE
+17050113,ER,Super-linear,Super-linear,FALSE
+17050113,GPP,Super-linear,Super-linear,FALSE
+17050114,ER,Super-linear,Seasonally variable,TRUE
+17050114,GPP,Super-linear,Super-linear,FALSE
+17050115,ER,Super-linear,Seasonally variable,TRUE
+17050115,GPP,Super-linear,Super-linear,FALSE
+17050116,ER,Super-linear,Seasonally variable,TRUE
+17050116,GPP,Super-linear,Super-linear,FALSE
+17050117,ER,Super-linear,Super-linear,FALSE
+17050117,GPP,Super-linear,Super-linear,FALSE
+17050118,ER,Super-linear,Seasonally variable,TRUE
+17050118,GPP,Super-linear,Super-linear,FALSE
+17050119,ER,Super-linear,Seasonally variable,TRUE
+17050119,GPP,Super-linear,Super-linear,FALSE
+17050120,ER,Seasonally variable,Seasonally variable,FALSE
+17050120,GPP,Super-linear,Super-linear,FALSE
+17050121,ER,Insufficient data,Insufficient data,FALSE
+17050121,GPP,Insufficient data,Insufficient data,FALSE
+17050122,ER,Seasonally variable,Seasonally variable,FALSE
+17050122,GPP,Super-linear,Super-linear,FALSE
+17050123,ER,Seasonally variable,Super-linear,TRUE
+17050123,GPP,Super-linear,Super-linear,FALSE
+17050124,ER,Super-linear,Seasonally variable,TRUE
+17050124,GPP,Super-linear,Super-linear,FALSE
+17050201,ER,Super-linear,Seasonally variable,TRUE
+17050201,GPP,Super-linear,Super-linear,FALSE
+17050202,ER,Seasonally variable,Seasonally variable,FALSE
+17050202,GPP,Super-linear,Super-linear,FALSE
+17050203,ER,Super-linear,Super-linear,FALSE
+17050203,GPP,Super-linear,Super-linear,FALSE
+17060101,ER,Super-linear,Seasonally variable,TRUE
+17060101,GPP,Super-linear,Super-linear,FALSE
+17060102,ER,Seasonally variable,Seasonally variable,FALSE
+17060102,GPP,Super-linear,Super-linear,FALSE
+17060103,ER,Super-linear,Seasonally variable,TRUE
+17060103,GPP,Super-linear,Super-linear,FALSE
+17060104,ER,Super-linear,Super-linear,FALSE
+17060104,GPP,Super-linear,Super-linear,FALSE
+17060105,ER,Super-linear,Seasonally variable,TRUE
+17060105,GPP,Super-linear,Super-linear,FALSE
+17060106,ER,Super-linear,Seasonally variable,TRUE
+17060106,GPP,Super-linear,Super-linear,FALSE
+17060107,ER,Super-linear,Seasonally variable,TRUE
+17060107,GPP,Super-linear,Super-linear,FALSE
+17060108,ER,Super-linear,Super-linear,FALSE
+17060108,GPP,Super-linear,Super-linear,FALSE
+17060109,ER,Super-linear,Super-linear,FALSE
+17060109,GPP,Super-linear,Seasonally variable,TRUE
+17060110,ER,Super-linear,Seasonally variable,TRUE
+17060110,GPP,Super-linear,Super-linear,FALSE
+17060201,ER,Seasonally variable,Seasonally variable,FALSE
+17060201,GPP,Super-linear,Super-linear,FALSE
+17060202,ER,Seasonally variable,Seasonally variable,FALSE
+17060202,GPP,Super-linear,Super-linear,FALSE
+17060203,ER,Super-linear,Seasonally variable,TRUE
+17060203,GPP,Super-linear,Super-linear,FALSE
+17060204,ER,Super-linear,Seasonally variable,TRUE
+17060204,GPP,Super-linear,Super-linear,FALSE
+17060205,ER,Seasonally variable,Seasonally variable,FALSE
+17060205,GPP,Super-linear,Seasonally variable,TRUE
+17060206,ER,Seasonally variable,Seasonally variable,FALSE
+17060206,GPP,Super-linear,Super-linear,FALSE
+17060207,ER,Super-linear,Seasonally variable,TRUE
+17060207,GPP,Super-linear,Super-linear,FALSE
+17060208,ER,Seasonally variable,Seasonally variable,FALSE
+17060208,GPP,Super-linear,Super-linear,FALSE
+17060209,ER,Seasonally variable,Seasonally variable,FALSE
+17060209,GPP,Super-linear,Super-linear,FALSE
+17060210,ER,Super-linear,Super-linear,FALSE
+17060210,GPP,Super-linear,Seasonally variable,TRUE
+17060301,ER,Seasonally variable,Seasonally variable,FALSE
+17060301,GPP,Super-linear,Super-linear,FALSE
+17060302,ER,Seasonally variable,Seasonally variable,FALSE
+17060302,GPP,Super-linear,Super-linear,FALSE
+17060303,ER,Seasonally variable,Seasonally variable,FALSE
+17060303,GPP,Super-linear,Super-linear,FALSE
+17060304,ER,Insufficient data,Insufficient data,FALSE
+17060304,GPP,Insufficient data,Insufficient data,FALSE
+17060305,ER,Seasonally variable,Seasonally variable,FALSE
+17060305,GPP,Super-linear,Super-linear,FALSE
+17060306,ER,Seasonally variable,Seasonally variable,FALSE
+17060306,GPP,Super-linear,Super-linear,FALSE
+17060307,ER,Seasonally variable,Seasonally variable,FALSE
+17060307,GPP,Super-linear,Super-linear,FALSE
+17060308,ER,Seasonally variable,Seasonally variable,FALSE
+17060308,GPP,Super-linear,Super-linear,FALSE
+17070101,ER,Uncertain,Uncertain,FALSE
+17070101,GPP,Uncertain,Uncertain,FALSE
+17070102,ER,Super-linear,Seasonally variable,TRUE
+17070102,GPP,Seasonally variable,Super-linear,TRUE
+17070103,ER,Seasonally variable,Super-linear,TRUE
+17070103,GPP,Super-linear,Super-linear,FALSE
+17070104,ER,Super-linear,Seasonally variable,TRUE
+17070104,GPP,Super-linear,Super-linear,FALSE
+17070105,ER,Uncertain,Seasonally variable,TRUE
+17070105,GPP,Seasonally variable,Seasonally variable,FALSE
+17070106,ER,Seasonally variable,Seasonally variable,FALSE
+17070106,GPP,Super-linear,Super-linear,FALSE
+17070201,ER,Super-linear,Super-linear,FALSE
+17070201,GPP,Super-linear,Super-linear,FALSE
+17070202,ER,Seasonally variable,Seasonally variable,FALSE
+17070202,GPP,Super-linear,Super-linear,FALSE
+17070203,ER,Super-linear,Super-linear,FALSE
+17070203,GPP,Super-linear,Super-linear,FALSE
+17070204,ER,Super-linear,Seasonally variable,TRUE
+17070204,GPP,Super-linear,Super-linear,FALSE
+17070301,ER,Seasonally variable,Seasonally variable,FALSE
+17070301,GPP,Super-linear,Super-linear,FALSE
+17070302,ER,Seasonally variable,Seasonally variable,FALSE
+17070302,GPP,Super-linear,Super-linear,FALSE
+17070303,ER,Uncertain,Uncertain,FALSE
+17070303,GPP,Seasonally variable,Super-linear,TRUE
+17070304,ER,Super-linear,Seasonally variable,TRUE
+17070304,GPP,Super-linear,Super-linear,FALSE
+17070305,ER,Super-linear,Seasonally variable,TRUE
+17070305,GPP,Super-linear,Super-linear,FALSE
+17070306,ER,Super-linear,Seasonally variable,TRUE
+17070306,GPP,Super-linear,Super-linear,FALSE
+17070307,ER,Seasonally variable,Insufficient data,TRUE
+17070307,GPP,Super-linear,Super-linear,FALSE
+17080001,ER,Seasonally variable,Seasonally variable,FALSE
+17080001,GPP,Seasonally variable,Super-linear,TRUE
+17080002,ER,Seasonally variable,Seasonally variable,FALSE
+17080002,GPP,Super-linear,Super-linear,FALSE
+17080003,ER,Seasonally variable,Seasonally variable,FALSE
+17080003,GPP,Super-linear,Super-linear,FALSE
+17080004,ER,Seasonally variable,Seasonally variable,FALSE
+17080004,GPP,Super-linear,Super-linear,FALSE
+17080005,ER,Seasonally variable,Seasonally variable,FALSE
+17080005,GPP,Super-linear,Super-linear,FALSE
+17090001,ER,Seasonally variable,Seasonally variable,FALSE
+17090001,GPP,Super-linear,Super-linear,FALSE
+17090002,ER,Seasonally variable,Seasonally variable,FALSE
+17090002,GPP,Super-linear,Super-linear,FALSE
+17090003,ER,Seasonally variable,Seasonally variable,FALSE
+17090003,GPP,Super-linear,Super-linear,FALSE
+17090004,ER,Seasonally variable,Seasonally variable,FALSE
+17090004,GPP,Super-linear,Super-linear,FALSE
+17090005,ER,Seasonally variable,Seasonally variable,FALSE
+17090005,GPP,Seasonally variable,Super-linear,TRUE
+17090006,ER,Seasonally variable,Seasonally variable,FALSE
+17090006,GPP,Super-linear,Super-linear,FALSE
+17090007,ER,Seasonally variable,Seasonally variable,FALSE
+17090007,GPP,Super-linear,Super-linear,FALSE
+17090008,ER,Super-linear,Super-linear,FALSE
+17090008,GPP,Super-linear,Super-linear,FALSE
+17090009,ER,Super-linear,Super-linear,FALSE
+17090009,GPP,Super-linear,Super-linear,FALSE
+17090010,ER,Super-linear,Seasonally variable,TRUE
+17090010,GPP,Seasonally variable,Super-linear,TRUE
+17090011,ER,Seasonally variable,Seasonally variable,FALSE
+17090011,GPP,Super-linear,Super-linear,FALSE
+17090012,ER,Seasonally variable,Seasonally variable,FALSE
+17090012,GPP,Super-linear,Super-linear,FALSE
+17100102,ER,Seasonally variable,Uncertain,TRUE
+17100102,GPP,Seasonally variable,Seasonally variable,FALSE
+17100103,ER,Seasonally variable,Seasonally variable,FALSE
+17100103,GPP,Super-linear,Super-linear,FALSE
+17100104,ER,Seasonally variable,Seasonally variable,FALSE
+17100104,GPP,Super-linear,Super-linear,FALSE
+17100202,ER,Seasonally variable,Super-linear,TRUE
+17100202,GPP,Super-linear,Super-linear,FALSE
+17100203,ER,Seasonally variable,Seasonally variable,FALSE
+17100203,GPP,Super-linear,Super-linear,FALSE
+17100204,ER,Seasonally variable,Seasonally variable,FALSE
+17100204,GPP,Super-linear,Super-linear,FALSE
+17100206,ER,Seasonally variable,Super-linear,TRUE
+17100206,GPP,Super-linear,Super-linear,FALSE
+17100301,ER,Seasonally variable,Seasonally variable,FALSE
+17100301,GPP,Super-linear,Super-linear,FALSE
+17100302,ER,Seasonally variable,Seasonally variable,FALSE
+17100302,GPP,Super-linear,Super-linear,FALSE
+17100303,ER,Seasonally variable,Super-linear,TRUE
+17100303,GPP,Super-linear,Super-linear,FALSE
+17100305,ER,Seasonally variable,Seasonally variable,FALSE
+17100305,GPP,Super-linear,Super-linear,FALSE
+17100307,ER,Seasonally variable,Seasonally variable,FALSE
+17100307,GPP,Super-linear,Super-linear,FALSE
+17100308,ER,Super-linear,Seasonally variable,TRUE
+17100308,GPP,Super-linear,Super-linear,FALSE
+17100309,ER,Seasonally variable,Seasonally variable,FALSE
+17100309,GPP,Super-linear,Super-linear,FALSE
+17100310,ER,Super-linear,Seasonally variable,TRUE
+17100310,GPP,Super-linear,Super-linear,FALSE
+17100311,ER,Seasonally variable,Seasonally variable,FALSE
+17100311,GPP,Uncertain,Uncertain,FALSE
+17110004,ER,Seasonally variable,Seasonally variable,FALSE
+17110004,GPP,Super-linear,Seasonally variable,TRUE
+17110005,ER,Uncertain,Seasonally variable,TRUE
+17110005,GPP,Seasonally variable,Seasonally variable,FALSE
+17110006,ER,Seasonally variable,Seasonally variable,FALSE
+17110006,GPP,Super-linear,Super-linear,FALSE
+17110007,ER,Insufficient data,Insufficient data,FALSE
+17110007,GPP,Insufficient data,Insufficient data,FALSE
+17110008,ER,Seasonally variable,Seasonally variable,FALSE
+17110008,GPP,Super-linear,Super-linear,FALSE
+17110009,ER,Seasonally variable,Seasonally variable,FALSE
+17110009,GPP,Super-linear,Super-linear,FALSE
+17110010,ER,Seasonally variable,Seasonally variable,FALSE
+17110010,GPP,Super-linear,Super-linear,FALSE
+17110011,ER,Insufficient data,Insufficient data,FALSE
+17110011,GPP,Insufficient data,Insufficient data,FALSE
+17110012,ER,Seasonally variable,Super-linear,TRUE
+17110012,GPP,Super-linear,Super-linear,FALSE
+17110013,ER,Seasonally variable,Seasonally variable,FALSE
+17110013,GPP,Super-linear,Super-linear,FALSE
+17110014,ER,Seasonally variable,Seasonally variable,FALSE
+17110014,GPP,Super-linear,Super-linear,FALSE
+17110015,ER,Seasonally variable,Seasonally variable,FALSE
+17110015,GPP,Super-linear,Super-linear,FALSE
+17120001,ER,Super-linear,Super-linear,FALSE
+17120001,GPP,Super-linear,Super-linear,FALSE
+17120002,ER,Super-linear,Super-linear,FALSE
+17120002,GPP,Super-linear,Super-linear,FALSE
+17120003,ER,Seasonally variable,Super-linear,TRUE
+17120003,GPP,Super-linear,Super-linear,FALSE
+17120004,ER,Super-linear,Seasonally variable,TRUE
+17120004,GPP,Super-linear,Super-linear,FALSE
+17120005,ER,Seasonally variable,Seasonally variable,FALSE
+17120005,GPP,Seasonally variable,Super-linear,TRUE
+17120006,ER,Super-linear,Super-linear,FALSE
+17120006,GPP,Super-linear,Super-linear,FALSE
+17120007,ER,Super-linear,Super-linear,FALSE
+17120007,GPP,Seasonally variable,Super-linear,TRUE
+17120008,ER,Super-linear,Uncertain,TRUE
+17120008,GPP,Super-linear,Super-linear,FALSE
+17120009,ER,Super-linear,Seasonally variable,TRUE
+17120009,GPP,Super-linear,Super-linear,FALSE
+18010101,ER,Seasonally variable,Seasonally variable,FALSE
+18010101,GPP,Super-linear,Seasonally variable,TRUE
+18010103,ER,Seasonally variable,Seasonally variable,FALSE
+18010103,GPP,Super-linear,Seasonally variable,TRUE
+18010104,ER,Seasonally variable,Super-linear,TRUE
+18010104,GPP,Super-linear,Seasonally variable,TRUE
+18010105,ER,Seasonally variable,Seasonally variable,FALSE
+18010105,GPP,Super-linear,Super-linear,FALSE
+18010106,ER,Seasonally variable,Seasonally variable,FALSE
+18010106,GPP,Super-linear,Super-linear,FALSE
+18010110,ER,Super-linear,Super-linear,FALSE
+18010110,GPP,Super-linear,Seasonally variable,TRUE
+18010201,ER,Seasonally variable,Seasonally variable,FALSE
+18010201,GPP,Seasonally variable,Super-linear,TRUE
+18010202,ER,Super-linear,Super-linear,FALSE
+18010202,GPP,Super-linear,Super-linear,FALSE
+18010203,ER,Super-linear,Seasonally variable,TRUE
+18010203,GPP,Super-linear,Super-linear,FALSE
+18010204,ER,Super-linear,Super-linear,FALSE
+18010204,GPP,Super-linear,Super-linear,FALSE
+18010205,ER,Seasonally variable,Seasonally variable,FALSE
+18010205,GPP,Super-linear,Super-linear,FALSE
+18010206,ER,Super-linear,Super-linear,FALSE
+18010206,GPP,Super-linear,Super-linear,FALSE
+18010207,ER,Seasonally variable,Seasonally variable,FALSE
+18010207,GPP,Seasonally variable,Super-linear,TRUE
+18010208,ER,Super-linear,Super-linear,FALSE
+18010208,GPP,Super-linear,Seasonally variable,TRUE
+18010209,ER,Super-linear,Super-linear,FALSE
+18010209,GPP,Super-linear,Super-linear,FALSE
+18010210,ER,Seasonally variable,Seasonally variable,FALSE
+18010210,GPP,Super-linear,Seasonally variable,TRUE
+18010211,ER,Seasonally variable,Seasonally variable,FALSE
+18010211,GPP,Super-linear,Super-linear,FALSE
+18010212,ER,Seasonally variable,Seasonally variable,FALSE
+18010212,GPP,Super-linear,Seasonally variable,TRUE
+18020001,ER,Super-linear,Super-linear,FALSE
+18020001,GPP,Super-linear,Super-linear,FALSE
+18020002,ER,Super-linear,Super-linear,FALSE
+18020002,GPP,Super-linear,Super-linear,FALSE
+18020003,ER,Super-linear,Super-linear,FALSE
+18020003,GPP,Super-linear,Super-linear,FALSE
+18020004,ER,Super-linear,Seasonally variable,TRUE
+18020004,GPP,Super-linear,Super-linear,FALSE
+18020005,ER,Super-linear,Seasonally variable,TRUE
+18020005,GPP,Seasonally variable,Seasonally variable,FALSE
+18020104,ER,Super-linear,Seasonally variable,TRUE
+18020104,GPP,Super-linear,Super-linear,FALSE
+18020111,ER,Seasonally variable,Seasonally variable,FALSE
+18020111,GPP,Super-linear,Super-linear,FALSE
+18020115,ER,Super-linear,Super-linear,FALSE
+18020115,GPP,Seasonally variable,Seasonally variable,FALSE
+18020116,ER,Super-linear,Super-linear,FALSE
+18020116,GPP,Super-linear,Super-linear,FALSE
+18020121,ER,Super-linear,Super-linear,FALSE
+18020121,GPP,Seasonally variable,Super-linear,TRUE
+18020122,ER,Super-linear,Super-linear,FALSE
+18020122,GPP,Super-linear,Super-linear,FALSE
+18020123,ER,Super-linear,Super-linear,FALSE
+18020123,GPP,Super-linear,Super-linear,FALSE
+18020125,ER,Seasonally variable,Seasonally variable,FALSE
+18020125,GPP,Super-linear,Super-linear,FALSE
+18020126,ER,Super-linear,Seasonally variable,TRUE
+18020126,GPP,Super-linear,Super-linear,FALSE
+18020128,ER,Seasonally variable,Seasonally variable,FALSE
+18020128,GPP,Super-linear,Seasonally variable,TRUE
+18020129,ER,Seasonally variable,Seasonally variable,FALSE
+18020129,GPP,Super-linear,Super-linear,FALSE
+18020151,ER,Super-linear,Seasonally variable,TRUE
+18020151,GPP,Seasonally variable,Seasonally variable,FALSE
+18020152,ER,Super-linear,Super-linear,FALSE
+18020152,GPP,Super-linear,Seasonally variable,TRUE
+18020153,ER,Super-linear,Seasonally variable,TRUE
+18020153,GPP,Seasonally variable,Seasonally variable,FALSE
+18020154,ER,Super-linear,Super-linear,FALSE
+18020154,GPP,Seasonally variable,Seasonally variable,FALSE
+18020155,ER,Super-linear,Super-linear,FALSE
+18020155,GPP,Super-linear,Super-linear,FALSE
+18020156,ER,Super-linear,Seasonally variable,TRUE
+18020156,GPP,Super-linear,Super-linear,FALSE
+18020157,ER,Super-linear,Seasonally variable,TRUE
+18020157,GPP,Super-linear,Super-linear,FALSE
+18020158,ER,Super-linear,Seasonally variable,TRUE
+18020158,GPP,Super-linear,Super-linear,FALSE
+18020159,ER,Super-linear,Super-linear,FALSE
+18020159,GPP,Super-linear,Super-linear,FALSE
+18020161,ER,Seasonally variable,Seasonally variable,FALSE
+18020161,GPP,Seasonally variable,Super-linear,TRUE
+18020162,ER,Super-linear,Super-linear,FALSE
+18020162,GPP,Seasonally variable,Seasonally variable,FALSE
+18020163,ER,Super-linear,Seasonally variable,TRUE
+18020163,GPP,Super-linear,Super-linear,FALSE
+18030001,ER,Seasonally variable,Super-linear,TRUE
+18030001,GPP,Super-linear,Super-linear,FALSE
+18030002,ER,Super-linear,Super-linear,FALSE
+18030002,GPP,Super-linear,Super-linear,FALSE
+18030003,ER,Super-linear,Seasonally variable,TRUE
+18030003,GPP,Super-linear,Super-linear,FALSE
+18030004,ER,Super-linear,Seasonally variable,TRUE
+18030004,GPP,Super-linear,Seasonally variable,TRUE
+18030005,ER,Super-linear,Seasonally variable,TRUE
+18030005,GPP,Super-linear,Super-linear,FALSE
+18030006,ER,Super-linear,Seasonally variable,TRUE
+18030006,GPP,Super-linear,Seasonally variable,TRUE
+18030007,ER,Super-linear,Seasonally variable,TRUE
+18030007,GPP,Seasonally variable,Seasonally variable,FALSE
+18030009,ER,Seasonally variable,Seasonally variable,FALSE
+18030009,GPP,Super-linear,Seasonally variable,TRUE
+18030010,ER,Seasonally variable,Seasonally variable,FALSE
+18030010,GPP,Super-linear,Super-linear,FALSE
+18030012,ER,Super-linear,Seasonally variable,TRUE
+18030012,GPP,Super-linear,Super-linear,FALSE
+18040001,ER,Super-linear,Seasonally variable,TRUE
+18040001,GPP,Super-linear,Super-linear,FALSE
+18040002,ER,Seasonally variable,Seasonally variable,FALSE
+18040002,GPP,Super-linear,Super-linear,FALSE
+18040003,ER,Super-linear,Seasonally variable,TRUE
+18040003,GPP,Super-linear,Super-linear,FALSE
+18040006,ER,Seasonally variable,Super-linear,TRUE
+18040006,GPP,Super-linear,Super-linear,FALSE
+18040007,ER,Insufficient data,Seasonally variable,TRUE
+18040007,GPP,Seasonally variable,Seasonally variable,FALSE
+18040008,ER,Super-linear,Seasonally variable,TRUE
+18040008,GPP,Super-linear,Super-linear,FALSE
+18040009,ER,Seasonally variable,Seasonally variable,FALSE
+18040009,GPP,Super-linear,Super-linear,FALSE
+18040010,ER,Seasonally variable,Seasonally variable,FALSE
+18040010,GPP,Super-linear,Seasonally variable,TRUE
+18040011,ER,Super-linear,Seasonally variable,TRUE
+18040011,GPP,Super-linear,Seasonally variable,TRUE
+18040012,ER,Seasonally variable,Seasonally variable,FALSE
+18040012,GPP,Seasonally variable,Seasonally variable,FALSE
+18040013,ER,Super-linear,Seasonally variable,TRUE
+18040013,GPP,Super-linear,Super-linear,FALSE
+18040014,ER,Insufficient data,Insufficient data,FALSE
+18040014,GPP,Insufficient data,Insufficient data,FALSE
+18040051,ER,Uncertain,Seasonally variable,TRUE
+18040051,GPP,Uncertain,Uncertain,FALSE
+18050001,ER,Super-linear,Seasonally variable,TRUE
+18050001,GPP,Seasonally variable,Seasonally variable,FALSE
+18050003,ER,Seasonally variable,Seasonally variable,FALSE
+18050003,GPP,Seasonally variable,Seasonally variable,FALSE
+18060002,ER,Super-linear,Super-linear,FALSE
+18060002,GPP,Super-linear,Seasonally variable,TRUE
+18060003,ER,Uncertain,Seasonally variable,TRUE
+18060003,GPP,Seasonally variable,Super-linear,TRUE
+18060004,ER,Seasonally variable,Seasonally variable,FALSE
+18060004,GPP,Super-linear,Super-linear,FALSE
+18060005,ER,Super-linear,Seasonally variable,TRUE
+18060005,GPP,Super-linear,Super-linear,FALSE
+18060007,ER,Super-linear,Seasonally variable,TRUE
+18060007,GPP,Super-linear,Super-linear,FALSE
+18060008,ER,Super-linear,Super-linear,FALSE
+18060008,GPP,Super-linear,Super-linear,FALSE
+18060010,ER,Super-linear,Seasonally variable,TRUE
+18060010,GPP,Super-linear,Super-linear,FALSE
+18070102,ER,Super-linear,Super-linear,FALSE
+18070102,GPP,Super-linear,Seasonally variable,TRUE
+18070103,ER,Uncertain,Insufficient data,TRUE
+18070103,GPP,Seasonally variable,Uncertain,TRUE
+18070105,ER,Super-linear,Super-linear,FALSE
+18070105,GPP,Super-linear,Super-linear,FALSE
+18070106,ER,Super-linear,Seasonally variable,TRUE
+18070106,GPP,Uncertain,Uncertain,FALSE
+18070202,ER,Super-linear,Super-linear,FALSE
+18070202,GPP,Super-linear,Super-linear,FALSE
+18070203,ER,Super-linear,Super-linear,FALSE
+18070203,GPP,Super-linear,Seasonally variable,TRUE
+18070302,ER,Super-linear,Seasonally variable,TRUE
+18070302,GPP,Super-linear,Seasonally variable,TRUE
+18070303,ER,Super-linear,Seasonally variable,TRUE
+18070303,GPP,Super-linear,Super-linear,FALSE
+18070304,ER,Super-linear,Super-linear,FALSE
+18070304,GPP,Super-linear,Seasonally variable,TRUE
+18080001,ER,Super-linear,Super-linear,FALSE
+18080001,GPP,Super-linear,Super-linear,FALSE
+18080002,ER,Super-linear,Super-linear,FALSE
+18080002,GPP,Super-linear,Super-linear,FALSE
+18080003,ER,Super-linear,Seasonally variable,TRUE
+18080003,GPP,Super-linear,Super-linear,FALSE
+18090101,ER,Uncertain,Uncertain,FALSE
+18090101,GPP,Uncertain,Uncertain,FALSE
+18090102,ER,Seasonally variable,Seasonally variable,FALSE
+18090102,GPP,Seasonally variable,Super-linear,TRUE
+18090103,ER,Super-linear,Seasonally variable,TRUE
+18090103,GPP,Super-linear,Super-linear,FALSE
+18090201,ER,Seasonally variable,Seasonally variable,FALSE
+18090201,GPP,Super-linear,Seasonally variable,TRUE
+18090202,ER,Super-linear,Seasonally variable,TRUE
+18090202,GPP,Super-linear,Super-linear,FALSE
+18090203,ER,Super-linear,Super-linear,FALSE
+18090203,GPP,Super-linear,Super-linear,FALSE
+18090204,ER,Seasonally variable,Uncertain,TRUE
+18090204,GPP,Super-linear,Seasonally variable,TRUE
+18090205,ER,Super-linear,Seasonally variable,TRUE
+18090205,GPP,Super-linear,Super-linear,FALSE
+18090206,ER,Seasonally variable,Seasonally variable,FALSE
+18090206,GPP,Seasonally variable,Super-linear,TRUE
+18090207,ER,Super-linear,Super-linear,FALSE
+18090207,GPP,Super-linear,Super-linear,FALSE
+18090208,ER,Super-linear,Super-linear,FALSE
+18090208,GPP,Super-linear,Super-linear,FALSE
+18100100,ER,Super-linear,Super-linear,FALSE
+18100100,GPP,Super-linear,Super-linear,FALSE
+18100201,ER,Seasonally variable,Seasonally variable,FALSE
+18100201,GPP,Super-linear,Seasonally variable,TRUE
+18100202,ER,Insufficient data,Insufficient data,FALSE
+18100202,GPP,Insufficient data,Insufficient data,FALSE
+18100203,ER,Seasonally variable,Seasonally variable,FALSE
+18100203,GPP,Super-linear,Super-linear,FALSE
+18100204,ER,Super-linear,Seasonally variable,TRUE
+18100204,GPP,Super-linear,Super-linear,FALSE

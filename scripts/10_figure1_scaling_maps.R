@@ -67,6 +67,7 @@ monthly <- stability %>%
     ),
     available = TRUE
   ) %>% select(huc, month, metabolism_metric, monthly_class, available)
+write_csv(monthly, file.path(dir_processed, "10_no_uparea_monthly_classes.csv"))
 rm(stability)
 
 # 3. Require agreement across all 12 months --------------------------------
@@ -89,6 +90,7 @@ annual <- expand_grid(huc = boundaries$huc, metabolism_metric = c("GPP", "ER"),
       TRUE ~ first(monthly_class)
     ), .groups = "drop"
   ) %>% mutate(scaling_class = factor(scaling_class, levels = classes))
+write_csv(annual, file.path(dir_processed, "10_no_uparea_annual_classes.csv"))
 map_data <- boundaries %>% left_join(annual, by = "huc",
                                      relationship = "one-to-many")
 rm(monthly, annual)

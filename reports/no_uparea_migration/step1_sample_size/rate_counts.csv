@@ -1,0 +1,9 @@
+process,variant,stage,rows,missing,negative,zero,nonfinite,finite
+GPP,original,01,2101392,0,3300,0,0,2101392
+GPP,no_uparea,01,2101392,60,8850,0,60,2101332
+GPP,original,03,1968876,0,3062,0,0,1968876
+GPP,no_uparea,03,1968876,24,8021,0,24,1968852
+ER,original,01,2101392,0,71968,0,0,2101392
+ER,no_uparea,01,2101392,60,152517,0,60,2101332
+ER,original,03,1968876,0,68911,0,0,1968876
+ER,no_uparea,03,1968876,24,146288,0,24,1968852

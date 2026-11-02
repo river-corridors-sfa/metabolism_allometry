@@ -1,0 +1,14 @@
+variant,metabolism_metric,monthly_class,n
+no_uparea,ER,Insufficient data,1464
+no_uparea,ER,Super-linear,17125
+no_uparea,ER,Uncertain,4139
+no_uparea,GPP,Insufficient data,295
+no_uparea,GPP,Super-linear,21582
+no_uparea,GPP,Uncertain,851
+original,ER,Insufficient data,753
+original,ER,Super-linear,20137
+original,ER,Uncertain,1838
+original,GPP,Insufficient data,292
+original,GPP,Linear,2
+original,GPP,Super-linear,21793
+original,GPP,Uncertain,641

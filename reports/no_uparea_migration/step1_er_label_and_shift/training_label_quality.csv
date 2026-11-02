@@ -1,0 +1,3 @@
+raw_er_positive,rows,sites,median_raw_er,median_rhat,median_n_eff,interval_entirely_positive,interval_crosses_zero,median_uparea,median_discharge,median_water_temp,median_shortwave,median_canopy,median_wetland_fraction
+False,447348,353,-3.793413763,1.000325145,2000.0,0,52103,971.5247823,2.978578344,16.665625,199.7410208,35.56936292,0.0138820754327611
+True,43010,318,1.9080908125,1.0002535085,2000.0,25596,17414,1292.593577,14.21431978,9.784583333,162.90066665,40.73979752,0.01227167844723

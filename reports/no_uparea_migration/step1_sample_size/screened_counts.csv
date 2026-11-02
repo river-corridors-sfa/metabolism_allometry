@@ -1,0 +1,3 @@
+process,original_rows,no_uparea_rows,matched_rows,original_only,no_uparea_only,net_change,pct_change,original_reaches,no_uparea_reaches,reaches_lost_completely,reaches_gained_completely,original_huc8s,no_uparea_huc8s
+GPP,1954228,1951894,1950287,3941,1607,-2334,-0.119433351686702,163024,163024,0,0,1894,1894
+ER,1860852,1659023,1628761,232091,30262,-201829,-10.8460533132135,161350,156665,5843,1158,1894,1894

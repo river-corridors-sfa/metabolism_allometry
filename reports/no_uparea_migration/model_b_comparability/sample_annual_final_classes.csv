@@ -1,0 +1,49 @@
+huc,metabolism_metric,design,months,annual_class
+02050202,GPP,original_all,12,Super-linear
+02050202,ER,original_all,12,Seasonally variable
+03050106,GPP,original_all,12,Super-linear
+03050106,ER,original_all,12,Seasonally variable
+10220003,GPP,original_all,12,Super-linear
+10220003,ER,original_all,12,Super-linear
+10190015,GPP,original_all,12,Super-linear
+10190015,ER,original_all,12,Super-linear
+17120003,GPP,original_all,12,Super-linear
+17120003,ER,original_all,12,Seasonally variable
+16010201,GPP,original_all,12,Super-linear
+16010201,ER,original_all,12,Super-linear
+02050202,GPP,B_all,12,Super-linear
+02050202,ER,B_all,12,Super-linear
+03050106,GPP,B_all,12,Super-linear
+03050106,ER,B_all,12,Super-linear
+10220003,GPP,B_all,12,Super-linear
+10220003,ER,B_all,12,Super-linear
+10190015,GPP,B_all,12,Super-linear
+10190015,ER,B_all,12,Super-linear
+17120003,GPP,B_all,12,Super-linear
+17120003,ER,B_all,12,Super-linear
+16010201,GPP,B_all,12,Super-linear
+16010201,ER,B_all,12,Super-linear
+02050202,GPP,original_common,12,Super-linear
+02050202,ER,original_common,12,Seasonally variable
+03050106,GPP,original_common,12,Super-linear
+03050106,ER,original_common,12,Seasonally variable
+10220003,ER,original_common,12,Super-linear
+10220003,GPP,original_common,12,Super-linear
+10190015,ER,original_common,12,Super-linear
+10190015,GPP,original_common,12,Super-linear
+17120003,ER,original_common,12,Seasonally variable
+17120003,GPP,original_common,12,Super-linear
+16010201,ER,original_common,12,Super-linear
+16010201,GPP,original_common,12,Super-linear
+02050202,GPP,B_common,12,Super-linear
+02050202,ER,B_common,12,Seasonally variable
+03050106,GPP,B_common,12,Super-linear
+03050106,ER,B_common,12,Seasonally variable
+10220003,ER,B_common,12,Super-linear
+10220003,GPP,B_common,12,Super-linear
+10190015,ER,B_common,12,Super-linear
+10190015,GPP,B_common,12,Super-linear
+17120003,ER,B_common,12,Super-linear
+17120003,GPP,B_common,12,Super-linear
+16010201,ER,B_common,12,Super-linear
+16010201,GPP,B_common,12,Super-linear

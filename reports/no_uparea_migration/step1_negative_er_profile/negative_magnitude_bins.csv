@@ -1,0 +1,17 @@
+transition,magnitude,n
+negative_both,"[0.1,0.5)",3445
+negative_both,"[1,2)",7294
+negative_both,"[2,5)",10903
+new_negative_only,"[1,2)",38434
+new_negative_only,"[2,5)",27194
+new_negative_only,"[0.1,0.5)",22516
+new_negative_only,"[0.5,1)",21394
+new_negative_only,"[0.01,0.1)",5535
+new_negative_only,"[5,10)",5440
+negative_both,"[0.5,1)",3786
+negative_both,"[5,10)",3587
+new_negative_only,"[0,0.01)",675
+negative_both,"[0,0.01)",87
+negative_both,"[0.01,0.1)",814
+negative_both,"[10,Inf)",582
+new_negative_only,"[10,Inf)",831

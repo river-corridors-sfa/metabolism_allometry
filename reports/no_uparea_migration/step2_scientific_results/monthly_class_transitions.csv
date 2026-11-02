@@ -1,0 +1,20 @@
+metabolism_metric,original,no_uparea,changed,n
+ER,Insufficient data,Insufficient data,FALSE,542
+ER,Insufficient data,Super-linear,TRUE,107
+ER,Insufficient data,Uncertain,TRUE,104
+ER,Super-linear,Insufficient data,TRUE,680
+ER,Super-linear,Super-linear,FALSE,16580
+ER,Super-linear,Uncertain,TRUE,2877
+ER,Uncertain,Insufficient data,TRUE,242
+ER,Uncertain,Super-linear,TRUE,438
+ER,Uncertain,Uncertain,FALSE,1158
+GPP,Insufficient data,Insufficient data,FALSE,290
+GPP,Insufficient data,Super-linear,TRUE,1
+GPP,Insufficient data,Uncertain,TRUE,1
+GPP,Linear,Uncertain,TRUE,2
+GPP,Super-linear,Insufficient data,TRUE,4
+GPP,Super-linear,Super-linear,FALSE,21349
+GPP,Super-linear,Uncertain,TRUE,440
+GPP,Uncertain,Insufficient data,TRUE,1
+GPP,Uncertain,Super-linear,TRUE,232
+GPP,Uncertain,Uncertain,FALSE,408

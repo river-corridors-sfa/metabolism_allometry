@@ -1,0 +1,167 @@
+---
+title: "Model B versus Maavara: coverage, prediction agreement, and sampled allometry"
+date: "2026-10-30"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(knitr)
+library(scales)
+theme_set(theme_minimal(base_size=12))
+p <- "reports/no_uparea_migration/model_b_comparability"
+read <- function(name,...) fread(file.path(p,name),...)
+cov <- read("coverage_total.csv")
+comids <- read("coverage_unique_comids.csv")
+strata <- read("coverage_by_stratum.csv")
+paired <- read("paired_magnitudes_overall.csv")
+paired_strata <- read("paired_magnitudes_by_stratum.csv")
+sample <- read("sample_huc8s.csv",colClasses=list(character="huc8"))
+fits <- read("sample_allometry_comparison.csv",colClasses=list(character="huc"))
+cum <- read("sample_cumulative_paired.csv",colClasses=list(character="huc"))
+monthly <- read("sample_monthly_final_classes.csv",colClasses=list(character="huc"))
+annual <- read("sample_annual_final_classes.csv",colClasses=list(character="huc"))
+```
+
+# Scope and definitions
+
+**Original** means the downloaded [Maavara et al. Dryad](https://doi.org/10.5061/dryad.c2fqz61kx) GPP and ER predictions. **Modified** means the existing six-predictor GPP refit plus the near-zero-QC six-predictor ER Model B. The shared grid is **175,116 COMIDs × 12 months = 2,101,392 reach-months**. “Nonmissing both” means both values are finite; “positive both” means both are finite and strictly `>0`, matching the present downstream usable-rate convention. The original predictions cover every grid key; modified predictions are NA at five COMIDs in each month because of incomplete scaling covariates. No refit, national routing, or production script was run for this assessment.
+
+Geographic bands use the saved HUC8 centroid longitude: West `<-105°`, Central `-105°` to `<-90°`, East `>=-90°`. The scaling grid has **11,160 COMIDs without a saved HUC8 assignment**, shown as “Unassigned HUC8” rather than located by assumption. Area is the source `uparea` (km²). The source grid begins near 17.5 km²; it cannot assess smaller headwaters.
+
+# 1. How much original coverage is retained?
+
+```{r coverage-tables, echo=FALSE}
+kable(cov[,.(definition,total,original,modified,overlap,retained_pct,original_only,modified_only)],digits=3,
+      caption="Reach-month denominator: original coverage for retention percentage; total grid for all counts.")
+kable(comids[,.(definition,months_required,total,original,modified,overlap,retained_pct,original_only,modified_only)],digits=3,
+      caption="Unique COMIDs with at least one or all 12 months satisfying the stated condition. An all-12 gain can have some original valid months.")
+```
+
+The modified pair retains **2,101,332/2,101,392 = 99.997%** of original nonmissing joint estimates. Among original jointly positive estimates it retains **2,019,033/2,026,579 = 99.628%**; it loses 7,546 and gains 73,449 elsewhere on the same grid. The net positive gain is 65,903 reach-months. At the reach level, 1,527 COMIDs gain their **first** positive joint month, while five lose their last; 15,578 COMIDs reach **all 12** positive months from fewer than 12 originally, while 3,896 move the other way. The latter are threshold transitions, not wholly new reaches.
+
+```{r reasons, echo=FALSE}
+kable(read("positive_coverage_gain_reasons.csv"),caption="Why originally unusable reach-months become positive in the modified pair")
+kable(read("positive_coverage_loss_reasons.csv"),caption="Why originally positive reach-months become unusable")
+```
+
+The dominant gain is original ER `<=0` with positive GPP (70,951 reach-months). Most losses come from nonpositive modified GPP (7,486), with 60 missing modified predictions.
+
+```{r coverage-figure, fig.width=9, fig.height=5, echo=FALSE}
+z <- strata[definition=="both_positive" & grouping=="area_bin"]
+z[,level:=factor(level,levels=c("<=50","50-100","100-1000","1000-10000",">10000"))]
+long <- melt(z,id.vars="level",measure.vars=c("modified_only","original_only"),variable.name="direction",value.name="reach_months")
+long[,direction:=factor(direction,levels=c("modified_only","original_only"),labels=c("Recovered","Lost"))]
+ggplot(long,aes(level,reach_months,fill=direction)) + geom_col(position="dodge") +
+  labs(x="Upstream area (km2)",y="Jointly positive reach-months",fill=NULL,
+       title="Coverage gains and losses by watershed size") + theme(legend.position="bottom")
+```
+
+```{r region-figure, fig.width=8, fig.height=4.5, echo=FALSE}
+z <- strata[definition=="both_positive" & grouping=="region"]
+long <- melt(z,id.vars="level",measure.vars=c("modified_only","original_only"),variable.name="direction",value.name="reach_months")
+long[,direction:=factor(direction,levels=c("modified_only","original_only"),labels=c("Recovered","Lost"))]
+ggplot(long,aes(level,reach_months,fill=direction)) + geom_col(position="dodge") +
+  labs(x="HUC8 centroid longitude band",y="Jointly positive reach-months",fill=NULL,
+       title="Coverage gains and losses by region") + theme(axis.text.x=element_text(angle=20,hjust=1),legend.position="bottom")
+```
+
+```{r coverage-strata, echo=FALSE}
+kable(strata[definition=="both_positive" & grouping!="month",.(grouping,level,original,overlap,retained_pct,original_only,modified_only)],digits=2)
+```
+
+# 2. How different are paired rates?
+
+Paired magnitude statistics below use identical COMID-months where **both predictions for that process are positive**. The ratio is modified/original; bias is modified minus original in g O2 m-2 d-1. These pairs describe already-valid predictions. Newly recovered reach-months have no valid original pair for a ratio and are summarized separately.
+
+```{r paired-overall, echo=FALSE}
+kable(paired[,.(metric,n,correlation,median_ratio,mean_bias,median_relative_pct,median_original,median_modified)],digits=3)
+```
+
+```{r ratio-area, fig.width=9, fig.height=4.5, echo=FALSE}
+z <- paired_strata[grouping=="area_bin"]
+z[,level:=factor(level,levels=c("<=50","50-100","100-1000","1000-10000",">10000"))]
+ggplot(z,aes(level,median_ratio,color=metric,group=metric)) + geom_hline(yintercept=1,linetype="dashed") +
+  geom_point() + geom_line() + labs(x="Upstream area (km2)",y="Median modified/original ratio",color=NULL,
+  title="Paired rates differ nonuniformly with upstream area") + theme(legend.position="bottom")
+```
+
+```{r ratio-month, fig.width=9, fig.height=4.5, echo=FALSE}
+z <- paired_strata[grouping=="month"]
+z[,level:=factor(level,levels=as.character(1:12))]
+ggplot(z,aes(level,median_ratio,color=metric,group=metric)) + geom_hline(yintercept=1,linetype="dashed") +
+  geom_point() + geom_line() + labs(x="Month",y="Median modified/original ratio",color=NULL,
+  title="Monthly paired prediction differences") + theme(legend.position="bottom")
+```
+
+```{r paired-strata, echo=FALSE}
+kable(paired_strata[grouping!="month",.(metric,grouping,level,n,correlation,median_ratio,mean_bias,median_relative_pct)],digits=3)
+```
+
+ER does **not** show a simple monotonic area correction: median B/original is 1.19 in the `<=50 km²` band, 1.35 at `100–1000 km²`, and 1.04 above `10,000 km²`. A descriptive pooled regression of `log(B/original)` on `log10(uparea)` has slope **+0.0286**, but monthly slopes range from **−0.0122** (August) to **+0.0761** (March); the binned pattern and seasonal reversal matter more than that pooled slope. These routed reach-months repeat COMIDs, so the slope is descriptive, with no independence-based significance claim.
+
+```{r new-magnitudes, echo=FALSE}
+new <- read("newly_recovered_magnitudes.csv")
+kable(new[,.(reach_months=sum(reach_months),regions=uniqueN(region),median_gpp_of_groups=weighted.mean(median_gpp,reach_months),median_er_of_groups=weighted.mean(median_er,reach_months)),by=area_bin],digits=3,
+      caption="Newly recovered jointly positive observations, summarized separately from paired rates. Group medians are weighted summaries, not pooled medians.")
+```
+
+The local held-out comparison provides a different kind of evidence: on the same 134,336 physically valid ER observations, B had R² 0.7895 and RMSE 2.328 versus the unfiltered six-predictor ER fit's 0.7687 and 2.441. That supports skill after ER QC; it does not establish close agreement of CONUS predictions with the published forest. The Maavara notebook reports Pearson r² 0.7785 on an unfiltered test set, so it is not a paired valid-only benchmark. The saved GPP six-predictor fit had all-row test R² 0.8251 versus 0.8276 for the reproduced seven-predictor fit; row-level valid-only GPP scores were not saved.
+
+# 3. What changes in sampled routed allometry?
+
+Six HUC8s were selected deterministically: within each West/Central/East band, choose the 25th and 75th percentiles of maximum `uparea` among HUC8s with 40–150 flowlines, at least 1.5 decades of area range, and all 24 original monthly GPP/ER fits. This is a geographically and size-diverse **diagnostic sample**, not a national estimate or random probability sample.
+
+```{r sample-table, echo=FALSE}
+kable(sample[,.(huc8,huc8_name,states,region,centroid_longitude,n_flowlines,max_uparea_km2)],digits=1)
+```
+
+For each HUC8-month-process, the **controlled** comparison fits original and modified cumulative fluxes on identical eligible focal reaches. The **expanded** comparison fits each model on its own eligible reaches. Cumulative area and flux include the focal reach and all retained upstream reaches, using the saved 05 lookup and the unchanged 07 rules: negative local rates → NA, positive cumulative flux, `<10%` area and metabolism coverage, at least 20 reaches and distinct areas, and at least one decade of area range. The recomputed six-predictor GPP sample matches all **5,257** corresponding saved 07 rows (maximum relative flux difference `2.8e-16`), validating the route/flux replay. Section-deletion monthly classes were recomputed only for this sample using 08's confluence/HUC section rule and 10's thresholds. All **72** sampled six-predictor GPP monthly classes match the saved 10 table.
+
+```{r cum-table, echo=FALSE}
+kable(cum[,.(n=.N,median_cumulative_ratio=median(ratio_B_original),p10=quantile(ratio_B_original,.1),p90=quantile(ratio_B_original,.9)),by=metabolism_metric],digits=3)
+```
+
+```{r slopes, echo=FALSE}
+kable(fits[,.(huc_month_fits=.N,median_abs_controlled_slope_change=median(abs(controlled_slope_delta),na.rm=TRUE),
+               median_abs_coverage_slope_change=median(abs(coverage_slope_delta),na.rm=TRUE),
+               median_abs_total_slope_change=median(abs(total_slope_delta),na.rm=TRUE),
+               median_original_r2=median(r2_original_all,na.rm=TRUE),median_modified_r2=median(r2_B_all,na.rm=TRUE),
+               median_controlled_r2_change=median(r2_B_common-r2_original_common,na.rm=TRUE),
+               median_expanded_r2_change=median(r2_B_all-r2_original_all,na.rm=TRUE),
+               B_only_reach_month_entries=sum(B_only_reaches),original_only_reach_month_entries=sum(original_only_reaches)),by=metabolism_metric],digits=3)
+```
+
+```{r slope-figure, fig.width=7, fig.height=5, echo=FALSE}
+ggplot(fits,aes(slope_original_all,slope_B_all,color=metabolism_metric)) +
+  geom_abline(slope=1,intercept=0,linetype="dashed") + geom_point(alpha=.65) +
+  facet_wrap(~metabolism_metric) + labs(x="Original slope",y="Modified slope",color=NULL,
+       title="Sampled monthly allometric exponents") + theme(legend.position="none")
+```
+
+```{r class-table, echo=FALSE}
+wide_month <- dcast(monthly,huc+month+metabolism_metric~design,value.var="monthly_class")
+class_counts <- wide_month[,.(monthly_groups=.N,controlled_changes=sum(original_common!=B_common),
+                              expanded_changes=sum(original_all!=B_all)),by=metabolism_metric]
+kable(class_counts)
+wide_annual <- dcast(annual,huc+metabolism_metric~design,value.var="annual_class")
+kable(wide_annual[original_all!=B_all | original_common!=B_common],caption="Annual classification changes in the six-HUC sample")
+```
+
+The final 10/11-style monthly class changes in **4/72 ER groups** on identical reaches and **7/72 ER groups** with each model's eligible reaches. Annual ER classifications change in **1/6** HUC8s on the controlled sample and **3/6** with expanded coverage. GPP classes do not change in this sample. These are observed sample outcomes, not national rates. The heuristic section-deletion ranges are not slope confidence intervals.
+
+# 4. Answer and limitations
+
+| Question | Finding |
+|---|---|
+| Original coverage retained? | **99.997%** of nonmissing joint reach-months; **99.628%** of originally jointly positive reach-months. The modified pair nets 65,903 additional usable reach-months on the shared grid. |
+| Prediction agreement? | Architecture differs only by removal of `uparea` plus B's ER training-label QC, with the original split and RF settings retained. Paired positive rates are correlated but shifted: median modified/original is **1.39 for GPP** and **1.22 for ER**. The shift varies by area, season, and region. |
+| Allometric agreement? | The six-HUC sample has changed cumulative fluxes and slopes; **3/6 annual ER classes** change in the expanded comparison. This does not establish national agreement. |
+| “Comparable to Maavara”? | Defensible only with qualification: **methodologically related and nearly complete coverage**, but **not interchangeable predictions or demonstrated allometric equivalence**. Report modified model identity and sensitivity results explicitly. |
+
+The strongest limitation is scope: the HUC8 test is six deliberately diverse examples, and no national B routing or final classifications were produced. The same row-wise held-out sites can appear in training, so predictive transfer to entirely new sites is not measured. HUC8-centroid regions leave 11,160 grid reaches unassigned. The network starts around 17.5 km²; conclusions about smaller streams require different inputs. Production outputs and scripts 07–12 remain unchanged.

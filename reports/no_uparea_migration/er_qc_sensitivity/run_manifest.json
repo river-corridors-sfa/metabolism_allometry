@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-10-30T20:23:56.148304+00:00",
+  "python": "3.12.2",
+  "versions": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.1",
+    "sklearn": "1.4.2",
+    "scipy": "1.13.0"
+  },
+  "source_sha256": "e81601bf7e5f8cf6282ff50d09acb7bd1cd77ca1592ccb00e98a4c02f5be1e30",
+  "scaling_sha256": "65f4ad807fdca33bb039ff22bf302d86881c8369580c99667331fa6bf91b659f",
+  "original_script_sha256": "ad9415442e180a7e5669e215bdcbc7ab8361552104848160c500a38e1de61189",
+  "rf_parameters": {
+    "n_estimators": 500,
+    "max_features": 5,
+    "max_depth": 30,
+    "max_samples": 0.4,
+    "n_jobs": -1,
+    "random_state": 24,
+    "oob_score": true
+  },
+  "split_seed": 24,
+  "test_size": 0.3,
+  "valid_test_n": 134336
+}

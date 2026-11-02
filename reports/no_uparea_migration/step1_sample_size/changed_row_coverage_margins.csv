@@ -1,0 +1,5 @@
+metabolism_metric,change,N,median_pct_metabolism_missing,n_8_to_10_pct,n_9_to_10_pct
+GPP,original_only,3941,0,23,12
+ER,original_only,232091,0,11954,5600
+ER,no_uparea_only,30262,0,3858,1950
+GPP,no_uparea_only,1607,0,41,22

@@ -1,0 +1,5 @@
+script,stage,file_exists,n_rows,key_mismatches,class_mismatches
+10,monthly,TRUE,45456,0,0
+11,monthly,TRUE,45456,0,0
+10,annual,TRUE,3788,0,0
+11,annual,TRUE,3788,0,0

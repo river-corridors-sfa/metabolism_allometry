@@ -1,0 +1,22 @@
+metabolism_metric,original,no_uparea,changed,n
+ER,Insufficient data,Insufficient data,FALSE,24
+ER,Insufficient data,Seasonally variable,TRUE,2
+ER,Seasonally variable,Insufficient data,TRUE,8
+ER,Seasonally variable,Seasonally variable,FALSE,398
+ER,Seasonally variable,Super-linear,TRUE,52
+ER,Seasonally variable,Uncertain,TRUE,25
+ER,Super-linear,Insufficient data,TRUE,3
+ER,Super-linear,Seasonally variable,TRUE,574
+ER,Super-linear,Super-linear,FALSE,758
+ER,Super-linear,Uncertain,TRUE,15
+ER,Uncertain,Insufficient data,TRUE,1
+ER,Uncertain,Seasonally variable,TRUE,16
+ER,Uncertain,Uncertain,FALSE,18
+GPP,Insufficient data,Insufficient data,FALSE,24
+GPP,Seasonally variable,Seasonally variable,FALSE,51
+GPP,Seasonally variable,Super-linear,TRUE,66
+GPP,Seasonally variable,Uncertain,TRUE,12
+GPP,Super-linear,Seasonally variable,TRUE,105
+GPP,Super-linear,Super-linear,FALSE,1619
+GPP,Uncertain,Seasonally variable,TRUE,2
+GPP,Uncertain,Uncertain,FALSE,15

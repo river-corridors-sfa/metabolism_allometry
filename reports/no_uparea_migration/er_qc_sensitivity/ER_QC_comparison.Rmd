@@ -1,0 +1,240 @@
+---
+title: "ER training-label sensitivity: strict exclusion versus near-zero treatment"
+date: "2026-10-30"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(knitr)
+library(scales)
+root <- normalizePath(".")
+out <- file.path(root, "reports/no_uparea_migration/er_qc_sensitivity")
+refit <- file.path(root, "data/processed/17_maavara_refits")
+original <- file.path(root, "data/raw/dryad_data/scaling_ER_pred")
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+labels <- c(with_uparea="Seven-feature local", without_uparea="Six-feature unfiltered",
+            strict_exclusion="A: strict", near_zero="B: near-zero",
+            maavara="Maavara published")
+order <- names(labels)
+theme_set(theme_minimal(base_size=12))
+```
+
+# Decision question
+
+Can two training-only ER label treatments reduce negative CONUS respiration predictions while retaining skill on the **same physically valid held-out observations** and credible coverage, especially in headwaters? The reported comparisons are a sensitivity analysis, not a change to production outputs. A physically valid ER observation is raw StreamMetabolizer `ER <= 0`; the predicted target is positive respiration magnitude `-ER`. A prediction of zero is physically nonnegative, but the current downstream workflow requires strictly positive ER, so zero is counted separately and is **not usable coverage**.
+
+**Summary.** Both QC variants remove negative predictions throughout the saved CONUS scaling grid while improving common-test R², RMSE, and MAE relative to the unfiltered six-predictor model. B has slightly better pooled skill and retains more training rows than A. Its CONUS ER distribution remains shifted upward from Maavara's downloaded seven-predictor predictions, particularly in the upper tail. This favors B as the next candidate to validate, while leaving the production choice open.
+
+# Design and provenance
+
+The local fits use the archived 70/30 row split (`random_state=24`) and the same RF settings (500 trees, `max_features=5`, `max_depth=30`, `max_samples=0.4`, `oob_score=True`, `random_state=24`). The seven-predictor baseline includes `uparea`; the other three use the same six predictors without it. A removes raw `ER>0` **from training**. B removes raw `ER>0.5` from training and maps raw `ER` in `(0,0.5]` to zero respiration magnitude. All four are evaluated on the identical 134,336 original test rows with raw `ER<=0`. Training and test rows can share sites under this original row split; no site-held-out claim is made.
+
+The [Maavara et al. Dryad archive](https://doi.org/10.5061/dryad.c2fqz61kx) contains the published network predictions and ER notebook. The final seven-predictor notebook cell reports test Pearson `r=0.8823235`, hence **Pearson r²=0.7784948**, on its unfiltered test set. It does not give RMSE, MAE, or bias in that cell. Pearson r² is not `sklearn` R² (`r2_score`). The published forest's row-level held-out predictions were not saved locally, so it cannot be scored on the common valid-only test set. Its CONUS predictions are compared on paired network keys below. The [Appling et al. source assessment](https://pmc.ncbi.nlm.nih.gov/articles/PMC6289110/) and the earlier [wrong-sign audit](../step1_er_training_distribution/ER_wrong_sign_training_audit.Rmd) explain why these training treatments matter.
+
+```{r manifest, echo=FALSE}
+manifest <- jsonlite::read_json(file.path(out,"run_manifest.json"))
+cat("Run UTC:", manifest$created_utc, "\n\n")
+cat("Pinned versions:", paste(names(manifest$versions), unlist(manifest$versions), collapse="; "), "\n\n")
+```
+
+# Training support
+
+```{r support, echo=FALSE}
+m <- fread(file.path(out,"heldout_metrics.csv"))
+m[, model := factor(labels[variant], levels=labels[order])]
+support <- m[, .(model, train_n, train_sites)]
+kable(support, digits=3)
+```
+
+```{r predictor-support, echo=FALSE}
+ps <- fread(file.path(out,"training_predictor_support.csv"))
+ps[, model := factor(labels[variant], levels=labels[order])]
+ps[, .(model, feature, p01, median, p99)] |> kable(digits=3)
+```
+
+The source split, retained row counts, and retained sites were checked before fitting; see [PREFLIGHT.md](PREFLIGHT.md). Predictor quantiles show whether A or B materially shrink the range seen during training.
+
+The two sites absent from A's training set are `nwis_09326500` and `nwis_09327000`; both have low Appling site-minimum confidence. All 154 training rows at the first site and all 113 at the second have raw ER > 0. B also loses the first site; at the second it keeps just **three** near-zero rows, mapped to zero. Thus B's one-site advantage should not be interpreted as meaningful retention of measured respiration support at that site.
+
+# Common held-out skill
+
+```{r overall, echo=FALSE}
+overall <- m[, .(model, n, r2, rmse, mae, bias, negative_n, zero_n)]
+kable(overall, digits=4)
+```
+
+```{r skill-figure, fig.width=9, fig.height=5, echo=FALSE}
+skill <- melt(m[, .(model,r2,rmse,mae,bias)], id.vars="model")
+ggplot(skill, aes(model,value,fill=model)) + geom_col(show.legend=FALSE) +
+  facet_wrap(~variable, scales="free_y") + coord_flip() +
+  labs(x=NULL,y=NULL,title="Paired skill on physically valid held-out ER observations")
+```
+
+For direct paired changes, the reference is the **unfiltered six-predictor fit**. R² uses `sklearn.metrics.r2_score`; bias is predicted minus observed magnitude, so positive bias means overprediction.
+
+```{r differences, echo=FALSE}
+base <- m[variant=="without_uparea"]
+delta <- m[variant %chin% c("strict_exclusion","near_zero"),
+           .(model, delta_r2=r2-base$r2, delta_rmse=rmse-base$rmse,
+             delta_mae=mae-base$mae, delta_bias=bias-base$bias,
+             rmse_change_pct=100*(rmse/base$rmse-1))]
+kable(delta,digits=4)
+```
+
+# Where skill changes
+
+Bins below are fixed from the **pooled common held-out set**, not separately chosen for each model. Area bins (km²) are `<=50`, `50–100`, `100–1000`, and `>1000`; flow bins (m³/s) are `<=0.1`, `0.1–1`, `1–10`, `10–100`, and `>100`. Region bands are descriptive longitude groups, not ecological regions. Season follows day of year: winter Dec–Feb, spring Mar–May, summer Jun–Aug, fall Sep–Nov.
+
+```{r strata-data, include=FALSE}
+h <- fread(file.path(out,"heldout_common.csv"))
+h[, area_bin := cut(uparea,c(-Inf,50,100,1000,Inf),labels=c("≤50","50–100","100–1000",">1000"))]
+h[, flow_bin := cut(discharge,c(-Inf,.1,1,10,100,Inf),labels=c("≤0.1","0.1–1","1–10","10–100",">100"))]
+h[, month := as.integer(format(as.Date(doy-1,origin="2024-01-01"),"%m"))]
+h[, season := fifelse(month %in% c(12,1,2),"Winter",fifelse(month %in% 3:5,"Spring",fifelse(month %in% 6:8,"Summer","Fall")))]
+h[, region := fifelse(longitude < -105,"West",fifelse(longitude < -90,"Central","East"))]
+pred <- rbindlist(lapply(order[1:4], function(v) {
+  p <- fread(file.path(out,paste0("heldout_",v,".csv")))
+  p[, variant := v]
+  p
+}))
+pred <- merge(pred,h,by="source_row",allow.cartesian=TRUE)
+score_group <- function(d) {
+  a <- d$observed_er_magnitude; p <- d$prediction
+  list(n=length(a), r2=if (length(a)>1 && var(a)>0) 1-sum((a-p)^2)/sum((a-mean(a))^2) else NA_real_,
+       rmse=sqrt(mean((p-a)^2)), mae=mean(abs(p-a)), bias=mean(p-a), negative_pct=100*mean(p<0))
+}
+grouped <- rbindlist(lapply(c("area_bin","flow_bin","season","region"),function(g) {
+  z <- pred[, score_group(.SD), by=c("variant",g)]
+  setnames(z,g,"level"); z[, grouping:=g]; z
+}),fill=TRUE)
+grouped[, model:=factor(labels[variant],levels=labels[order])]
+grouped[, level:=factor(level,levels=c("≤50","50–100","100–1000",">1000",
+                                        "≤0.1","0.1–1","1–10","10–100",">100",
+                                        "West","Central","East","Winter","Spring","Summer","Fall"))]
+fwrite(grouped,file.path(out,"heldout_strata.csv"))
+```
+
+```{r strata-figure, fig.width=10, fig.height=8, echo=FALSE}
+ggplot(grouped,aes(level,rmse,color=model,group=model)) + geom_point() + geom_line() +
+  facet_wrap(~grouping,scales="free_x",ncol=2) +
+  labs(x=NULL,y="Held-out RMSE (g O2 m-2 d-1)",color=NULL,
+       title="Predictive error across setting and season") +
+  theme(axis.text.x=element_text(angle=30,hjust=1),legend.position="bottom") +
+  guides(color=guide_legend(nrow=2))
+```
+
+```{r strata-table, echo=FALSE}
+kable(grouped[, .(grouping,level,model,n,r2,rmse,mae,bias,negative_pct)],digits=3)
+```
+
+# Paired CONUS predictions and coverage
+
+All five variants are joined by identical COMID and month; the Maavara column is the downloaded seven-predictor prediction. The local seven- and six-predictor baseline network predictions are reused from the prior run, while A and B are newly generated. `finite & >0` defines usable reach-month coverage under the current downstream sign rule. Report missing, negative, and exact-zero separately. The source network starts at upstream area ~17.5 km² and contains no reaches `<=10 km²`. We therefore identify headwaters using stream **order 1**, and separately show the smallest available area band (`<=50 km²`).
+
+```{r conus-data, include=FALSE}
+scaling <- fread(file.path(root,"data/raw/dryad_data/scaling_dataset_Qmonth_06082024.csv"),select=c("COMID","uparea","order"))
+stopifnot(!anyDuplicated(scaling$COMID))
+scaling[, area_bin:=cut(uparea,c(-Inf,50,100,1000,Inf),labels=c("≤50","50–100","100–1000",">1000"))]
+scaling[, headwater:=order==1]
+network <- vector("list",length(months))
+paired <- vector("list",length(months))
+headwater_month <- vector("list",length(months))
+network_month <- vector("list",length(months))
+for (i in seq_along(months)) {
+  mo <- months[i]; vals <- vector("list",length(order))
+  for (j in seq_along(order)) {
+    v <- order[j]
+    path <- if (v=="maavara") file.path(original,paste0("scaling_ER_pred_",mo,".csv")) else if (v %chin% c("with_uparea","without_uparea")) file.path(refit,v,"ER",paste0("scaling_ER_pred_",mo,".csv")) else file.path(out,"conus",v,paste0("scaling_ER_pred_",mo,".csv"))
+    p <- fread(path)
+    stopifnot(!anyDuplicated(p$COMID),nrow(p)==nrow(scaling))
+    setnames(p,names(p)[2],v)
+    vals[[j]] <- p
+  }
+  z <- Reduce(function(a,b) merge(a,b,by="COMID",all=FALSE),vals)
+  z <- merge(z,scaling,by="COMID")
+  stopifnot(nrow(z)==nrow(scaling))
+  z[, month:=mo]
+  long <- melt(z,id.vars=c("COMID","uparea","order","area_bin","headwater","month"),measure.vars=order,variable.name="variant",value.name="prediction")
+  long[, usable:=is.finite(prediction)&prediction>0]
+  network[[i]] <- long[, .(n=.N,missing=sum(!is.finite(prediction)),negative=sum(prediction<0,na.rm=TRUE),zero=sum(prediction==0,na.rm=TRUE),
+                          usable=sum(usable),p05=quantile(prediction,.05,na.rm=TRUE),median=median(prediction,na.rm=TRUE),p95=quantile(prediction,.95,na.rm=TRUE)),by=.(month,variant,area_bin)]
+  headwater_month[[i]] <- long[, .(n=.N,missing=sum(!is.finite(prediction)),negative=sum(prediction<0,na.rm=TRUE),zero=sum(prediction==0,na.rm=TRUE),usable=sum(usable)),by=.(month,variant,headwater)]
+  network_month[[i]] <- long[, .(n=.N,p05=quantile(prediction,.05,na.rm=TRUE),median=median(prediction,na.rm=TRUE),p95=quantile(prediction,.95,na.rm=TRUE)),by=.(month,variant)]
+  paired[[i]] <- z[, .(month=mo,
+                         A_gain=sum(is.finite(strict_exclusion) & strict_exclusion>0 & (is.na(without_uparea)|without_uparea<=0)),
+                         A_loss=sum((is.na(strict_exclusion)|strict_exclusion<=0) & is.finite(without_uparea) & without_uparea>0),
+                         B_gain=sum(is.finite(near_zero) & near_zero>0 & (is.na(without_uparea)|without_uparea<=0)),
+                         B_loss=sum((is.na(near_zero)|near_zero<=0) & is.finite(without_uparea) & without_uparea>0)),by=area_bin]
+}
+network <- rbindlist(network); network[,model:=factor(labels[variant],levels=labels[order])]
+paired <- rbindlist(paired)
+network_month <- rbindlist(network_month); network_month[,model:=factor(labels[variant],levels=labels[order])]
+network_month[,month:=factor(month,levels=months)]
+headwater_all <- rbindlist(headwater_month)[,lapply(.SD,sum),by=.(variant,headwater),.SDcols=c("n","missing","negative","zero","usable")]
+headwater_all[,model:=factor(labels[variant],levels=labels[order])]
+headwater_all[,usable_pct:=100*usable/n]
+network_all <- network[,lapply(.SD,sum),by=.(variant,model,area_bin),.SDcols=c("n","missing","negative","zero","usable")]
+network_all[,usable_pct:=100*usable/n]
+network_all[,negative_pct:=100*negative/n]
+fwrite(network_all,file.path(out,"conus_coverage_by_area.csv"))
+fwrite(headwater_all,file.path(out,"conus_coverage_by_headwater.csv"))
+fwrite(network_month,file.path(out,"conus_monthly_distribution.csv"))
+fwrite(paired,file.path(out,"conus_paired_coverage_changes.csv"))
+```
+
+```{r coverage-table, echo=FALSE}
+kable(network_all[,.(model,area_bin,n,missing,negative,zero,usable,usable_pct,negative_pct)],digits=2)
+```
+
+**Stream-order 1 headwaters versus higher orders:**
+
+```{r headwater-table, echo=FALSE}
+kable(headwater_all[,.(model,headwater,n,missing,negative,zero,usable,usable_pct)],digits=2)
+```
+
+```{r coverage-figure, fig.width=9, fig.height=5, echo=FALSE}
+ggplot(network_all,aes(area_bin,usable_pct,color=model,group=model)) + geom_point() + geom_line() +
+  labs(x="Upstream area (km²)",y="Usable COMID-months (%)",color=NULL,
+       title="ER coverage by stream size") + theme(legend.position="bottom") +
+  guides(color=guide_legend(nrow=2))
+```
+
+```{r negative-figure, fig.width=9, fig.height=5, echo=FALSE}
+ggplot(network_all,aes(area_bin,negative_pct,color=model,group=model)) + geom_point() + geom_line() +
+  labs(x="Upstream area (km²)",y="Negative predictions (%)",color=NULL,
+       title="Physically implausible ER predictions by stream size") + theme(legend.position="bottom") +
+  guides(color=guide_legend(nrow=2))
+```
+
+```{r conus-distribution, fig.width=9, fig.height=5, echo=FALSE}
+ggplot(network_month,aes(month,median,color=model,group=model)) + geom_point(size=1) + geom_line() +
+  labs(x="Month",y="Median predicted ER magnitude (g O2 m-2 d-1)",color=NULL,
+       title="CONUS prediction distribution through the year") + theme(legend.position="bottom") +
+  guides(color=guide_legend(nrow=2))
+```
+
+```{r distribution-range, echo=FALSE}
+kable(network_month[,.(month,model,p05,median,p95)],digits=3)
+```
+
+```{r paired-coverage, echo=FALSE}
+kable(paired[,lapply(.SD,sum),by=area_bin,.SDcols=c("A_gain","A_loss","B_gain","B_loss")])
+```
+
+# Interpretation and recommendation
+
+```{r conclusion, results='asis', echo=FALSE}
+a <- m[variant=="strict_exclusion"]; b <- m[variant=="near_zero"]
+u <- network_all[variant=="without_uparea",.(negative=sum(negative),usable=sum(usable),n=sum(n))]
+qa <- network_all[variant=="strict_exclusion",.(negative=sum(negative),usable=sum(usable),n=sum(n))]
+qb <- network_all[variant=="near_zero",.(negative=sum(negative),usable=sum(usable),n=sum(n))]
+cat(sprintf("Relative to the unfiltered six-predictor fit, A changes held-out RMSE by **%+.2f%%** and B by **%+.2f%%**. ",100*(a$rmse/base$rmse-1),100*(b$rmse/base$rmse-1)))
+cat(sprintf("Across all COMID-months, the unfiltered fit has **%s** negative predictions and **%s** usable predictions; A has **%s** and **%s**, and B has **%s** and **%s**, respectively.\n\n",comma(u$negative),comma(u$usable),comma(qa$negative),comma(qa$usable),comma(qb$negative),comma(qb$usable)))
+cat("**Recommendation:** Advance **B** as the provisional QC candidate for scientific review. It retains 6,251 more training rows than A, has slightly better pooled R²/RMSE/MAE and smaller absolute bias, and provides the same complete positive-prediction coverage. Its extra retained site contributes only three zero-mapped observations, so that site-count difference has little practical value. Both A and B lower RMSE relative to the unfiltered six-predictor fit in every displayed area, flow, season, and region group. The practical difference between A and B is small. Neither establishes agreement with the published seven-predictor CONUS distribution: both retain the elevated upper tail associated with removing `uparea`, and the monthly median ER is higher than the downloaded Maavara predictions. Before replacing production, decide whether that distribution shift is scientifically credible and consider a site-held-out check, because the original row-wise split shares sites across training and testing. No downstream scripts were rerun.\n")
+```

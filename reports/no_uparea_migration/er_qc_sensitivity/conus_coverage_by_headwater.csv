@@ -1,0 +1,11 @@
+variant,headwater,n,missing,negative,zero,usable,model,usable_pct
+with_uparea,FALSE,1038924,36,69098,0,969790,Seven-feature local,93.3456152711844
+with_uparea,TRUE,1062468,24,2165,0,1060279,Seven-feature local,99.7939702654574
+without_uparea,FALSE,1038924,36,77952,0,960936,Six-feature unfiltered,92.4933873892604
+without_uparea,TRUE,1062468,24,74565,0,987879,Six-feature unfiltered,92.9796473870272
+strict_exclusion,FALSE,1038924,36,0,0,1038888,A: strict,99.9965348764684
+strict_exclusion,TRUE,1062468,24,0,0,1062444,A: strict,99.9977411084381
+near_zero,FALSE,1038924,36,0,0,1038888,B: near-zero,99.9965348764684
+near_zero,TRUE,1062468,24,0,0,1062444,B: near-zero,99.9977411084381
+maavara,FALSE,1038924,0,69772,0,969152,Maavara published,93.284205581929
+maavara,TRUE,1062468,0,2196,0,1060272,Maavara published,99.7933114220852

@@ -1,0 +1,9 @@
+metabolism_metric,change,eligibility_original,eligibility_no_uparea,N
+ER,original_only,eligible,fewer_than_20_reaches,392
+ER,no_uparea_only,area_range_under_one_decade,eligible,185
+ER,no_uparea_only,fewer_than_20_reaches,eligible,32
+ER,original_only,eligible,area_range_under_one_decade,496
+GPP,original_only,eligible,fewer_than_20_reaches,2
+GPP,original_only,eligible,area_range_under_one_decade,1
+GPP,no_uparea_only,fewer_than_20_reaches,eligible,1
+GPP,no_uparea_only,area_range_under_one_decade,eligible,1

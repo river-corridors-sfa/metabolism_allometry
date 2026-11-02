@@ -1,0 +1,17 @@
+variant,metabolism_metric,scaling_class,n
+no_uparea,ER,Insufficient data,36
+no_uparea,ER,Seasonally variable,990
+no_uparea,ER,Super-linear,810
+no_uparea,ER,Uncertain,58
+no_uparea,GPP,Insufficient data,24
+no_uparea,GPP,Seasonally variable,158
+no_uparea,GPP,Super-linear,1685
+no_uparea,GPP,Uncertain,27
+original,ER,Insufficient data,26
+original,ER,Seasonally variable,483
+original,ER,Super-linear,1350
+original,ER,Uncertain,35
+original,GPP,Insufficient data,24
+original,GPP,Seasonally variable,129
+original,GPP,Super-linear,1724
+original,GPP,Uncertain,17

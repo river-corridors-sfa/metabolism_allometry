@@ -1,0 +1,8 @@
+rule,before,removed,after
+huc,3933744,384,3933360
+month,3933360,0,3933360
+positive_area,3933360,0,3933360
+positive_flux,3933360,75397,3857963
+area_coverage,3857963,20767,3837196
+finite_metabolism_coverage,3837196,0,3837196
+metabolism_coverage,3837196,226279,3610917

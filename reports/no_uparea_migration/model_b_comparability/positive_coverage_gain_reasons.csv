@@ -1,0 +1,4 @@
+original_gpp_status,original_er_status,n,unique_comids
+positive,nonpositive,70951,14985
+nonpositive,positive,2138,1568
+nonpositive,nonpositive,360,268

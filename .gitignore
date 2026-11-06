@@ -80,3 +80,4 @@ scripts/x_l1_conus_nm_oneoff.R
 
 # Python bytecode
 __pycache__/
+reports/
